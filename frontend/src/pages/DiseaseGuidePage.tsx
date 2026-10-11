@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
   BookOpen,
@@ -360,6 +360,8 @@ const CATALOGUE: DiseaseGuideEntry[] = [
 ];
 
 export const DiseaseGuidePage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedSlug = searchParams.get('disease');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
@@ -404,28 +406,28 @@ export const DiseaseGuidePage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         {/* Unified Editorial Console Header */}
-        <Surface className="p-6 sm:p-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-emerald-950/10">
+        <Surface className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 pb-5 sm:pb-6 border-b border-emerald-950/10">
             <div className="space-y-1.5 max-w-2xl">
               <div className="flex items-center space-x-2 text-agri-800 text-xs font-semibold">
-                <BookOpen className="w-4 h-4 text-agri-600" />
+                <BookOpen className="w-4 h-4 text-agri-600 shrink-0" />
                 <span>Field Diagnostics Reference</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-                Groundnut Pathology & Treatment Guide
+                Groundnut Pathology &amp; Treatment Guide
               </h1>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              <p className="text-slate-600 text-sm leading-relaxed">
                 Farmer-tested visual symptoms, photorealistic specimen photos, natural bio-fungicides, chemical dosages, and soil care.
               </p>
             </div>
           </div>
 
           {/* Search & Category Filter Strip */}
-          <div className="pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 sm:gap-4">
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -433,34 +435,35 @@ export const DiseaseGuidePage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search symptom or remedy (e.g. yellow halo, mancozeb)..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-emerald-950/10 bg-white/60 text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                className="w-full min-h-[44px] pl-10 pr-10 py-2.5 rounded-xl border border-emerald-950/10 bg-white/75 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
               />
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 touch-target cursor-pointer"
+                  aria-label="Clear search"
                 >
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all touch-target ${
-                      selectedCategory === cat
-                        ? 'bg-agri-800 text-white shadow-xs'
-                        : 'bg-white/60 text-slate-700 hover:bg-white/90 border border-emerald-950/5'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
+                    selectedCategory === cat
+                      ? 'bg-agri-800 text-white shadow-xs'
+                      : 'bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
         </Surface>
@@ -469,12 +472,12 @@ export const DiseaseGuidePage: React.FC = () => {
           <Surface className="py-16 text-center space-y-3">
             <Search className="w-10 h-10 text-slate-400 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">No Matching Diseases</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <p className="text-sm text-slate-500 max-w-sm mx-auto">
               Try searching for a different symptom, remedy, or switch category filters.
             </p>
           </Surface>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {filteredCatalogue.map((disease) => (
               <ExpandableProfileCard
                 key={disease.slug}
@@ -482,6 +485,12 @@ export const DiseaseGuidePage: React.FC = () => {
                 imageSrc={disease.image}
                 title={disease.name}
                 subtitle={`${disease.localName} • ${disease.scientificName}`}
+                defaultOpen={selectedSlug === disease.slug}
+                onClose={() => {
+                  if (selectedSlug === disease.slug) {
+                    setSearchParams({}, { replace: true });
+                  }
+                }}
                 badge={
                   <Badge variant={disease.badgeVariant} className="shadow-xs backdrop-blur-md">
                     {disease.severity}
@@ -494,25 +503,25 @@ export const DiseaseGuidePage: React.FC = () => {
                       <div className="text-xs font-bold uppercase tracking-wider text-agri-800">
                         Quick Identification
                       </div>
-                      <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                      <p className="text-sm text-slate-700 leading-relaxed font-medium">
                         {disease.quickCheck}
                       </p>
-                      <div className="pt-1 text-[11px] font-semibold text-emerald-800 flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
+                      <div className="pt-1 text-xs font-semibold text-emerald-800 flex items-start gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5" />
                         <span>Action: {disease.whenToAct}</span>
                       </div>
                     </div>
 
                     {/* Diagnostic Symptoms */}
                     <div>
-                      <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <Eye className="w-3.5 h-3.5 text-agri-700" />
+                      <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                        <Eye className="w-4 h-4 text-agri-700 shrink-0" />
                         <span>Diagnostic Symptoms</span>
                       </h4>
-                      <ul className="space-y-1.5">
+                      <ul className="space-y-2">
                         {disease.symptoms.map((s, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs text-slate-600">
-                            <span className="w-1.5 h-1.5 rounded-full bg-agri-600 shrink-0 mt-1.5" />
+                          <li key={idx} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
+                            <span className="w-1.5 h-1.5 rounded-full bg-agri-600 shrink-0 mt-2" />
                             <span>{s}</span>
                           </li>
                         ))}
@@ -521,18 +530,18 @@ export const DiseaseGuidePage: React.FC = () => {
 
                     {/* Bio-Organic Remedies */}
                     {disease.organicRemedies.length > 0 && (
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
-                          <Sprout className="w-3.5 h-3.5 text-emerald-600" />
+                          <Sprout className="w-4 h-4 text-emerald-600 shrink-0" />
                           <span>Bio-Organic Treatment</span>
                         </h4>
                         {disease.organicRemedies.map((r, idx) => (
-                          <div key={idx} className="p-3 rounded-xl bg-white/70 border border-emerald-950/10 space-y-1">
-                            <div className="text-xs font-bold text-slate-900">{r.name}</div>
-                            <div className="text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md inline-block">
+                          <div key={idx} className="p-3.5 rounded-xl bg-white/80 border border-emerald-950/10 space-y-1.5">
+                            <div className="text-sm font-bold text-slate-900 leading-snug">{r.name}</div>
+                            <div className="text-xs text-emerald-900 font-bold bg-emerald-100/80 border border-emerald-200/70 px-2.5 py-1 rounded-lg inline-block">
                               Dosage: {r.dosage}
                             </div>
-                            <p className="text-[11px] text-slate-600">{r.instruction}</p>
+                            <p className="text-sm text-slate-600 leading-relaxed">{r.instruction}</p>
                           </div>
                         ))}
                       </div>
@@ -540,18 +549,18 @@ export const DiseaseGuidePage: React.FC = () => {
 
                     {/* Chemical Shield */}
                     {disease.chemicalRemedies.length > 0 && (
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
-                          <FlaskConical className="w-3.5 h-3.5 text-blue-600" />
+                          <FlaskConical className="w-4 h-4 text-agri-700 shrink-0" />
                           <span>Protective Chemical Shield</span>
                         </h4>
                         {disease.chemicalRemedies.map((r, idx) => (
-                          <div key={idx} className="p-3 rounded-xl bg-white/70 border border-emerald-950/10 space-y-1">
-                            <div className="text-xs font-bold text-slate-900">{r.name}</div>
-                            <div className="text-[11px] text-blue-800 font-semibold bg-blue-50 px-2 py-0.5 rounded-md inline-block">
+                          <div key={idx} className="p-3.5 rounded-xl bg-white/80 border border-emerald-950/10 space-y-1.5">
+                            <div className="text-sm font-bold text-slate-900 leading-snug">{r.name}</div>
+                            <div className="text-xs text-agri-900 font-bold bg-[#edf4ed] border border-emerald-950/10 px-2.5 py-1 rounded-lg inline-block">
                               Dosage: {r.dosage}
                             </div>
-                            <p className="text-[11px] text-slate-600">{r.instruction}</p>
+                            <p className="text-sm text-slate-600 leading-relaxed">{r.instruction}</p>
                           </div>
                         ))}
                       </div>
@@ -559,15 +568,15 @@ export const DiseaseGuidePage: React.FC = () => {
 
                     {/* Cultural & Soil Care */}
                     {disease.culturalRemedies.length > 0 && (
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5">
-                          <ShieldCheck className="w-3.5 h-3.5 text-agri-700" />
-                          <span>Field & Soil Management</span>
+                          <ShieldCheck className="w-4 h-4 text-agri-700 shrink-0" />
+                          <span>Field &amp; Soil Management</span>
                         </h4>
                         {disease.culturalRemedies.map((r, idx) => (
-                          <div key={idx} className="p-3 rounded-xl bg-white/70 border border-emerald-950/10 space-y-1">
-                            <div className="text-xs font-bold text-slate-900">{r.name}</div>
-                            <p className="text-[11px] text-slate-600">{r.instruction}</p>
+                          <div key={idx} className="p-3.5 rounded-xl bg-white/80 border border-emerald-950/10 space-y-1.5">
+                            <div className="text-sm font-bold text-slate-900 leading-snug">{r.name}</div>
+                            <p className="text-sm text-slate-600 leading-relaxed">{r.instruction}</p>
                           </div>
                         ))}
                       </div>

@@ -134,28 +134,28 @@ export const HistoryPage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         {/* Header Console */}
-        <Surface className="p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-emerald-950/10">
+        <Surface className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-emerald-950/10">
             <div className="space-y-1">
               <div className="flex items-center space-x-2 text-agri-800 text-xs font-semibold">
-                <History className="w-4 h-4 text-agri-600" />
+                <History className="w-4 h-4 text-agri-600 shrink-0" />
                 <span>Field Audit Telemetry</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
                 Specimen Diagnosis History
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 Tap any specimen card to morph into high-resolution side-by-side inspection with verified remedies.
               </p>
             </div>
           </div>
 
           {/* Filter & Search Bar */}
-          <div className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="pt-5 sm:pt-6 flex flex-col md:flex-row md:items-center justify-between gap-3.5 sm:gap-4">
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -163,12 +163,12 @@ export const HistoryPage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by disease name..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-emerald-950/10 bg-white/60 text-slate-900 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                className="w-full min-h-[44px] pl-10 pr-4 py-2.5 rounded-xl border border-emerald-950/10 bg-white/75 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
               />
             </div>
 
             <div className="flex items-center space-x-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
-              <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 pl-1">
+              <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 pl-1 shrink-0">
                 <Filter className="w-3.5 h-3.5" />
                 <span>Filter:</span>
               </span>
@@ -183,14 +183,15 @@ export const HistoryPage: React.FC = () => {
               ].map((f) => (
                 <button
                   key={f.id}
+                  type="button"
                   onClick={() => {
                     setDiseaseFilter(f.id);
                     setPage(1);
                   }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all touch-target ${
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
                     diseaseFilter === f.id
                       ? 'bg-agri-800 text-white shadow-xs'
-                      : 'bg-white/60 text-slate-700 hover:bg-white/90 border border-emerald-950/5'
+                      : 'bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'
                   }`}
                 >
                   {f.label}
@@ -207,16 +208,16 @@ export const HistoryPage: React.FC = () => {
             <span>Retrieving verified farm logs...</span>
           </div>
         ) : filteredItems.length === 0 ? (
-          <Surface className="py-16 text-center space-y-4 border-dashed border-2">
+          <Surface className="py-16 px-4 text-center space-y-4 border-dashed border-2">
             <Scan className="w-12 h-12 text-slate-400 mx-auto" />
             <h3 className="text-lg font-bold text-slate-900">No Diagnosis Records Found</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            <p className="text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
               {searchQuery || diseaseFilter !== 'all'
                 ? 'No historical logs match your current search and filter settings.'
                 : 'Diagnoses are saved explicitly from the Live Scanner. Start scanning crops to build your history.'}
             </p>
             <div className="pt-2">
-              <Button asChild size="default">
+              <Button asChild size="default" className="min-h-[44px]">
                 <Link to="/scan" className="flex items-center space-x-2">
                   <Scan className="w-4 h-4" />
                   <span>Start Crop Scan</span>
@@ -225,7 +226,7 @@ export const HistoryPage: React.FC = () => {
             </div>
           </Surface>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             {filteredItems.map((item) => {
               const isHealthy = item.disease_name.toLowerCase().includes('healthy');
               const imageSrc = getDiseaseImage(item.disease_name, item.media_url);
@@ -273,9 +274,9 @@ export const HistoryPage: React.FC = () => {
                             }}
                           />
                         </div>
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                        <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
+                          <span className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             {new Date(item.diagnosis_timestamp).toLocaleDateString(undefined, {
                               dateStyle: 'medium',
                             })}
@@ -294,7 +295,7 @@ export const HistoryPage: React.FC = () => {
                         <h4 className="text-slate-900 font-bold text-xs uppercase tracking-wider mb-1.5">
                           Field Assessment
                         </h4>
-                        <p className="text-slate-600 text-xs leading-relaxed">
+                        <p className="text-slate-600 text-sm leading-relaxed">
                           {isHealthy
                             ? 'Clean foliage profile verified with zero detected lesion chlorosis. Maintain scheduled irrigation and weekly crop inspection.'
                             : `AI vision detector flagged foliage symptoms consistent with ${item.disease_name}. Review curative and preventive field interventions below.`}
@@ -302,32 +303,32 @@ export const HistoryPage: React.FC = () => {
                       </div>
 
                       {/* Interactive Controls */}
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-3 border-t border-emerald-950/10">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-3 border-t border-emerald-950/10">
                         <button
                           type="button"
                           onClick={() => handleInspectRemedies(item)}
-                          className="flex-1 py-2.5 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                          className="flex-1 min-h-[44px] py-2.5 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 shadow-xs touch-target cursor-pointer"
                         >
-                          <ExternalLink className="w-3.5 h-3.5" />
+                          <ExternalLink className="w-4 h-4 shrink-0" />
                           <span>Inspect Full Treatment Plan</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => setDeleteId(item.id)}
-                          className="py-2.5 px-4 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 font-bold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="min-h-[44px] py-2.5 px-4 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 touch-target cursor-pointer"
                           title="Delete log entry"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4 shrink-0" />
                           <span>Delete</span>
                         </button>
                       </div>
 
                       <div className="pt-1">
                         <Link
-                          to="/guide"
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-agri-700 hover:text-agri-800 hover:underline"
+                          to={`/guide?disease=${item.disease_id}`}
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-agri-700 hover:text-agri-800 hover:underline py-1"
                         >
-                          <BookOpen className="w-3 h-3" />
+                          <BookOpen className="w-3.5 h-3.5 shrink-0" />
                           <span>Open Disease Guide entry for {item.disease_name}</span>
                         </Link>
                       </div>
@@ -341,25 +342,29 @@ export const HistoryPage: React.FC = () => {
 
         {/* Pagination Controls */}
         {totalPages > 1 && (
-          <Surface className="p-4 flex items-center justify-between text-xs font-semibold text-slate-600">
+          <Surface className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-semibold text-slate-600">
             <div>
               Showing page <span className="font-mono font-bold text-slate-900">{page}</span> of{' '}
               <span className="font-mono font-bold text-slate-900">{totalPages}</span> (Total{' '}
               {totalCount} records)
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 self-end sm:self-auto">
               <button
+                type="button"
                 disabled={page <= 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="p-2 rounded-xl border border-emerald-950/10 bg-white/70 hover:bg-white disabled:opacity-40 transition-colors touch-target flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"
+                aria-label="Previous page"
+                className="h-11 w-11 rounded-xl border border-emerald-950/10 bg-white/80 hover:bg-white disabled:opacity-40 transition-colors touch-target flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
+                type="button"
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                className="p-2 rounded-xl border border-emerald-950/10 bg-white/70 hover:bg-white disabled:opacity-40 transition-colors touch-target flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"
+                aria-label="Next page"
+                className="h-11 w-11 rounded-xl border border-emerald-950/10 bg-white/80 hover:bg-white disabled:opacity-40 transition-colors touch-target flex items-center justify-center cursor-pointer disabled:cursor-not-allowed"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

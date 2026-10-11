@@ -105,18 +105,21 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
     {
       id: 'organic' as const,
       label: 'Organic & Bio',
+      shortLabel: 'Organic',
       icon: Sprout,
       iconColor: 'text-emerald-600',
     },
     {
       id: 'chemical' as const,
       label: 'Chemical Shield',
+      shortLabel: 'Chemical',
       icon: FlaskConical,
       iconColor: 'text-agri-700',
     },
     {
       id: 'preventive' as const,
       label: 'Cultural Care',
+      shortLabel: 'Cultural',
       icon: Shield,
       iconColor: 'text-agri-700',
     },
@@ -141,21 +144,21 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
           }}
           className="p-4 sm:p-5 rounded-2xl border border-emerald-950/10 bg-[#f7faf7] space-y-2.5"
         >
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h4 className="text-sm font-bold text-slate-900">
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
               {remedy.title || remedy.treatment_name || defaultTitle}
             </h4>
             {remedy.dosage && (
-              <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-lg bg-emerald-100/80 text-agri-800 font-semibold border border-emerald-200/60">
+              <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-emerald-100/90 text-agri-800 font-bold border border-emerald-200/80">
                 {remedy.dosage}
               </span>
             )}
           </div>
           {remedy.description && (
-            <p className="text-xs text-slate-700 leading-relaxed">{remedy.description}</p>
+            <p className="text-sm text-slate-700 leading-relaxed">{remedy.description}</p>
           )}
           {remedy.application_instructions && (
-            <div className="text-xs text-agri-950 leading-relaxed bg-white p-3 rounded-xl border border-emerald-950/10">
+            <div className="text-xs sm:text-sm text-agri-950 leading-relaxed bg-white p-3.5 rounded-xl border border-emerald-950/10">
               <span className="font-bold text-agri-800">Application: </span>
               {remedy.application_instructions}
             </div>
@@ -171,8 +174,8 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         className="p-4 sm:p-5 rounded-2xl border border-emerald-950/10 bg-[#f7faf7] space-y-2"
       >
-        <h4 className="text-sm font-bold text-slate-900">{fallbackTitle}</h4>
-        <p className="text-xs text-slate-700 leading-relaxed">{fallbackDescription}</p>
+        <h4 className="text-sm sm:text-base font-bold text-slate-900">{fallbackTitle}</h4>
+        <p className="text-sm text-slate-700 leading-relaxed">{fallbackDescription}</p>
       </motion.div>
     );
   };
@@ -180,7 +183,7 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[110] overflow-y-auto flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[110] overflow-y-auto flex items-center justify-center p-2.5 sm:p-6">
           {/* Smooth Animated Backdrop */}
           <motion.div
             key="treatment-modal-backdrop"
@@ -206,21 +209,21 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
               damping: 28,
               mass: 0.85,
             }}
-            className="relative z-10 bg-white/95 backdrop-blur-2xl rounded-3xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-2xl overflow-hidden border border-white/80 text-slate-900 ring-1 ring-emerald-950/10"
+            className="relative z-10 bg-white/95 backdrop-blur-2xl rounded-2xl sm:rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-white/80 text-slate-900 ring-1 ring-emerald-950/10"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header — Botanical Sage & Frosted Glass matching rest of Plant-Aid */}
-            <div className="p-6 sm:p-7 bg-gradient-to-br from-[#edf4ed] via-[#f3f8f3] to-emerald-50/60 border-b border-emerald-950/10 relative shrink-0">
+            <div className="p-4 sm:p-6 md:p-7 bg-gradient-to-br from-[#edf4ed] via-[#f3f8f3] to-emerald-50/60 border-b border-emerald-950/10 relative shrink-0">
               <button
                 onClick={onClose}
-                className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 hover:bg-white border border-emerald-950/10 text-slate-600 hover:text-slate-900 transition-colors shadow-xs touch-target cursor-pointer"
+                className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/85 hover:bg-white border border-emerald-950/10 text-slate-600 hover:text-slate-900 transition-colors shadow-xs touch-target cursor-pointer"
                 aria-label="Close modal"
                 title="Close"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
 
-              <div className="space-y-1.5 pr-10">
+              <div className="space-y-1.5 pr-12">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant={isHealthy ? 'optimal' : 'default'}>
                     <span>Agronomic Treatment Plan</span>
@@ -229,7 +232,7 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
                     {(displayConfidence * 100).toFixed(1)}% Match
                   </span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight pt-1">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-normal text-slate-900 tracking-tight pt-1 leading-snug">
                   {displayDiseaseName}
                 </h3>
                 {displayScientificName && (
@@ -237,9 +240,9 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
                 )}
               </div>
 
-              {/* Pill Tab Selector with Sliding Motion Indicator */}
+              {/* Pill Tab Selector with Sliding Motion Indicator — never truncates on mobile */}
               {!isHealthy && (
-                <div className="grid grid-cols-3 gap-1.5 mt-5 p-1 rounded-2xl bg-emerald-950/5 border border-emerald-950/5 text-xs font-semibold relative">
+                <div className="grid grid-cols-3 gap-1 sm:gap-1.5 mt-4 sm:mt-5 p-1 rounded-2xl bg-emerald-950/5 border border-emerald-950/5 text-xs font-semibold relative">
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -248,7 +251,7 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
                         key={tab.id}
                         type="button"
                         onClick={() => setActiveTab(tab.id)}
-                        className={`relative py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer z-10 ${
+                        className={`relative min-h-[44px] py-2 px-1.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer z-10 touch-target ${
                           isActive
                             ? 'text-agri-950 font-bold'
                             : 'text-slate-600 hover:text-slate-900'
@@ -265,8 +268,9 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
                             className="absolute inset-0 rounded-xl bg-white shadow-xs border border-emerald-950/5 -z-10"
                           />
                         )}
-                        <Icon className={`w-4 h-4 ${tab.iconColor} shrink-0`} />
-                        <span className="truncate">{tab.label}</span>
+                        <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${tab.iconColor} shrink-0`} />
+                        <span className="sm:hidden whitespace-nowrap">{tab.shortLabel}</span>
+                        <span className="hidden sm:inline whitespace-nowrap">{tab.label}</span>
                       </button>
                     );
                   })}
@@ -275,17 +279,17 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
             </div>
 
             {/* Modal Body / Smooth Animated Tab Content */}
-            <div className="p-6 sm:p-7 overflow-y-auto flex-1 bg-white/80 custom-scrollbar">
+            <div className="p-4 sm:p-6 md:p-7 overflow-y-auto flex-1 bg-white/80 custom-scrollbar">
               {isHealthy ? (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 text-center space-y-3"
+                  className="p-5 sm:p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 text-center space-y-3"
                 >
                   <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
                   <h4 className="text-base font-bold text-emerald-950">Crop Canopy is Healthy</h4>
-                  <p className="text-xs text-emerald-900/80 max-w-md mx-auto leading-relaxed">
+                  <p className="text-sm text-emerald-900/85 max-w-md mx-auto leading-relaxed">
                     No active fungal pustules, necrotic spots, or chlorotic halos detected. Continue
                     standard agronomic irrigation, maintain weed-free crop borders, and schedule
                     regular weekly monitoring.
@@ -305,7 +309,7 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
                       {[0, 1].map((skeletonIdx) => (
                         <div
                           key={skeletonIdx}
-                          className="p-5 rounded-2xl border border-emerald-950/10 bg-[#f7faf7] space-y-3 animate-pulse"
+                          className="p-4 sm:p-5 rounded-2xl border border-emerald-950/10 bg-[#f7faf7] space-y-3 animate-pulse"
                         >
                           <div className="flex items-center justify-between gap-4">
                             <div className="h-4 w-44 bg-emerald-950/10 rounded-md" />
@@ -355,11 +359,11 @@ export const TreatmentPlanModal: React.FC<TreatmentPlanModalProps> = ({
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-4 bg-[#edf4ed]/70 border-t border-emerald-950/10 flex items-center justify-between gap-4 text-xs text-slate-600 shrink-0">
-              <span className="text-xs text-slate-600 font-medium">
+            <div className="px-4 sm:px-6 py-3.5 sm:py-4 bg-[#edf4ed]/70 border-t border-emerald-950/10 flex items-center justify-between gap-3 text-xs text-slate-600 shrink-0">
+              <span className="text-xs text-slate-600 font-medium leading-snug">
                 Always wear protective gear during field spraying
               </span>
-              <Button size="sm" onClick={onClose}>
+              <Button size="sm" onClick={onClose} className="shrink-0 min-h-[44px] px-5">
                 Done
               </Button>
             </div>

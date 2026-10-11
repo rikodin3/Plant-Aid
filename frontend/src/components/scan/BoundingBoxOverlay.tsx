@@ -50,7 +50,11 @@ export const BoundingBoxOverlay: React.FC<BoundingBoxOverlayProps> = ({
             height: `${Math.max(1, (boundingBox.y_max - boundingBox.y_min) * 100)}%`,
           }}
         >
-          <div className="absolute -top-6 left-0 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-900 text-white border border-slate-700 whitespace-nowrap shadow-sm">
+          <div
+            className={`absolute left-0 px-2 py-0.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-slate-900/95 text-white border border-slate-700 whitespace-nowrap shadow-sm ${
+              boundingBox.y_min < 0.14 ? 'top-1.5 ml-1.5' : '-top-7'
+            }`}
+          >
             {isHealthy ? 'Healthy Canopy' : `Lesion ROI: ${(confidence * 100).toFixed(0)}%`}
           </div>
         </div>

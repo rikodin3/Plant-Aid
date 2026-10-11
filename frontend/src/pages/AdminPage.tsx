@@ -254,32 +254,32 @@ export const AdminPage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         {/* Admin Header Console */}
         <Card
           glass
-          className="p-6 sm:p-8 backdrop-blur-xl border border-white/80 shadow-[0_10px_35px_-5px_rgba(20,83,45,0.08)] ring-1 ring-emerald-950/5"
+          className="p-4 sm:p-6 md:p-8 backdrop-blur-xl border border-white/80 shadow-[0_10px_35px_-5px_rgba(20,83,45,0.08)] ring-1 ring-emerald-950/5"
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-agri-700 to-agri-900 text-white flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-agri-700 to-agri-900 text-white flex items-center justify-center shadow-md shrink-0">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
                 <div>
                   <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
                     Platform Administration
                   </h1>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     Governance console for user authorization, diagnostic logs, and remedy catalog management
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 self-start sm:self-center">
+            <div className="flex items-center space-x-2 self-start sm:self-center shrink-0">
               <Badge variant="warning" className="bg-amber-100/90 text-amber-900 border-amber-300">
                 <Sparkles className="w-3.5 h-3.5 text-amber-700" />
                 <span>Super-User Active</span>
@@ -288,11 +288,11 @@ export const AdminPage: React.FC = () => {
           </div>
 
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-6 border-t border-emerald-950/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-emerald-950/10">
             <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <Users className="w-5 h-5 text-agri-700" />
+              <Users className="w-5 h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                   Total Operators
                 </div>
                 <div className="text-lg font-bold text-slate-900">{usersTotal}</div>
@@ -300,9 +300,9 @@ export const AdminPage: React.FC = () => {
             </div>
 
             <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <History className="w-5 h-5 text-agri-700" />
+              <History className="w-5 h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                   Global Diagnoses
                 </div>
                 <div className="text-lg font-bold text-slate-900">{historyTotal}</div>
@@ -310,9 +310,9 @@ export const AdminPage: React.FC = () => {
             </div>
 
             <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <BookOpen className="w-5 h-5 text-agri-700" />
+              <BookOpen className="w-5 h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                   Groundnut Classes
                 </div>
                 <div className="text-lg font-bold text-slate-900">{GROUNDNUT_DISEASES.length}</div>
@@ -346,26 +346,26 @@ export const AdminPage: React.FC = () => {
 
         {/* Administration Tabs */}
         <Tabs value={activeTab} onValueChange={(val: any) => setActiveTab(val)}>
-          <TabsList className="bg-white/70 backdrop-blur-md border border-emerald-950/10 p-1.5 rounded-2xl shadow-sm">
-            <TabsTrigger value="users" className="flex items-center space-x-2 px-4 py-2">
-              <Users className="w-4 h-4" />
+          <TabsList className="bg-white/70 backdrop-blur-md border border-emerald-950/10 p-1.5 rounded-2xl shadow-sm w-full sm:w-auto">
+            <TabsTrigger value="users" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+              <Users className="w-4 h-4 shrink-0" />
               <span>User Governance</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center space-x-2 px-4 py-2">
-              <History className="w-4 h-4" />
+            <TabsTrigger value="history" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+              <History className="w-4 h-4 shrink-0" />
               <span>Global Diagnosis Records</span>
             </TabsTrigger>
-            <TabsTrigger value="remedies" className="flex items-center space-x-2 px-4 py-2">
-              <BookOpen className="w-4 h-4" />
-              <span>Remedy & Treatment Catalog</span>
+            <TabsTrigger value="remedies" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+              <BookOpen className="w-4 h-4 shrink-0" />
+              <span>Remedy &amp; Treatment Catalog</span>
             </TabsTrigger>
           </TabsList>
 
           {/* TAB 1: USER GOVERNANCE */}
           <TabsContent value="users" className="space-y-4">
-            <Card glass className="p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
               {/* Filter and Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-6 border-b border-emerald-950/10">
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-5 sm:pb-6 border-b border-emerald-950/10">
                 <div className="relative flex-1 max-w-md">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -373,15 +373,15 @@ export const AdminPage: React.FC = () => {
                     value={userSearch}
                     onChange={(e) => setUserSearch(e.target.value)}
                     placeholder="Search by operator name, email, or phone..."
-                    className="w-full pl-10 pr-4 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
+                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <select
                     value={userRoleFilter}
                     onChange={(e) => setUserRoleFilter(e.target.value)}
-                    className="px-3 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Roles</option>
                     <option value="user">User</option>
@@ -391,7 +391,7 @@ export const AdminPage: React.FC = () => {
                   <select
                     value={userStatusFilter}
                     onChange={(e) => setUserStatusFilter(e.target.value)}
-                    className="px-3 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Statuses</option>
                     <option value="ACTIVE">Active</option>
@@ -404,7 +404,7 @@ export const AdminPage: React.FC = () => {
                     size="sm"
                     onClick={fetchUsers}
                     title="Refresh user list"
-                    className="p-2"
+                    className="min-h-[44px] min-w-[44px] p-2.5"
                   >
                     <RefreshCw className={`w-4 h-4 text-slate-600 ${usersLoading ? 'animate-spin' : ''}`} />
                   </Button>
@@ -414,7 +414,7 @@ export const AdminPage: React.FC = () => {
               {/* Users Table */}
               <div className="overflow-x-auto pt-4">
                 <table className="w-full text-left text-sm text-slate-700">
-                  <thead className="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                  <thead className="text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
                     <tr>
                       <th scope="col" className="pb-3 font-bold">Operator</th>
                       <th scope="col" className="pb-3 font-bold">Role</th>
@@ -579,9 +579,9 @@ export const AdminPage: React.FC = () => {
 
           {/* TAB 2: GLOBAL DIAGNOSTIC RECORDS */}
           <TabsContent value="history" className="space-y-4">
-            <Card glass className="p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
               {/* Filter and Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-6 border-b border-emerald-950/10">
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-5 sm:pb-6 border-b border-emerald-950/10">
                 <div className="relative flex-1 max-w-md">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -589,15 +589,15 @@ export const AdminPage: React.FC = () => {
                     value={historySearch}
                     onChange={(e) => setHistorySearch(e.target.value)}
                     placeholder="Search by operator, email, or disease name..."
-                    className="w-full pl-10 pr-4 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
+                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <select
                     value={historyDiseaseFilter}
                     onChange={(e) => setHistoryDiseaseFilter(e.target.value)}
-                    className="px-3 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Groundnut Diseases</option>
                     {GROUNDNUT_DISEASES.map((d) => (
@@ -612,7 +612,7 @@ export const AdminPage: React.FC = () => {
                     size="sm"
                     onClick={fetchGlobalHistory}
                     title="Refresh history feed"
-                    className="p-2"
+                    className="min-h-[44px] min-w-[44px] p-2.5"
                   >
                     <RefreshCw className={`w-4 h-4 text-slate-600 ${historyLoading ? 'animate-spin' : ''}`} />
                   </Button>
@@ -622,7 +622,7 @@ export const AdminPage: React.FC = () => {
               {/* History Table */}
               <div className="overflow-x-auto pt-4">
                 <table className="w-full text-left text-sm text-slate-700">
-                  <thead className="text-[11px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                  <thead className="text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
                     <tr>
                       <th className="pb-3 font-bold">Timestamp</th>
                       <th className="pb-3 font-bold">Operator</th>
@@ -692,7 +692,7 @@ export const AdminPage: React.FC = () => {
                                   <ExternalLink className="w-3 h-3" />
                                 </a>
                               ) : (
-                                <span className="text-xs text-slate-400">Archived</span>
+                                <span className="text-xs text-slate-500">Archived</span>
                               )}
                             </td>
                           </tr>
@@ -703,11 +703,11 @@ export const AdminPage: React.FC = () => {
                 </table>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-slate-100 text-xs text-slate-500">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 border-t border-slate-100 text-xs text-slate-500">
                 <div>
                   Showing {historyItems.length} of {historyTotal} records (Page {historyPage})
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 self-end sm:self-auto">
                   <Button
                     variant="outline"
                     size="sm"
@@ -731,20 +731,20 @@ export const AdminPage: React.FC = () => {
 
           {/* TAB 3: REMEDY & TREATMENT CATALOG */}
           <TabsContent value="remedies" className="space-y-4">
-            <Card glass className="p-6 backdrop-blur-xl border border-white/80 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-emerald-950/10">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-emerald-950/10">
                 <div className="space-y-1">
                   <h2 className="text-lg font-bold text-slate-900">Disease Remedy Catalog</h2>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs sm:text-sm text-slate-500">
                     Add, update, or remove biological, chemical, and cultural treatments served to farmers
                   </p>
                 </div>
 
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <select
                     value={selectedDiseaseId}
                     onChange={(e) => setSelectedDiseaseId(e.target.value)}
-                    className="px-3.5 py-2 rounded-xl bg-white/70 border border-slate-200 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     {GROUNDNUT_DISEASES.map((d) => (
                       <option key={d.id} value={d.id}>
@@ -755,7 +755,7 @@ export const AdminPage: React.FC = () => {
 
                   <Button
                     onClick={openAddRemedyModal}
-                    className="flex items-center space-x-1.5 bg-agri-700 hover:bg-agri-800 text-white text-xs px-3.5 py-2 rounded-xl shadow-xs"
+                    className="min-h-[44px] flex items-center space-x-1.5 bg-agri-700 hover:bg-agri-800 text-white text-xs sm:text-sm px-4 py-2 rounded-xl shadow-xs shrink-0"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add Remedy</span>
@@ -764,7 +764,7 @@ export const AdminPage: React.FC = () => {
               </div>
 
               {/* Remedies Grid */}
-              <div className="pt-6">
+              <div className="pt-5 sm:pt-6">
                 {remediesLoading ? (
                   <div className="py-12 text-center text-slate-500">
                     <div className="w-6 h-6 border-2 border-agri-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
@@ -772,7 +772,7 @@ export const AdminPage: React.FC = () => {
                   </div>
                 ) : remedies.length === 0 ? (
                   <div className="py-12 text-center text-slate-500 bg-white/40 rounded-xl border border-dashed border-slate-200">
-                    No remedies listed for this condition yet. Click "Add Remedy" above.
+                    No remedies listed for this condition yet. Click &quot;Add Remedy&quot; above.
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -783,44 +783,48 @@ export const AdminPage: React.FC = () => {
                       return (
                         <div
                           key={remedy.id}
-                          className="p-5 rounded-2xl bg-white/70 border border-emerald-950/5 shadow-xs flex flex-col justify-between space-y-4 hover:border-agri-600/30 transition"
+                          className="p-4 sm:p-5 rounded-2xl bg-white/80 border border-emerald-950/10 shadow-xs flex flex-col justify-between space-y-4 hover:border-agri-600/30 transition"
                         >
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <Badge
                                 variant={isOrganic ? 'optimal' : isChemical ? 'destructive' : 'warning'}
-                                className="text-[11px]"
+                                className="text-xs"
                               >
                                 {remedy.category}
                               </Badge>
                               <div className="flex items-center space-x-1">
                                 <button
+                                  type="button"
                                   onClick={() => openEditRemedyModal(remedy)}
-                                  className="p-1 rounded-md text-slate-400 hover:text-agri-700 hover:bg-slate-100 transition"
+                                  className="h-9 w-9 rounded-xl text-agri-700 hover:text-agri-900 hover:bg-emerald-50 flex items-center justify-center transition touch-target cursor-pointer"
                                   title="Edit remedy"
+                                  aria-label="Edit remedy"
                                 >
-                                  <Edit2 className="w-3.5 h-3.5" />
+                                  <Edit2 className="w-4 h-4" />
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => handleDeleteRemedy(remedy.id)}
-                                  className="p-1 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition"
+                                  className="h-9 w-9 rounded-xl text-rose-700 hover:text-rose-900 hover:bg-rose-50 flex items-center justify-center transition touch-target cursor-pointer"
                                   title="Delete remedy"
+                                  aria-label="Delete remedy"
                                 >
-                                  <Trash2 className="w-3.5 h-3.5" />
+                                  <Trash2 className="w-4 h-4" />
                                 </button>
                               </div>
                             </div>
 
-                            <h3 className="font-bold text-slate-900 text-sm">{remedy.title}</h3>
-                            <p className="text-xs text-slate-600 leading-relaxed">{remedy.description}</p>
+                            <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-snug">{remedy.title}</h3>
+                            <p className="text-sm text-slate-600 leading-relaxed">{remedy.description}</p>
                           </div>
 
                           {remedy.application_instructions && (
                             <div className="pt-3 border-t border-slate-100">
-                              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                              <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
                                 Application Protocol
                               </div>
-                              <p className="text-xs text-slate-700 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/60 font-mono">
+                              <p className="text-xs sm:text-sm text-slate-700 bg-emerald-50/60 p-2.5 rounded-lg border border-emerald-100/80 font-mono leading-relaxed">
                                 {remedy.application_instructions}
                               </p>
                             </div>
@@ -838,29 +842,31 @@ export const AdminPage: React.FC = () => {
         {/* Modal: Add / Edit Remedy Dialog */}
         <AnimatePresence>
           {isAddingRemedy && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+                className="w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-auto"
               >
-                <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50/50">
+                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-100 bg-slate-50/50">
                   <div className="flex items-center space-x-2">
-                    <BookOpen className="w-5 h-5 text-agri-700" />
+                    <BookOpen className="w-5 h-5 text-agri-700 shrink-0" />
                     <h3 className="text-base font-bold text-slate-900">
                       {editingRemedy ? 'Edit Treatment Protocol' : 'Add Treatment Protocol'}
                     </h3>
                   </div>
                   <button
+                    type="button"
                     onClick={() => setIsAddingRemedy(false)}
-                    className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                    className="h-10 w-10 flex items-center justify-center rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 touch-target cursor-pointer"
+                    aria-label="Close modal"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <form onSubmit={handleSaveRemedy} className="p-6 space-y-4">
+                <form onSubmit={handleSaveRemedy} className="p-4 sm:p-6 space-y-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">
                       Target Condition
@@ -869,7 +875,7 @@ export const AdminPage: React.FC = () => {
                       value={remedyForm.disease_id}
                       onChange={(e) => setRemedyForm({ ...remedyForm, disease_id: e.target.value })}
                       disabled={!!editingRemedy}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                     >
                       {GROUNDNUT_DISEASES.map((d) => (
                         <option key={d.id} value={d.id}>
@@ -879,7 +885,7 @@ export const AdminPage: React.FC = () => {
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">
                         Category
@@ -887,7 +893,7 @@ export const AdminPage: React.FC = () => {
                       <select
                         value={remedyForm.category}
                         onChange={(e) => setRemedyForm({ ...remedyForm, category: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                        className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                       >
                         {REMEDY_CATEGORIES.map((cat) => (
                           <option key={cat} value={cat}>
@@ -907,7 +913,7 @@ export const AdminPage: React.FC = () => {
                         onChange={(e) => setRemedyForm({ ...remedyForm, remedy_type: e.target.value })}
                         placeholder="e.g. Bio-Fungicide"
                         required
-                        className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                        className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                       />
                     </div>
                   </div>
@@ -922,13 +928,13 @@ export const AdminPage: React.FC = () => {
                       onChange={(e) => setRemedyForm({ ...remedyForm, title: e.target.value })}
                       placeholder="e.g. Trichoderma viride seed treatment"
                       required
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                      className="w-full min-h-[44px] px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">
-                      Description & Mode of Action
+                      Description &amp; Mode of Action
                     </label>
                     <textarea
                       rows={3}
@@ -936,7 +942,7 @@ export const AdminPage: React.FC = () => {
                       onChange={(e) => setRemedyForm({ ...remedyForm, description: e.target.value })}
                       placeholder="Explain how this treatment controls the condition..."
                       required
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                     />
                   </div>
 
@@ -949,7 +955,7 @@ export const AdminPage: React.FC = () => {
                       value={remedyForm.application_instructions}
                       onChange={(e) => setRemedyForm({ ...remedyForm, application_instructions: e.target.value })}
                       placeholder="e.g. 4g per kg seed or 2.5ml per liter water..."
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600"
                     />
                   </div>
 
@@ -958,12 +964,13 @@ export const AdminPage: React.FC = () => {
                       type="button"
                       variant="outline"
                       onClick={() => setIsAddingRemedy(false)}
+                      className="min-h-[42px]"
                     >
                       Cancel
                     </Button>
                     <Button
                       type="submit"
-                      className="bg-agri-700 hover:bg-agri-800 text-white"
+                      className="bg-agri-700 hover:bg-agri-800 text-white min-h-[42px]"
                     >
                       {editingRemedy ? 'Save Changes' : 'Add Treatment'}
                     </Button>

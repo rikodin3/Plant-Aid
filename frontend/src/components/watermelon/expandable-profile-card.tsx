@@ -10,24 +10,32 @@ export interface ExpandableCardProps {
   content?: React.ReactNode;
   badge?: React.ReactNode;
   className?: string;
+  defaultOpen?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
 }
 
 export default function ExpandableProfileCard({
   id,
-  imageSrc = 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000',
-  title = 'Jane Doe',
-  subtitle = 'Senior UX Designer',
+  imageSrc = '/images/diseases/healthy_leaf.jpg',
+  title = 'Groundnut Foliage Specimen',
+  subtitle = 'Field Pathology Reference',
   content,
   badge,
   className = '',
+  defaultOpen = false,
   onOpen,
   onClose,
 }: ExpandableCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const uniqueKey = id || title.replace(/\s+/g, '-').toLowerCase();
   const layoutId = `expandable-profile-card-${uniqueKey}`;
+
+  useEffect(() => {
+    if (defaultOpen) {
+      setIsOpen(true);
+    }
+  }, [defaultOpen]);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -77,7 +85,7 @@ export default function ExpandableProfileCard({
           }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-black/10 opacity-80 group-hover:opacity-95 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-black/10 opacity-85 group-hover:opacity-95 transition-opacity" />
 
         {badge && (
           <div className="absolute top-3.5 left-3.5 z-10">
@@ -85,16 +93,16 @@ export default function ExpandableProfileCard({
           </div>
         )}
 
-        <div className="absolute bottom-0 left-0 p-5 sm:p-6 w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute bottom-0 left-0 p-4 sm:p-6 w-full sm:translate-y-1 sm:group-hover:translate-y-0 transition-transform duration-300">
           <motion.p
             layoutId={`subtitle-${layoutId}`}
-            className="text-emerald-300 text-xs font-semibold tracking-wider uppercase mb-1 drop-shadow-xs"
+            className="text-emerald-300 text-xs font-semibold tracking-wider uppercase mb-1 drop-shadow-xs line-clamp-2"
           >
             {subtitle}
           </motion.p>
           <motion.h3
             layoutId={`title-${layoutId}`}
-            className="text-lg sm:text-xl font-bold tracking-tight text-white drop-shadow-sm"
+            className="text-lg sm:text-xl font-bold tracking-tight text-white drop-shadow-sm leading-snug"
           >
             {title}
           </motion.h3>
@@ -103,7 +111,7 @@ export default function ExpandableProfileCard({
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-5 md:p-8 overflow-hidden">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-5 md:p-8 overflow-hidden">
             {/* Backdrop: covers navbar, full screen blur */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -118,20 +126,20 @@ export default function ExpandableProfileCard({
               layoutId={layoutId}
               role="dialog"
               aria-modal="true"
-              className="relative w-full max-w-4xl h-[88vh] md:h-[82vh] max-h-[820px] bg-white/95 backdrop-blur-2xl rounded-3xl overflow-hidden border border-white/80 z-10 flex flex-col md:flex-row shadow-2xl min-h-0"
+              className="relative w-full max-w-4xl h-[90vh] md:h-[82vh] max-h-[820px] bg-white/95 backdrop-blur-2xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/80 z-10 flex flex-col md:flex-row shadow-2xl min-h-0"
             >
-              {/* Floating Close Button: Pinned to top-right with high z-index */}
+              {/* Floating Close Button: Pinned to top-right with 44x44px touch target */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 z-40 flex h-9 w-9 items-center justify-center bg-slate-900/70 hover:bg-slate-900 rounded-full border border-white/20 text-white transition-colors backdrop-blur-md touch-target cursor-pointer shadow-lg"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-40 flex h-11 w-11 items-center justify-center bg-slate-900/75 hover:bg-slate-900 rounded-full border border-white/25 text-white transition-colors backdrop-blur-md touch-target cursor-pointer shadow-lg"
                 title="Close"
                 aria-label="Close dialog"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
 
               {/* Left Column: Specimen Image */}
-              <div className="relative h-48 sm:h-56 md:h-full w-full md:w-1/2 shrink-0 overflow-hidden bg-slate-950">
+              <div className="relative h-44 sm:h-56 md:h-full w-full md:w-1/2 shrink-0 overflow-hidden bg-slate-950">
                 <motion.img
                   layoutId={`image-${layoutId}`}
                   src={imageSrc}
@@ -142,13 +150,13 @@ export default function ExpandableProfileCard({
               </div>
 
               {/* Right Column: Scrollable Content with guaranteed scrollbar */}
-              <div className="p-6 sm:p-8 w-full md:w-1/2 flex flex-col h-full min-h-0 overflow-y-auto overscroll-contain custom-scrollbar">
-                {/* Header with right clearance for close button */}
-                <div className="pr-12 mb-3 shrink-0">
+              <div className="p-4 sm:p-6 md:p-8 w-full md:w-1/2 flex flex-col flex-1 min-h-0 overflow-y-auto overscroll-contain custom-scrollbar">
+                {/* Header: right clearance only on desktop (md:pr-12) where close button sits over this column */}
+                <div className="md:pr-12 mb-3 shrink-0">
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                     <motion.p
                       layoutId={`subtitle-${layoutId}`}
-                      className="text-agri-700 text-xs font-bold tracking-wider uppercase"
+                      className="text-agri-700 text-xs font-bold tracking-wider uppercase leading-relaxed"
                     >
                       {subtitle}
                     </motion.p>
@@ -157,7 +165,7 @@ export default function ExpandableProfileCard({
 
                   <motion.h3
                     layoutId={`title-${layoutId}`}
-                    className="text-2xl sm:text-3xl font-normal tracking-tight text-slate-900 pb-3 border-b border-emerald-950/10"
+                    className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight text-slate-900 pb-3 border-b border-emerald-950/10 leading-snug"
                   >
                     {title}
                   </motion.h3>
@@ -172,35 +180,15 @@ export default function ExpandableProfileCard({
                   className="text-slate-700 text-sm leading-relaxed space-y-4 pb-4 grow-0 shrink-0"
                 >
                   {content || (
-                    <div className="flex flex-col gap-6">
-                      <p>
-                        A passionate UX/UI designer with over 8 years of experience creating
-                        intuitive digital products. I specialize in bridging the gap between
-                        complex systems and user-friendly interfaces.
+                    <div className="flex flex-col gap-4">
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        Inspect foliar symptoms, lesion boundaries, and recommended agronomic interventions for this groundnut specimen.
                       </p>
-                      <div>
-                        <h4 className="text-slate-900 font-bold tracking-tight mb-1 text-sm">
-                          Background
-                        </h4>
-                        <p className="text-slate-600 text-xs leading-relaxed">
-                          Previously led design teams at top fintech startups, focusing on
-                          accessibility, seamless transactions, and inclusive design.
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="text-slate-900 font-bold tracking-tight mb-1 text-sm">
-                          Current Focus
-                        </h4>
-                        <p className="text-slate-600 text-xs leading-relaxed">
-                          Currently exploring the intersection of AI and user experience, building
-                          tools that empower creators and simplify daily workflows.
-                        </p>
-                      </div>
                       <button
                         onClick={handleClose}
-                        className="mt-2 px-5 py-2.5 bg-agri-700 text-white font-bold rounded-xl hover:bg-agri-800 transition-colors self-start shadow-xs text-xs cursor-pointer"
+                        className="mt-1 px-5 py-2.5 bg-agri-700 text-white font-bold rounded-xl hover:bg-agri-800 transition-colors self-start shadow-xs text-xs cursor-pointer touch-target"
                       >
-                        Connect with Jane
+                        Close Inspection
                       </button>
                     </div>
                   )}

@@ -308,19 +308,19 @@ export const ProfilePage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6">
         {/* 1. Minimal Profile Header */}
-        <Card glass className="p-6 sm:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="w-14 h-14 rounded-2xl bg-agri-800 text-white flex items-center justify-center font-bold text-xl shadow-xs shrink-0 select-none">
+        <Card glass className="p-4 sm:p-6 md:p-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
+            <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-agri-800 text-white flex items-center justify-center font-bold text-xl shadow-xs shrink-0 select-none">
                 {displayName.charAt(0).toUpperCase()}
               </div>
               <div className="min-w-0 space-y-1">
-                <div className="flex flex-wrap items-center gap-2.5">
-                  <h1 className="text-2xl font-bold text-slate-900 tracking-tight truncate">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight truncate">
                     {displayName}
                   </h1>
                   {isAdmin && (
@@ -333,14 +333,16 @@ export const ProfilePage: React.FC = () => {
                     </Badge>
                   )}
                 </div>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-600">
-                  <span className="truncate">{displayEmail}</span>
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs sm:text-sm text-slate-600">
+                  <span className="truncate max-w-full">{displayEmail}</span>
                   {memberSinceText && (
                     <>
-                      <span className="text-slate-300" aria-hidden="true">
+                      <span className="text-slate-300 hidden sm:inline" aria-hidden="true">
                         •
                       </span>
-                      <span>Member since {memberSinceText}</span>
+                      <span className="text-xs sm:text-sm text-slate-500">
+                        Member since {memberSinceText}
+                      </span>
                     </>
                   )}
                 </div>
@@ -350,7 +352,7 @@ export const ProfilePage: React.FC = () => {
             <Button
               variant="outline"
               onClick={handleLogout}
-              className="self-start sm:self-center shrink-0"
+              className="w-full sm:w-auto self-stretch sm:self-center shrink-0 min-h-[44px]"
             >
               <LogOut className="w-4 h-4 text-slate-500" />
               <span>Sign Out</span>
@@ -359,7 +361,7 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* 2. Diagnostic Activity & Field Data Export */}
-        <Card glass className="p-6 sm:p-8 space-y-6">
+        <Card glass className="p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
@@ -370,20 +372,21 @@ export const ProfilePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2.5 self-start sm:self-center shrink-0">
+            <div className="grid grid-cols-2 sm:flex items-center gap-2.5 w-full sm:w-auto shrink-0">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleExportCsv}
                 disabled={loadingActivity || historyLogs.length === 0}
+                className="min-h-[42px] w-full sm:w-auto"
               >
-                <Download className="w-4 h-4 text-agri-700" />
+                <Download className="w-4 h-4 text-agri-700 shrink-0" />
                 <span>Export CSV</span>
               </Button>
-              <Button variant="secondary" size="sm" asChild>
+              <Button variant="secondary" size="sm" asChild className="min-h-[42px] w-full sm:w-auto">
                 <Link to="/history">
                   <span>View History</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                 </Link>
               </Button>
             </div>
@@ -404,11 +407,11 @@ export const ProfilePage: React.FC = () => {
                 <p className="text-sm font-semibold text-slate-800">
                   No field diagnoses saved yet
                 </p>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Scan groundnut foliage and save confirmed results to populate your farm log and enable CSV exports.
                 </p>
               </div>
-              <Button size="sm" asChild className="self-start sm:self-center shrink-0">
+              <Button size="sm" asChild className="w-full sm:w-auto min-h-[44px] shrink-0">
                 <Link to="/scan">
                   <Camera className="w-4 h-4" />
                   <span>Open Scanner</span>
@@ -416,7 +419,7 @@ export const ProfilePage: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-6 pt-5 border-t border-emerald-950/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-4 sm:gap-x-6 pt-5 border-t border-emerald-950/10">
               <div className="space-y-1">
                 <div className="text-xs font-medium text-slate-600">Saved Scans</div>
                 <div className="text-2xl font-bold text-slate-900 font-mono tabular-nums">
@@ -452,7 +455,7 @@ export const ProfilePage: React.FC = () => {
               <div className="space-y-1 min-w-0">
                 <div className="text-xs font-medium text-slate-600">Most Frequent</div>
                 <div
-                  className="text-base font-bold text-slate-900 truncate"
+                  className="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2"
                   title={activityStats.topCondition}
                 >
                   {activityStats.topCondition}
@@ -464,8 +467,8 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* 3. Editable Personal Information */}
-        <Card glass className="p-6 sm:p-8">
-          <form onSubmit={handleSaveProfile} className="space-y-6">
+        <Card glass className="p-4 sm:p-6 md:p-8">
+          <form onSubmit={handleSaveProfile} className="space-y-5 sm:space-y-6">
             <div className="space-y-1">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                 Personal Information
@@ -475,7 +478,7 @@ export const ProfilePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-emerald-950/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 pt-4 border-t border-emerald-950/10">
               <div className="space-y-1.5">
                 <label
                   htmlFor="profile-full-name"
@@ -573,6 +576,7 @@ export const ProfilePage: React.FC = () => {
                   size="sm"
                   onClick={handleResetProfileForm}
                   disabled={isSavingProfile}
+                  className="min-h-[42px]"
                 >
                   Discard
                 </Button>
@@ -581,6 +585,7 @@ export const ProfilePage: React.FC = () => {
                 type="submit"
                 size="sm"
                 disabled={!isProfileDirty || isSavingProfile}
+                className="min-h-[42px]"
               >
                 {isSavingProfile ? 'Saving...' : 'Save Changes'}
               </Button>
@@ -589,8 +594,8 @@ export const ProfilePage: React.FC = () => {
         </Card>
 
         {/* 4. Password & Security Controls */}
-        <Card glass className="p-6 sm:p-8">
-          <form onSubmit={handlePasswordSubmit} className="space-y-6">
+        <Card glass className="p-4 sm:p-6 md:p-8">
+          <form onSubmit={handlePasswordSubmit} className="space-y-5 sm:space-y-6">
             <div className="space-y-1">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                 Password &amp; Security
@@ -600,7 +605,7 @@ export const ProfilePage: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-emerald-950/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 pt-4 border-t border-emerald-950/10">
               <div className="sm:col-span-2 space-y-1.5">
                 <label
                   htmlFor="current-password"
@@ -624,7 +629,7 @@ export const ProfilePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowCurrentPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-slate-800 rounded-lg"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center text-slate-500 hover:text-slate-800 rounded-lg touch-target cursor-pointer"
                     aria-label={showCurrentPassword ? 'Hide current password' : 'Show current password'}
                   >
                     {showCurrentPassword ? (
@@ -660,7 +665,7 @@ export const ProfilePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowNewPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-slate-800 rounded-lg"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center text-slate-500 hover:text-slate-800 rounded-lg touch-target cursor-pointer"
                     aria-label={showNewPassword ? 'Hide new password' : 'Show new password'}
                   >
                     {showNewPassword ? (
@@ -723,6 +728,7 @@ export const ProfilePage: React.FC = () => {
                   !newPassword ||
                   !confirmPassword
                 }
+                className="min-h-[42px]"
               >
                 {isChangingPassword ? 'Updating...' : 'Update Password'}
               </Button>
