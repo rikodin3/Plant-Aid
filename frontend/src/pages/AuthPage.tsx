@@ -16,6 +16,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { PlantAidIcon } from '../components/layout/PlantAidLogo';
 import { TwoFactorChallengeResponse } from '../types';
+import api from '../services/api';
 
 export const AuthPage: React.FC = () => {
   const { login, verify2FA, resendOTP, register, forgotPassword, resetPassword, isAuthenticated } = useAuth();
@@ -51,6 +52,11 @@ export const AuthPage: React.FC = () => {
   const [challenge, setChallenge] = useState<TwoFactorChallengeResponse | null>(null);
   const [otpCode, setOtpCode] = useState('');
   const [secondsRemaining, setSecondsRemaining] = useState<number>(300);
+
+  // Pre-warm backend & serverless Postgres connection while user types credentials
+  useEffect(() => {
+    api.get('/api/health').catch(() => {});
+  }, []);
 
   // Redirect if already authenticated
   useEffect(() => {

@@ -1,7 +1,7 @@
 import datetime
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
@@ -40,7 +40,11 @@ router = APIRouter(tags=["Authentication & 2FA"])
 @router.post(
     "/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED
 )
-def register_user(user_in: UserRegister, db: Session = Depends(get_db)):
+def register_user(
+    user_in: UserRegister,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     """Registers a new user account with bcrypt password hashing and dispatches email verification OTP."""
     # Check duplicate email or phone
     query = db.query(User).filter(User.email_address == user_in.email_address)
@@ -81,15 +85,12 @@ def register_user(user_in: UserRegister, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    # Dispatch verification code via email
-    delivered = otp_service.send_otp(
-        destination=new_user.email_address, otp_code=otp_code
+    # Dispatch verification code asynchronously so registration responds immediately
+    background_tasks.add_task(
+        otp_service.send_otp,
+        destination=new_user.email_address,
+        otp_code=otp_code,
     )
-    if not delivered and not (settings.APP_DEBUG or settings.OTP_ALLOW_CONSOLE_FALLBACK):
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to send verification code email. Please check your email configuration.",
-        )
 
     resp = UserResponse.model_validate(new_user)
     resp.session_id = session_id
@@ -101,7 +102,10 @@ def register_user(user_in: UserRegister, db: Session = Depends(get_db)):
 @router.post("/login", response_model=TwoFactorChallengeResponse)
 @limiter.limit(settings.RATE_LIMIT_LOGIN)
 def login(
-    request: Request, credentials: UserLogin, db: Session = Depends(get_db)
+    request: Request,
+    credentials: UserLogin,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
 ):
     """Validates login credentials and initiates 2FA challenge returning an opaque session_id."""
     identifier = credentials.get_identifier()
@@ -141,18 +145,17 @@ def login(
     user.otp_resend_count = 0
     db.commit()
 
-    # Dispatch OTP via configured provider (SMTP / Resend / Console)
+    # Dispatch OTP asynchronously in the background so the 2FA screen opens immediately
     target_destination = (
         user.phone_number
         if (identifier == user.phone_number and user.phone_number)
         else user.email_address
     )
-    delivered = otp_service.send_otp(destination=target_destination, otp_code=otp_code)
-    if not delivered and not (settings.APP_DEBUG or settings.OTP_ALLOW_CONSOLE_FALLBACK):
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to send verification code email. Please check your email configuration.",
-        )
+    background_tasks.add_task(
+        otp_service.send_otp,
+        destination=target_destination,
+        otp_code=otp_code,
+    )
 
     return TwoFactorChallengeResponse(
         session_id=session_id,
@@ -163,7 +166,11 @@ def login(
 
 
 @router.post("/resend-otp", response_model=TwoFactorChallengeResponse)
-def resend_otp(req: ResendOTPRequest, db: Session = Depends(get_db)):
+def resend_otp(
+    req: ResendOTPRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     """Issues a fresh 6-digit OTP code for an active verification challenge session with rate limiting."""
     user = db.query(User).filter(User.active_session_id == req.session_id).first()
     if not user:
@@ -189,12 +196,11 @@ def resend_otp(req: ResendOTPRequest, db: Session = Depends(get_db)):
     db.commit()
 
     target_destination = user.email_address
-    delivered = otp_service.send_otp(destination=target_destination, otp_code=new_otp)
-    if not delivered and not (settings.APP_DEBUG or settings.OTP_ALLOW_CONSOLE_FALLBACK):
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to dispatch verification email. Please try again later.",
-        )
+    background_tasks.add_task(
+        otp_service.send_otp,
+        destination=target_destination,
+        otp_code=new_otp,
+    )
 
     return TwoFactorChallengeResponse(
         session_id=user.active_session_id,
@@ -343,7 +349,12 @@ def change_password(
 
 @router.post("/forgot-password", response_model=MessageResponse)
 @limiter.limit(settings.RATE_LIMIT_PASSWORD_RESET)
-def forgot_password(request: Request, req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+def forgot_password(
+    request: Request,
+    req: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     """Initiates a password reset by dispatching a 6-digit OTP to the registered email.
 
     Always returns a generic response so account enumeration through this endpoint stays closed.
@@ -369,14 +380,12 @@ def forgot_password(request: Request, req: ForgotPasswordRequest, db: Session = 
     user.otp_resend_count = 0
     db.commit()
 
-    delivered = otp_service.send_otp(
-        destination=user.email_address, otp_code=otp_code, purpose="password_reset"
+    background_tasks.add_task(
+        otp_service.send_otp,
+        destination=user.email_address,
+        otp_code=otp_code,
+        purpose="password_reset",
     )
-    if not delivered and not (settings.APP_DEBUG or settings.OTP_ALLOW_CONSOLE_FALLBACK):
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Failed to send password reset email. Please try again later.",
-        )
 
     return MessageResponse(
         message=generic_message,

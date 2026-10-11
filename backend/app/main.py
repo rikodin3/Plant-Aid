@@ -70,5 +70,12 @@ def root():
 
 
 @app.get("/health", tags=["System"])
+@app.get("/api/health", tags=["System"], include_in_schema=False)
 def health_check():
+    try:
+        from sqlalchemy import text
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception:
+        pass
     return {"status": "healthy"}

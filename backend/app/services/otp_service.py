@@ -187,7 +187,7 @@ class OTPService:
             "senderName": settings.SMTP_FROM_NAME,
         }
         try:
-            with httpx.Client(timeout=15.0, follow_redirects=True) as client:
+            with httpx.Client(timeout=25.0, follow_redirects=True) as client:
                 res = client.post(webhook_url, json=payload)
                 res.raise_for_status()
                 logger.info("Successfully dispatched OTP email via GAS HTTPS relay to %s", email)
