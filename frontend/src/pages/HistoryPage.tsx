@@ -167,7 +167,7 @@ export const HistoryPage: React.FC = () => {
               />
             </div>
 
-            <div className="flex items-center space-x-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 pl-1 shrink-0">
                 <Filter className="w-3.5 h-3.5" />
                 <span>Filter:</span>
@@ -188,7 +188,7 @@ export const HistoryPage: React.FC = () => {
                     setDiseaseFilter(f.id);
                     setPage(1);
                   }}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
+                  className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
                     diseaseFilter === f.id
                       ? 'bg-agri-800 text-white shadow-xs'
                       : 'bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'

@@ -410,14 +410,14 @@ export const DiseaseGuidePage: React.FC = () => {
     >
       <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
         {/* Unified Editorial Console Header */}
-        <Surface className="p-4 sm:p-6 md:p-8">
+        <Surface className="p-5 sm:p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 pb-5 sm:pb-6 border-b border-emerald-950/10">
-            <div className="space-y-1.5 max-w-2xl">
+            <div className="space-y-2 max-w-2xl">
               <div className="flex items-center space-x-2 text-agri-800 text-xs font-semibold">
                 <BookOpen className="w-4 h-4 text-agri-600 shrink-0" />
                 <span>Field Diagnostics Reference</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight leading-tight">
                 Groundnut Pathology &amp; Treatment Guide
               </h1>
               <p className="text-slate-600 text-sm leading-relaxed">
@@ -427,14 +427,14 @@ export const DiseaseGuidePage: React.FC = () => {
           </div>
 
           {/* Search & Category Filter Strip */}
-          <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 sm:gap-4">
+          <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search symptom or remedy (e.g. yellow halo, mancozeb)..."
+                placeholder="Search symptoms or remedies..."
                 className="w-full min-h-[44px] pl-10 pr-10 py-2.5 rounded-xl border border-emerald-950/10 bg-white/75 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
               />
               {searchQuery && (
@@ -449,13 +449,13 @@ export const DiseaseGuidePage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+            <div className="flex flex-wrap items-center gap-2">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
+                  className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
                     selectedCategory === cat
                       ? 'bg-agri-800 text-white shadow-xs'
                       : 'bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'

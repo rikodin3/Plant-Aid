@@ -82,7 +82,6 @@
 /* Custom smooth transitions and touch target utilities */
 .touch-target {
   min-height: 44px;
-  min-width: 44px;
 }
 
 /* Custom slim sleek scrollbar for modal containers */

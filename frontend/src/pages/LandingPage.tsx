@@ -284,13 +284,6 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
         </motion.div>
-
-        {/* Bottom Left Corner Copyright Claim */}
-        <div className="pt-2 pb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-slate-500 gap-2">
-          <div className="text-xs text-slate-500 font-medium pl-1 sm:pl-0">
-            Groundnut Foliar Diagnostic &amp; Treatment Advisory System
-          </div>
-        </div>
       </motion.div>
     </div>
   );
