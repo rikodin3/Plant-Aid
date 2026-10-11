@@ -32,9 +32,19 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Configure CORS Middleware
+cors_origins_raw = getattr(settings, "CORS_ORIGINS", "*")
+if cors_origins_raw != "*" and cors_origins_raw.strip():
+    allow_origins = [orig.strip() for orig in cors_origins_raw.split(",") if orig.strip()]
+    allow_origin_regex = None
+else:
+    # Default to supporting localhost, Hugging Face Spaces, and all Vercel deployments
+    allow_origins = ["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173"]
+    allow_origin_regex = r"https://.*\.vercel\.app|https://.*\.hf\.space|http://localhost:.*|http://127\.0\.0\.1:.*"
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins for local React dev server
+    allow_origins=allow_origins,
+    allow_origin_regex=allow_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
