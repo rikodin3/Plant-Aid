@@ -56,13 +56,15 @@ export const LandingPage: React.FC = () => {
           <div className="glass-frost p-5 sm:p-12 lg:p-16 text-center space-y-6 sm:space-y-8 relative overflow-hidden rounded-3xl sm:rounded-[32px]">
             {/* Headline & Description */}
             <div className="space-y-3.5 sm:space-y-4 max-w-3xl mx-auto">
-              <h1 className="text-2xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-slate-900 leading-[1.15] sm:leading-[1.12]">
-                Plant-Aid: Real-Time Plant Disease Identification &amp; Treatment Recommendation System
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl inline-flex items-baseline justify-center leading-none tracking-tight">
+                <span className="font-bold text-slate-900 font-gilroy">Plant</span>
+                <span className="text-amber-600 font-bold text-[0.9em] mx-1 sm:mx-1.5">·</span>
+                <span className="font-cursive font-bold text-[1.2em] text-[#b88a44] tracking-normal ml-0.5 select-none">
+                  Aid
+                </span>
               </h1>
               <p className="text-sm sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Diagnose crop pathogens in real-time with high-accuracy computer vision.
-                Receive tailored biological, chemical, and cultural remedies calibrated
-                for field health.
+                Diagnose groundnut crop diseases in real-time with high-accuracy and reliable remedies
               </p>
             </div>
 
@@ -115,7 +117,7 @@ export const LandingPage: React.FC = () => {
                   Instant Camera Scanner
                 </h3>
                 <p className="text-sm text-slate-600 mt-1.5 sm:mt-2 leading-relaxed">
-                  Point your camera directly at groundnut leaves to detect infections with bounding box localization and confidence ratings.
+                  Point your camera directly at groundnut leaves to detect infections.
                 </p>
               </div>
             </Link>
@@ -139,7 +141,7 @@ export const LandingPage: React.FC = () => {
                   Targeted Remedies
                 </h3>
                 <p className="text-sm text-slate-600 mt-1.5 sm:mt-2 leading-relaxed">
-                  Actionable recommendations categorized by organic biocontrol, chemical fungicides, and preventive field cultural practices.
+                  Recommendations categorized by organic biocontrol, chemical fungicides, and preventive field cultural practices.
                 </p>
               </div>
             </Link>
@@ -163,7 +165,7 @@ export const LandingPage: React.FC = () => {
                   Diagnosis History
                 </h3>
                 <p className="text-sm text-slate-600 mt-1.5 sm:mt-2 leading-relaxed">
-                  Keep a structured log of confirmed field inspections with photographic evidence and timeline tracking across your crops.
+                  Keep a structured log of field inspections with images and timeline tracking across your crops.
                 </p>
               </div>
             </Link>
