@@ -85,9 +85,6 @@ export const DashboardPage: React.FC = () => {
                   Plant-Aid: Real-Time Plant Disease Identification &amp; Treatment Recommendation System
                 </span>
               </h1>
-              <p className="text-sm sm:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Real-time edge-ready crop diagnostic and treatment advisory platform calibrated for groundnut pathology with dual-layer lesion localization.
-              </p>
             </div>
 
             {/* Action CTAs */}
