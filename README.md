@@ -1,261 +1,155 @@
-# 🌿 Plant-Aid: Real-Time Plant Disease Identification & Treatment Recommendation System
+# Plant-Aid
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C.svg?style=flat&logo=pytorch)](https://pytorch.org)
-[![Tests](https://img.shields.io/badge/Tests-59%20Passing-16a34a.svg?style=flat)]()
+**Real-Time AI Plant Disease Identification & Agronomic Treatment Companion**
 
-**Plant-Aid** is a real-time, edge-ready artificial intelligence crop diagnostic and treatment advisory platform. Designed for farmers, agronomists, and agricultural extension workers, Plant-Aid enables live camera scanning of plant foliage to instantly localize lesions, classify crop diseases, calibrate diagnostic confidence, and provide actionable organic, chemical, and preventive treatment plans.
+[![Live App](https://img.shields.io/badge/Live_App-plant--aid--seven.vercel.app-16a34a?style=for-the-badge&logo=vercel)](https://plant-aid-seven.vercel.app/)
+[![Backend API](https://img.shields.io/badge/AI_Engine-Hugging_Face_Spaces-ffcc00?style=for-the-badge&logo=huggingface&logoColor=black)](https://rikodon72-plant-aid-api.hf.space)
 
-> **⚠️ Frontend status: removed, pending rebuild.**
-> This branch (`frontend-cleanup`) deletes the previous React application so the user interface
-> can be rebuilt from scratch. **The backend is fully functional and independently runnable** —
-> everything documented below except the UI exists and is tested.
-> The design reference material (screen mockups, exported screenshots, and `DESIGN.md`) is
-> preserved in [`frontend_prototype/`](frontend_prototype/) for the rebuild.
-> Work remaining before the UI returns is tracked in [`Docs/DEVELOPMENT_PLAN.md`](Docs/DEVELOPMENT_PLAN.md).
+**Plant-Aid** is an AI-powered web application that helps farmers, agronomists, agricultural extension workers, and researchers identify crop diseases in seconds and take immediate, science-backed action. 
+
+Using either your smartphone/laptop camera or a saved photo, Plant-Aid pinpoints leaf lesions, diagnoses the condition with calibrated confidence, and provides practical **Organic**, **Chemical**, and **Cultural** treatment plans tailored for the field.
 
 ---
 
-## 📸 Architecture
+## Try It Live
 
-```
-[ Camera Stream / Upload ]
-           │
-           ▼
-[ Layer 1: OpenCV HSV Leaf Mask ] ──► Extracts Foliage ROI [x_min, y_min, x_max, y_max]
-           │
-           ▼
-[ Layer 2: Deep Vision Classifier ] ──► ConvNeXt-Tiny (6 Groundnut Classes)
-           │
-           ▼
-[ Calibration Threshold (τ = 0.55) ] ──► Flags Uncertain Frames vs Verified Alerts
-           │
-           ▼
-[ Remedies & History Store ] ──► Actionable Organic / Chemical / Cultural Treatments
-```
+* **Web Application**: **[https://plant-aid-seven.vercel.app/](https://plant-aid-seven.vercel.app/)**
+* **AI Inference API**: **[https://rikodon72-plant-aid-api.hf.space](https://rikodon72-plant-aid-api.hf.space)**
 
-Localization is a **two-layer, training-free overlay**: an HSV green-dominance mask isolates the
-leaf region, then an HSV hue-distance saliency map inside that region marks the suspected
-infection area. It is deliberately *not* gradient-weighted class activation — the in-request path
-uses saliency to stay inside the CPU latency budget, while true Grad-CAM (`backend/ml/gradcam.py`)
-is used for offline sample generation and report figures. See `Docs/Implementation.md` §4.2.
+> **Tip for Mobile Users:** Open **[plant-aid-seven.vercel.app](https://plant-aid-seven.vercel.app/)** in your phone's browser and grant camera permission on the **Scan** page to use the rear camera directly in the field or garden.
 
-### Frontend design reference
+### Demo Preview
 
-The previous UI is gone, but its design intent is not. `frontend_prototype/` contains per-screen
-HTML mockups and exported PNGs, plus `plant_aid_enterprise/DESIGN.md` (palette and typography) and
-the logo asset:
-
-| Screen | Prototype path |
-|---|---|
-| Get started / landing | `frontend_prototype/get_started/` |
-| Login + OTP verification | `frontend_prototype/login_otp_verification/` |
-| Dashboard | `frontend_prototype/dashboard/` |
-| Scan & diagnose | `frontend_prototype/scan_diagnose/` |
-| Diagnosis detail (heatmap overlay) | `frontend_prototype/diagnosis_detail_grad_cam_heatmap/` |
-| Diagnosis history | `frontend_prototype/diagnosis_history/` |
-| Profile & settings | `frontend_prototype/user_profile_settings/` |
-| Logo | `frontend_prototype/plant_aid_logo/Logo.png` |
-
-The rebuild must call only endpoints that exist; note in particular that **persisting a diagnosis
-is an explicit `POST /api/history` action**, not a side effect of uploading a frame.
+![Plant-Aid Demo Preview](Docs/assets/demo.gif)
 
 ---
 
-## 🔬 Taxonomy & Supported Disease Classes
+## What You Can Do with Plant-Aid
 
-The model is trained and calibrated against 6 official Groundnut (*Arachis hypogaea*) classes aligned with database store D2:
+### 1. Live Camera Scanning & Photo Upload
+* **Live Camera Stream**: Point your camera at a plant leaf for continuous real-time analysis (automatically sampling frames every 1.5 seconds without overlapping requests).
+* **Photo Upload**: Prefer to snap a photo first? Upload any `JPEG` or `PNG` leaf image from your device for instant analysis.
 
-| # | Disease Slug | Scientific Name | Category | Primary Presentation |
+### 2. Visual Lesion Pinpointing & Heatmaps
+* **Color-Coded Bounding Boxes**: Plant-Aid visually frames the detected leaf on screen using clear status colors:
+  * **Emerald**: Healthy foliage detected
+  * **Crimson**: Confirmed disease lesion detected
+  * **Amber**: Low confidence or ambiguous frame—reposition the camera for a clearer view
+* **Lesion Saliency Heatmap**: Toggle the thermal overlay on your diagnosis result to see the exact spots and discoloration patterns that triggered the AI's diagnosis.
+
+### 3. Honest Confidence Calibration (No False Alarms)
+* Generic plant apps often guess a random disease even when pointed at soil, a desk, or a blurry leaf.
+* Plant-Aid first verifies that plant foliage is actually in frame, and then applies a **55% confidence threshold ($\tau = 0.55$)**—explicitly warning you when a scan is uncertain so you never apply unnecessary treatments based on a weak guess.
+
+### 4. Actionable 3-Way Treatment Plans
+Every diagnosed condition comes with a structured treatment guide broken down into three practical approaches:
+1. **Organic / Biological**: Eco-friendly botanical extracts (like Neem Seed Kernel Extract) and bio-control agents (*Trichoderma*, *Bacillus subtilis*).
+2. **Chemical / Fungicide**: Targeted systemic and contact fungicides or foliar micronutrients with exact mixing ratios (g/L or ml/L) and spray intervals.
+3. **Preventive Cultural Practices**: Long-term field hygiene, crop rotation, spacing, and irrigation adjustments to stop outbreaks from returning.
+
+### 5. Personal Diagnosis History & CSV Export
+* **Intentional Logging**: Live camera frames never clutter your history automatically—you choose which diagnoses to save with a single click on **Save Diagnosis to History**.
+* **Filter & Review**: Search your saved logs by disease type or date range, inspect past leaf captures, and reopen treatment instructions anytime.
+* **Export Farm Reports**: Download your diagnostic history as a **CSV spreadsheet** directly from your Profile page for farm record-keeping or research.
+
+### 6. Interactive Disease Guide
+* Browse the built-in **Disease Guide** anytime—even without scanning a leaf—to study symptoms, scientific names, severity ratings, and full remedy protocols across all cataloged diseases.
+
+### 7. Secure 2FA Accounts & Admin Governance
+* **Two-Factor Authentication (2FA)**: Accounts are protected with bcrypt password encryption and a 6-digit email One-Time Passcode (OTP) on sign-in, plus self-service password recovery.
+* **Admin Console (`/admin`)**: Platform administrators get a dedicated governance console to search registered users, promote/demote admin roles, suspend or reactivate accounts, oversee platform-wide scan activity, and add or edit treatment remedies live.
+
+---
+
+## How to Use the App (Step-by-Step)
+
+1. **Create an Account & Sign In**
+   Visit **[plant-aid-seven.vercel.app](https://plant-aid-seven.vercel.app/)**, click **Get Started**, and register with your name and email. Enter the 6-digit verification code sent to your inbox to activate your account and sign in.
+
+2. **Scan a Leaf**
+   Navigate to **Scan** from the top menu (or tap the floating scan button):
+   * Select **Live Camera** to stream from your device camera and hold a leaf steady inside the viewfinder.
+   * Or select **Upload Photo** to pick an existing picture of a leaf from your phone or computer.
+
+3. **Inspect the Diagnosis**
+   Within seconds, the diagnostic panel displays:
+   * The identified **Disease Name** and **Scientific Name**
+   * The **Confidence Score** and **Severity Badge** (`NONE`, `MEDIUM`, `HIGH`, or `SEVERE`)
+   * A toggle to switch between the **Original Capture** and the **AI Saliency Heatmap**
+
+4. **Check the Treatment Plan**
+   Click **View Treatment Plan** to open the interactive modal. Switch between the **Organic**, **Chemical**, and **Cultural** tabs to read the recommended remedies and step-by-step application instructions.
+
+5. **Save & Track Your Outbreaks**
+   Click **Save Diagnosis to History** to store the result in your personal logbook. Visit **Dashboard** for a quick overview of your recent scans, or **History** to filter, review, or delete past records.
+
+---
+
+## Supported Crop Diseases
+
+Plant-Aid's primary deep vision model is trained and calibrated on **6 Groundnut (*Arachis hypogaea*) foliage conditions**:
+
+| Condition | Scientific / Causal Agent | Type | Severity | Key Visual Symptoms |
 |---|---|---|---|---|
-| **1** | `early_leaf_spot` | *Cercospora arachidicola* | Fungal | Circular brown lesions with conspicuous yellow chlorotic halos |
-| **2** | `early_rust` | *Puccinia arachidis* | Fungal | Small, scattered speckled dark-brown pustules on lower leaves |
-| **3** | `healthy_leaf` | *Arachis hypogaea* | Healthy | Uniform green chlorophyll pigmentation without lesions |
-| **4** | `late_leaf_spot` | *Phaeoisariopsis personata* | Fungal | Dark brown-to-black circular spots without prominent yellow rings |
-| **5** | `nutrition_deficiency` | *Nutritional Chlorosis* | Abiotic | Interveinal leaf yellowing, stunted margins, or pale foliage |
-| **6** | `rust` | *Puccinia arachidis Speg.* | Fungal | Dense orange-brown pustules on lower leaf surfaces |
+| **Groundnut Early Leaf Spot** | *Cercospora arachidicola* | Fungal | `HIGH` | Circular reddish-brown spots surrounded by bright yellow halos |
+| **Groundnut Early Rust** | *Puccinia arachidis Speg.* | Fungal | `MEDIUM` | Small, scattered dark-brown pustules emerging on lower leaves |
+| **Healthy Leaf** | *Arachis hypogaea L.* | Healthy | `NONE` | Uniform green foliage with no lesions or chlorosis |
+| **Groundnut Late Leaf Spot** | *Phaeoisariopsis personata* | Fungal | `SEVERE` | Dark brown-to-black spots on the underside of leaves without yellow rings |
+| **Nutrition Deficiency** | *Fe / Zn / N Chlorosis* | Abiotic | `MEDIUM` | Interveinal yellowing on young leaves or pale, stunted foliage |
+| **Groundnut Rust** | *Puccinia arachidis Speg.* | Fungal | `HIGH` | Dense orange-brown blister-like pustules across the leaf surface |
 
-`backend/ml/ml_config.py` is the single source of truth for this catalogue; the inference engine
-imports it directly and `ml/export.py` emits it to `labels.json`.
-
----
-
-## 🛠️ Repository Layout
-
-```
-Plant-Aid/
-├── backend/
-│   ├── alembic/                # Database migrations (history disease FK, soft delete)
-│   ├── app/
-│   │   ├── routers/            # API endpoints (auth, inference, remedy, history)
-│   │   ├── services/           # ML engine, S3 storage, 2FA OTP, disease lookup
-│   │   ├── config.py           # Centralized application configuration (Pydantic Settings)
-│   │   ├── database.py         # SQLAlchemy engine & session maker
-│   │   ├── limiter.py          # SlowAPI rate limiting (JWT subject, IP fallback)
-│   │   ├── models.py           # Database models (User, Disease, Remedy, History)
-│   │   ├── schemas.py          # Pydantic schemas (Request / Response contracts)
-│   │   └── security.py         # Bcrypt hashing, constant-time compare, JWT tokens
-│   ├── ml/                     # Training, evaluation, Grad-CAM, export, labels.json
-│   ├── tests/                  # Automated verification test suites (59 tests)
-│   ├── requirements.txt        # Backend dependencies
-│   ├── seed.py                 # Database seed script (6 groundnut classes; 4 non-groundnut rows retained)
-│   └── test_backend.py         # End-to-end integration tests
-├── frontend_prototype/         # UI design reference: HTML mockups, screenshots, DESIGN.md, logo
-├── Docs/                       # Comprehensive specifications, plans, and SRS documents
-└── README.md                   # Project documentation
-```
-
-> **Frontend:** there is no `frontend/` directory on this branch by design. The React app is
-> scheduled for a from-scratch rebuild; start from the prototype reference above.
+*(The built-in **Disease Guide** also includes reference treatment catalogs for **Tomato Late Blight**, **Potato Early Blight**, **Apple Scab**, and **Grape Black Rot**.)*
 
 ---
 
-## 🐳 Quick Start with Docker Compose
+## How It Works Under the Hood
 
-To run Plant-Aid with zero manual configuration using Docker Compose:
+Plant-Aid is designed to deliver fast, explainable diagnoses without requiring expensive GPU hardware in the field:
 
+1. **Stage 1 — Foliage Isolation (OpenCV HSV Masking)**:
+   When an image arrives, the vision pipeline converts it into the HSV color space to isolate green/chlorotic plant tissue from background soil, twigs, or hands. If no plant foliage is present, it immediately lets the user know rather than forcing a false classification.
+2. **Stage 2 — Deep Vision Classification & Saliency (ConvNeXt-Tiny)**:
+   The isolated leaf region is passed into a fine-tuned **PyTorch ConvNeXt-Tiny** neural network that predicts probabilities across the 6 Groundnut classes. Simultaneously, an HSV hue-distance saliency map highlights necrotic and chlorotic lesion areas inside the leaf boundary so users can visually verify what the model detected.
+3. **Stage 3 — Confidence Calibration ($\tau = 0.55$)**:
+   Predictions are gated against a calibrated threshold of **55%**. Any scan falling below $\tau = 0.55$ is marked as uncertain, prompting the user to capture a clearer angle under better lighting.
+4. **Full-Stack Cloud Architecture**:
+   * **Frontend**: Built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS**, and **Motion**, deployed globally on **Vercel**.
+   * **Backend & AI Engine**: Built with **FastAPI**, **PyTorch**, and **OpenCV**, containerized and hosted on **Hugging Face Spaces**.
+   * **Database & Storage**: Powered by **Neon Serverless PostgreSQL** (with SQLite support for local offline development) and **SQLAlchemy / Alembic**, with S3-compatible and local media storage.
+
+---
+
+## Running Plant-Aid Locally (Optional)
+
+If you want to run your own copy of Plant-Aid on your machine:
+
+### Option A: One-Command Docker Launch
 ```bash
-# 1. Copy the environment configuration
 cp .env.example .env
-
-# 2. Build and launch services
 docker compose up --build
 ```
+* **Web App**: `http://localhost`
+* **Backend API & Docs**: `http://localhost:8000/docs`
 
-* **Frontend UI**: [http://localhost](http://localhost) (Port 80)
-* **Backend API**: [http://localhost:8000](http://localhost:8000)
-* **Swagger Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
-* **Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
-
-To run **backend only**:
-```bash
-docker compose up --build backend
-```
-
-For full details on inspecting logs, restarting, and data persistence, see [`Docs/DOCKER_QUICKSTART.md`](Docs/DOCKER_QUICKSTART.md).
-
----
-
-## 🚀 How to Run the Backend Locally
-
-### Prerequisites
-* **Python 3.12+** (tested on Python 3.12 and 3.13)
-* **uv** (recommended for ultra-fast Python environment management) or standard `pip`
-
-*(Node.js and npm become prerequisites again once the frontend is rebuilt — they are not needed to
-run, test, or use the API today.)*
-
----
-
-### Step 1: Start the Backend API
-
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
-
-2. Create a virtual environment and install dependencies:
-   ```bash
-   # Using uv (recommended)
-   uv venv
-   uv pip install -r requirements.txt
-
-   # Or using standard python
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. Apply database migrations:
-   ```bash
-   uv run alembic upgrade head
-   ```
-
-4. Seed the database with diseases, remedies, and initial test accounts:
-   ```bash
-   uv run python seed.py
-   ```
-
-5. Launch the FastAPI server:
-   ```bash
-   uv run uvicorn app.main:app --reload --port 8000
-   ```
-   * The API server will be available at **`http://localhost:8000`**
-   * Interactive Swagger UI documentation is available at **`http://localhost:8000/docs`**
-
-> **No REST client?** Until the UI is rebuilt, exercise the API through Swagger UI at `/docs` or
-> `curl`. `POST /api/auth/login` returns an `otp_code_dev` field while `APP_DEBUG=true`, so you can
-> complete the 2FA flow locally without a real SMS or email provider.
-
----
-
-## 🧪 Running Automated Test Suites
-
-The backend includes a 59-test suite covering authentication, 2FA lockout, S3 storage compensation
-rollback, remedy catalog lookups, history pagination and soft deletion, ML two-layer localization,
-JWT enforcement, magic-byte upload validation, and API rate limiting:
-
+### Option B: Manual Local Development
+**1. Start the Backend (`http://localhost:8000`):**
 ```bash
 cd backend
-uv run pytest -v
+uv venv && uv pip install -r requirements.txt
+uv run alembic upgrade head
+uv run python seed.py
+uv run uvicorn app.main:app --reload --port 8000
 ```
 
-Expected output:
+**2. Start the Frontend (`http://localhost:5173`):**
+```bash
+cd frontend
+npm install
+npm run dev
 ```
-======================== 59 passed, 3 warnings in ~15s ========================
-```
-
-> The migrated database is required for the suites that touch history columns. Run
-> `uv run alembic upgrade head` first if you cloned fresh.
 
 ---
 
-## ⚙️ Environment Variables Reference
+## License
 
-Configure environment variables in a `.env` file or export them with the `PLANT_AID_` prefix:
-
-| Variable | Default Value | Description |
-|---|---|---|
-| `PLANT_AID_SECRET_KEY` | `super-secret-...` | Secret key used for signing JWT tokens |
-| `PLANT_AID_APP_DEBUG` | `True` | **Debug only.** While true, `/auth/login` echoes `otp_code_dev`. Must be `False` in production |
-| `PLANT_AID_DATABASE_URL` | `sqlite:///./plant_aid.db` | SQLAlchemy database connection string |
-| `PLANT_AID_ACCESS_TOKEN_EXPIRE_MINUTES` | `60` | JWT token lifespan in minutes |
-| `PLANT_AID_OTP_EXPIRE_MINUTES` | `5` | Two-Factor Authentication OTP expiration window |
-| `PLANT_AID_MAX_OTP_ATTEMPTS` | `5` | Maximum failed 2FA verification attempts before lockout |
-| `PLANT_AID_OTP_PROVIDER` | `console` | 2FA provider: `console` (prints to stdout), `twilio`, or `sendgrid` |
-| `PLANT_AID_ML_DEVICE` | `cpu` | Device for inference engine: `cpu` or `cuda` |
-| `PLANT_AID_ML_CONFIDENCE_THRESHOLD` | `0.55` | Confidence threshold ($\tau$) to differentiate uncertain frames |
-| `PLANT_AID_AWS_ACCESS_KEY_ID` | `""` | AWS S3 access key (uses local disk fallback if omitted) |
-| `PLANT_AID_AWS_SECRET_ACCESS_KEY` | `""` | AWS S3 secret key |
-| `PLANT_AID_S3_BUCKET_NAME` | `plant-aid-media-bucket` | Target S3 bucket for leaf image storage |
-
----
-
-## 📡 API Endpoints
-
-Every endpoint that reads or writes user data requires a Bearer JWT (NF.3), including inference and
-the remedy/disease catalogues. All routes are also served under an identical `/api/...` prefix.
-
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `POST` | `/auth/register` | Public | Register a new user account (`201` / `409`) |
-| `POST` | `/auth/login` | Public (10/min) | Authenticate credentials and issue a 2FA challenge (`200` / `401` / `429`) |
-| `POST` | `/auth/verify-2fa` | Challenge session | Verify the 6-digit OTP and issue a JWT (`200` / `401`) |
-| `GET` | `/auth/me` | JWT | Fetch the authenticated user profile |
-| `POST` | `/inference/frame` | JWT (60/min) | Real-time streaming frame inference with bounding box (`200` / `400` / `401` / `429`) |
-| `POST` | `/inference/predict` | JWT (60/min) | Multipart image upload inference; stores the frame and returns its URI (writes no history) |
-| `GET` | `/remedies/{disease_id}` | JWT | Treatment recommendations for a disease (optional `language` param) |
-| `GET` | `/remedies` | JWT | List or search the remedy catalogue |
-| `GET` | `/diseases` | JWT | List the disease catalogue with remedies |
-| `GET` | `/diseases/{disease_id}` | JWT | One disease record with its remedies |
-| `POST` | `/history` | JWT | Explicitly log a confirmed diagnosis (`201` / `422`) |
-| `GET` | `/history` | JWT | Paginated, filterable diagnosis history |
-| `GET` | `/history/{log_id}` | JWT | One history record with a presigned media URL |
-| `DELETE` | `/history/{log_id}` | JWT | Soft-delete a record and remove its media (`204`) |
-| `GET` | `/health` | Public | Liveness probe |
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
