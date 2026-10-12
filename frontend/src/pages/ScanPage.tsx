@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import {
   Camera,
   Upload,
@@ -8,12 +8,9 @@ import {
   Save,
   CheckCircle2,
   AlertTriangle,
-  ShieldCheck,
   Layers,
   ExternalLink,
   RotateCcw,
-  Sparkles,
-  Eye,
 } from 'lucide-react';
 import api from '../services/api';
 import { InferenceResponse, CreateHistoryPayload } from '../types';

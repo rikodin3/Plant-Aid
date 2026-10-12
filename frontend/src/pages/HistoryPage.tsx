@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  History,
   Search,
   Filter,
   Trash2,
@@ -12,7 +11,6 @@ import {
   ChevronRight,
   Scan,
   BookOpen,
-  Leaf,
 } from 'lucide-react';
 import api from '../services/api';
 import { HistoryLog, PaginatedHistoryResponse, Remedy } from '../types';
