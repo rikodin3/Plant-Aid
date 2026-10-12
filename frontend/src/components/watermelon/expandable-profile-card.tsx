@@ -72,7 +72,7 @@ export default function ExpandableProfileCard({
       <motion.div
         layoutId={layoutId}
         onClick={handleOpen}
-        className={`cursor-pointer relative h-72 w-full overflow-hidden rounded-2xl border border-white/60 bg-white/70 backdrop-blur-md group shadow-[0_4px_20px_rgba(20,83,45,0.06)] hover:shadow-[0_12px_32px_rgba(20,83,45,0.12)] transition-shadow duration-300 ${className}`}
+        className={`cursor-pointer relative h-48 sm:h-72 w-full overflow-hidden rounded-2xl bg-slate-950 group shadow-md hover:shadow-lg transition-shadow duration-300 ${className}`}
         whileHover="hover"
       >
         <motion.img
@@ -85,27 +85,27 @@ export default function ExpandableProfileCard({
           }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-black/10 opacity-85 group-hover:opacity-95 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/15" />
 
         {badge && (
-          <div className="absolute top-3.5 left-3.5 z-10">
+          <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-10">
             {badge}
           </div>
         )}
 
-        <div className="absolute bottom-0 left-0 p-4 sm:p-6 w-full sm:translate-y-1 sm:group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute bottom-0 left-0 p-3.5 sm:p-6 w-full sm:translate-y-1 sm:group-hover:translate-y-0 transition-transform duration-300">
           <motion.p
             layoutId={`subtitle-${layoutId}`}
-            className="text-emerald-300 text-xs font-semibold tracking-wider uppercase mb-1 drop-shadow-xs line-clamp-2"
+            className="text-emerald-200 text-xs font-medium mb-0.5 sm:mb-1 line-clamp-1 sm:line-clamp-2"
           >
             {subtitle}
           </motion.p>
-          <motion.h3
+          <motion.h2
             layoutId={`title-${layoutId}`}
-            className="text-lg sm:text-xl font-bold tracking-tight text-white drop-shadow-sm leading-snug"
+            className="text-lg sm:text-xl font-bold tracking-tight text-white leading-snug"
           >
             {title}
-          </motion.h3>
+          </motion.h2>
         </div>
       </motion.div>
 
@@ -126,7 +126,7 @@ export default function ExpandableProfileCard({
               layoutId={layoutId}
               role="dialog"
               aria-modal="true"
-              className="relative w-full max-w-4xl h-[90vh] md:h-[82vh] max-h-[820px] bg-white/95 backdrop-blur-2xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/80 z-10 flex flex-col md:flex-row shadow-2xl min-h-0"
+              className="relative w-full max-w-4xl h-[88vh] md:h-[82vh] max-h-[820px] bg-white/95 backdrop-blur-2xl rounded-2xl sm:rounded-3xl overflow-hidden border border-white/80 z-10 flex flex-col md:flex-row shadow-2xl min-h-0"
             >
               {/* Floating Close Button: Pinned to top-right with 44x44px touch target */}
               <button
@@ -139,7 +139,7 @@ export default function ExpandableProfileCard({
               </button>
 
               {/* Left Column: Specimen Image */}
-              <div className="relative h-44 sm:h-56 md:h-full w-full md:w-1/2 shrink-0 overflow-hidden bg-slate-950">
+              <div className="relative h-36 sm:h-56 md:h-full w-full md:w-1/2 shrink-0 overflow-hidden bg-slate-950">
                 <motion.img
                   layoutId={`image-${layoutId}`}
                   src={imageSrc}
@@ -156,7 +156,7 @@ export default function ExpandableProfileCard({
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
                     <motion.p
                       layoutId={`subtitle-${layoutId}`}
-                      className="text-agri-700 text-xs font-bold tracking-wider uppercase leading-relaxed"
+                      className="text-agri-700 text-xs font-semibold leading-relaxed"
                     >
                       {subtitle}
                     </motion.p>

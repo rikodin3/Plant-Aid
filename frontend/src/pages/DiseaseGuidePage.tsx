@@ -406,28 +406,24 @@ export const DiseaseGuidePage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-3 pb-24 sm:py-8 sm:pb-12 px-3.5 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
+      <div className="max-w-6xl mx-auto space-y-3.5 sm:space-y-6">
         {/* Unified Editorial Console Header */}
-        <Surface className="p-5 sm:p-6 md:p-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6 pb-5 sm:pb-6 border-b border-emerald-950/10">
-            <div className="space-y-2 max-w-2xl">
-              <div className="flex items-center space-x-2 text-agri-800 text-xs font-semibold">
-                <BookOpen className="w-4 h-4 text-agri-600 shrink-0" />
-                <span>Field Diagnostics Reference</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight leading-tight">
+        <Surface className="p-3.5 sm:p-6 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 sm:gap-6 pb-3 sm:pb-6 border-b border-emerald-950/10">
+            <div className="space-y-1 sm:space-y-2 max-w-2xl">
+              <h1 className="text-xl sm:text-3xl font-normal text-slate-900 tracking-tight leading-tight">
                 Groundnut Pathology &amp; Treatment Guide
               </h1>
-              <p className="text-slate-600 text-sm leading-relaxed">
+              <p className="hidden sm:block text-slate-600 text-sm leading-relaxed">
                 Farmer-tested visual symptoms, photorealistic specimen photos, natural bio-fungicides, chemical dosages, and soil care.
               </p>
             </div>
           </div>
 
           {/* Search & Category Filter Strip */}
-          <div className="pt-5 sm:pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+          <div className="pt-3 sm:pt-6 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 sm:gap-4">
             <div className="relative flex-1 max-w-md">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -435,7 +431,7 @@ export const DiseaseGuidePage: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search symptoms or remedies..."
-                className="w-full min-h-[44px] pl-10 pr-10 py-2.5 rounded-xl border border-emerald-950/10 bg-white/75 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                className="w-full min-h-[42px] sm:min-h-[44px] pl-9 pr-10 py-2 rounded-xl border border-emerald-950/10 bg-white/90 sm:bg-white/75 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
               />
               {searchQuery && (
                 <button
@@ -449,16 +445,16 @@ export const DiseaseGuidePage: React.FC = () => {
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex sm:flex-wrap items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-0.5 sm:pb-0 -mx-1 px-1 sm:mx-0 sm:px-0">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`shrink-0 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[40px] touch-target cursor-pointer ${
+                  className={`shrink-0 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all min-h-[38px] sm:min-h-[40px] touch-target cursor-pointer ${
                     selectedCategory === cat
                       ? 'bg-agri-800 text-white shadow-xs'
-                      : 'bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'
+                      : 'bg-white/85 sm:bg-white/70 text-slate-700 hover:bg-white/95 border border-emerald-950/10'
                   }`}
                 >
                   {cat}
@@ -469,15 +465,15 @@ export const DiseaseGuidePage: React.FC = () => {
         </Surface>
 
         {filteredCatalogue.length === 0 ? (
-          <Surface className="py-16 text-center space-y-3">
+          <Surface className="py-12 sm:py-16 text-center space-y-3">
             <Search className="w-10 h-10 text-slate-400 mx-auto" />
-            <h3 className="text-base font-bold text-slate-900">No Matching Diseases</h3>
+            <h2 className="text-base font-bold text-slate-900">No Matching Diseases</h2>
             <p className="text-sm text-slate-500 max-w-sm mx-auto">
               Try searching for a different symptom, remedy, or switch category filters.
             </p>
           </Surface>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-6">
             {filteredCatalogue.map((disease) => (
               <ExpandableProfileCard
                 key={disease.slug}
@@ -492,7 +488,7 @@ export const DiseaseGuidePage: React.FC = () => {
                   }
                 }}
                 badge={
-                  <Badge variant={disease.badgeVariant} className="shadow-xs backdrop-blur-md">
+                  <Badge variant={disease.badgeVariant} className="shadow-xs">
                     {disease.severity}
                   </Badge>
                 }

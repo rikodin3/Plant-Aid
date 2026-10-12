@@ -18,7 +18,7 @@ export const FloatingScanButton: React.FC = () => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-        className="fixed bottom-6 right-6 z-50"
+        className="hidden md:block fixed bottom-6 right-6 z-50"
       >
         <Link
           to="/scan"

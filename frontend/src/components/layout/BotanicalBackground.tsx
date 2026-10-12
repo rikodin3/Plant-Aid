@@ -9,12 +9,12 @@ export const BotanicalBackground: React.FC = () => {
       {/* Subtle soft gradient background overlay matching reference */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#f2f7f2] via-[#edf4ed] to-[#e4ede4] opacity-80" />
 
-      {/* Vector Botanical Background Layer with gently softened opacity */}
-      <div className="absolute inset-0 pointer-events-none opacity-75 transition-opacity duration-300">
+      {/* Vector Botanical Background Layer — Hidden on mobile (<md) to prevent wireframe clutter behind cards */}
+      <div className="hidden md:block absolute inset-0 pointer-events-none md:opacity-75 transition-opacity duration-300">
         {/* ============================================================ */}
         {/* 1. LEFT BOTANICAL TREE (PINNED TO BOTTOM-LEFT)               */}
         {/* ============================================================ */}
-        <div className="absolute left-0 bottom-0 w-[260px] sm:w-[340px] md:w-[420px] lg:w-[480px] h-[65vh] sm:h-[75vh] md:h-[82vh] max-h-[850px] min-h-[420px] pointer-events-none">
+        <div className="absolute left-0 bottom-0 w-[220px] sm:w-[340px] md:w-[420px] lg:w-[480px] h-[55vh] sm:h-[75vh] md:h-[82vh] max-h-[850px] min-h-[340px] pointer-events-none">
         <svg
           className="w-full h-full"
           viewBox="0 0 460 780"
@@ -260,7 +260,7 @@ export const BotanicalBackground: React.FC = () => {
       {/* ============================================================ */}
       {/* 3. RIGHT ARCHITECTURAL PINE TREES (PINNED TO BOTTOM-RIGHT)   */}
       {/* ============================================================ */}
-      <div className="absolute right-0 bottom-0 w-[220px] sm:w-[280px] md:w-[350px] lg:w-[420px] h-[55vh] sm:h-[65vh] md:h-[72vh] max-h-[750px] min-h-[380px] pointer-events-none">
+      <div className="hidden sm:block absolute right-0 bottom-0 w-[220px] sm:w-[280px] md:w-[350px] lg:w-[420px] h-[55vh] sm:h-[65vh] md:h-[72vh] max-h-[750px] min-h-[380px] pointer-events-none">
         <svg
           className="w-full h-full"
           viewBox="0 0 420 650"

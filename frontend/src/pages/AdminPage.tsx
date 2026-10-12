@@ -256,23 +256,23 @@ export const AdminPage: React.FC = () => {
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-6xl mx-auto space-y-5 sm:space-y-6">
+      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
         {/* Admin Header Console */}
         <Card
           glass
-          className="p-4 sm:p-6 md:p-8 backdrop-blur-xl border border-white/80 shadow-[0_10px_35px_-5px_rgba(20,83,45,0.08)] ring-1 ring-emerald-950/5"
+          className="p-4 sm:p-6 md:p-8 backdrop-blur-xl border border-emerald-950/10 shadow-xs"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div className="space-y-1">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-agri-700 to-agri-900 text-white flex items-center justify-center shadow-md shrink-0">
-                  <ShieldCheck className="w-6 h-6" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-agri-700 to-agri-900 text-white flex items-center justify-center shadow-xs shrink-0">
+                  <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
+                  <h1 className="text-xl sm:text-3xl font-normal text-slate-900 tracking-tight">
                     Platform Administration
                   </h1>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="hidden sm:block text-sm text-slate-600 leading-relaxed">
                     Governance console for user authorization, diagnostic logs, and remedy catalog management
                   </p>
                 </div>
@@ -288,34 +288,34 @@ export const AdminPage: React.FC = () => {
           </div>
 
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-emerald-950/10">
-            <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <Users className="w-5 h-5 text-agri-700 shrink-0" />
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-emerald-950/10">
+            <div className="p-2 sm:p-3.5 rounded-xl sm:bg-white/70 sm:border sm:border-emerald-950/10 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  Total Operators
+                <div className="text-xs font-bold text-slate-600">
+                  Operators
                 </div>
-                <div className="text-lg font-bold text-slate-900">{usersTotal}</div>
+                <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tabular-nums">{usersTotal}</div>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <History className="w-5 h-5 text-agri-700 shrink-0" />
+            <div className="p-2 sm:p-3.5 rounded-xl sm:bg-white/70 sm:border sm:border-emerald-950/10 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <History className="w-4 h-4 sm:w-5 sm:h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  Global Diagnoses
+                <div className="text-xs font-bold text-slate-600">
+                  Diagnoses
                 </div>
-                <div className="text-lg font-bold text-slate-900">{historyTotal}</div>
+                <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tabular-nums">{historyTotal}</div>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/60 border border-emerald-950/5 flex items-center space-x-3">
-              <BookOpen className="w-5 h-5 text-agri-700 shrink-0" />
+            <div className="p-2 sm:p-3.5 rounded-xl sm:bg-white/70 sm:border sm:border-emerald-950/10 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-agri-700 shrink-0" />
               <div>
-                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                  Groundnut Classes
+                <div className="text-xs font-bold text-slate-600">
+                  Classes
                 </div>
-                <div className="text-lg font-bold text-slate-900">{GROUNDNUT_DISEASES.length}</div>
+                <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tabular-nums">{GROUNDNUT_DISEASES.length}</div>
               </div>
             </div>
           </div>
@@ -346,26 +346,29 @@ export const AdminPage: React.FC = () => {
 
         {/* Administration Tabs */}
         <Tabs value={activeTab} onValueChange={(val: any) => setActiveTab(val)}>
-          <TabsList className="bg-white/70 backdrop-blur-md border border-emerald-950/10 p-1.5 rounded-2xl shadow-sm w-full sm:w-auto">
-            <TabsTrigger value="users" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+          <TabsList className="grid grid-cols-3 sm:inline-flex bg-white/85 backdrop-blur-md border border-emerald-950/10 p-1.5 rounded-2xl shadow-xs w-full sm:w-auto">
+            <TabsTrigger value="users" className="flex items-center justify-center space-x-1.5 sm:space-x-2 px-2 sm:px-4 py-2">
               <Users className="w-4 h-4 shrink-0" />
-              <span>User Governance</span>
+              <span className="sm:hidden">Users</span>
+              <span className="hidden sm:inline">User Governance</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+            <TabsTrigger value="history" className="flex items-center justify-center space-x-1.5 sm:space-x-2 px-2 sm:px-4 py-2">
               <History className="w-4 h-4 shrink-0" />
-              <span>Global Diagnosis Records</span>
+              <span className="sm:hidden">Records</span>
+              <span className="hidden sm:inline">Global Diagnosis Records</span>
             </TabsTrigger>
-            <TabsTrigger value="remedies" className="flex items-center space-x-2 px-3.5 sm:px-4 py-2">
+            <TabsTrigger value="remedies" className="flex items-center justify-center space-x-1.5 sm:space-x-2 px-2 sm:px-4 py-2">
               <BookOpen className="w-4 h-4 shrink-0" />
-              <span>Remedy &amp; Treatment Catalog</span>
+              <span className="sm:hidden">Remedies</span>
+              <span className="hidden sm:inline">Remedy &amp; Treatment Catalog</span>
             </TabsTrigger>
           </TabsList>
 
           {/* TAB 1: USER GOVERNANCE */}
           <TabsContent value="users" className="space-y-4">
-            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-emerald-950/10 shadow-xs">
               {/* Filter and Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-5 sm:pb-6 border-b border-emerald-950/10">
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-4 sm:pb-6 border-b border-emerald-950/10">
                 <div className="relative flex-1 max-w-md">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -373,7 +376,7 @@ export const AdminPage: React.FC = () => {
                     value={userSearch}
                     onChange={(e) => setUserSearch(e.target.value)}
                     placeholder="Search by operator name, email, or phone..."
-                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
+                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
                   />
                 </div>
 
@@ -381,7 +384,7 @@ export const AdminPage: React.FC = () => {
                   <select
                     value={userRoleFilter}
                     onChange={(e) => setUserRoleFilter(e.target.value)}
-                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-3 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Roles</option>
                     <option value="user">User</option>
@@ -391,7 +394,7 @@ export const AdminPage: React.FC = () => {
                   <select
                     value={userStatusFilter}
                     onChange={(e) => setUserStatusFilter(e.target.value)}
-                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-3 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Statuses</option>
                     <option value="ACTIVE">Active</option>
@@ -411,8 +414,105 @@ export const AdminPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Users Table */}
-              <div className="overflow-x-auto pt-4">
+              {/* Mobile Operators List (<md) */}
+              <div className="md:hidden divide-y divide-slate-100 pt-2">
+                {usersLoading ? (
+                  <div className="py-10 text-center text-slate-500 text-sm">
+                    <div className="w-6 h-6 border-2 border-agri-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                    Loading registered operators…
+                  </div>
+                ) : users.length === 0 ? (
+                  <div className="py-10 text-center text-slate-500 text-sm">
+                    No operators found matching criteria.
+                  </div>
+                ) : (
+                  users.map((u) => {
+                    const isSelf = u.id === currentUser?.id;
+                    return (
+                      <div key={u.id} className="py-3.5 space-y-2.5">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center space-x-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-full bg-agri-100 text-agri-800 flex items-center justify-center font-bold text-xs shrink-0">
+                              {u.user_name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="font-semibold text-sm text-slate-900 truncate">
+                                {u.user_name} {isSelf && <span className="text-xs text-agri-600 font-normal">(You)</span>}
+                              </div>
+                              <div className="text-xs text-slate-600 truncate">{u.email_address}</div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {u.role === 'admin' ? (
+                              <Badge variant="warning" className="bg-amber-100/90 text-amber-900 border-amber-300 text-xs">
+                                Admin
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-slate-600 bg-white/80 text-xs">
+                                User
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
+                          <div className="flex items-center gap-3">
+                            {u.account_status === 'ACTIVE' ? (
+                              <span className="inline-flex items-center space-x-1 font-semibold text-emerald-700">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                                <span>Active</span>
+                              </span>
+                            ) : u.account_status === 'SUSPENDED' ? (
+                              <span className="inline-flex items-center space-x-1 font-semibold text-rose-700">
+                                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                                <span>Suspended</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center space-x-1 font-semibold text-amber-700">
+                                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                                <span>Pending</span>
+                              </span>
+                            )}
+                            <span className="font-mono tabular-nums">{u.history_count} scans</span>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={() => handleToggleRole(u)}
+                              disabled={isSelf}
+                              className={`min-h-[38px] px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                                isSelf
+                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                  : u.role === 'admin'
+                                  ? 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+                                  : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                              }`}
+                            >
+                              {u.role === 'admin' ? 'Demote' : 'Promote'}
+                            </button>
+                            <button
+                              onClick={() => handleToggleStatus(u)}
+                              disabled={isSelf}
+                              className={`min-h-[38px] px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                                isSelf
+                                  ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                                  : u.account_status === 'ACTIVE'
+                                  ? 'bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200'
+                                  : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
+                              }`}
+                            >
+                              {u.account_status === 'ACTIVE' ? 'Suspend' : 'Activate'}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Desktop Users Table (md+) */}
+              <div className="hidden md:block overflow-x-auto pt-4">
                 <table className="w-full text-left text-sm text-slate-700">
                   <thead className="text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
                     <tr>
@@ -516,7 +616,7 @@ export const AdminPage: React.FC = () => {
                                 onClick={() => handleToggleRole(u)}
                                 disabled={isSelf}
                                 title={isSelf ? 'Safety Lock: Cannot alter own admin role' : `Change role to ${u.role === 'admin' ? 'user' : 'admin'}`}
-                                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agri-500 ${
+                                className={`min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agri-500 ${
                                   isSelf
                                     ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                                     : u.role === 'admin'
@@ -532,7 +632,7 @@ export const AdminPage: React.FC = () => {
                                 onClick={() => handleToggleStatus(u)}
                                 disabled={isSelf}
                                 title={isSelf ? 'Safety Lock: Cannot suspend own account' : `${u.account_status === 'ACTIVE' ? 'Suspend' : 'Activate'} user`}
-                                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agri-500 ${
+                                className={`min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-agri-500 ${
                                   isSelf
                                     ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
                                     : u.account_status === 'ACTIVE'
@@ -579,9 +679,9 @@ export const AdminPage: React.FC = () => {
 
           {/* TAB 2: GLOBAL DIAGNOSTIC RECORDS */}
           <TabsContent value="history" className="space-y-4">
-            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-emerald-950/10 shadow-xs">
               {/* Filter and Search Bar */}
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-5 sm:pb-6 border-b border-emerald-950/10">
+              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between pb-4 sm:pb-6 border-b border-emerald-950/10">
                 <div className="relative flex-1 max-w-md">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
@@ -589,7 +689,7 @@ export const AdminPage: React.FC = () => {
                     value={historySearch}
                     onChange={(e) => setHistorySearch(e.target.value)}
                     placeholder="Search by operator, email, or disease name..."
-                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
+                    className="w-full min-h-[44px] pl-10 pr-4 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 transition"
                   />
                 </div>
 
@@ -597,7 +697,7 @@ export const AdminPage: React.FC = () => {
                   <select
                     value={historyDiseaseFilter}
                     onChange={(e) => setHistoryDiseaseFilter(e.target.value)}
-                    className="min-h-[44px] px-3 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-3 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     <option value="">All Groundnut Diseases</option>
                     {GROUNDNUT_DISEASES.map((d) => (
@@ -619,8 +719,60 @@ export const AdminPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* History Table */}
-              <div className="overflow-x-auto pt-4">
+              {/* Mobile History List (<md) */}
+              <div className="md:hidden divide-y divide-slate-100 pt-2">
+                {historyLoading ? (
+                  <div className="py-10 text-center text-slate-500 text-sm">
+                    <div className="w-6 h-6 border-2 border-agri-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                    Loading global diagnosis records...
+                  </div>
+                ) : historyItems.length === 0 ? (
+                  <div className="py-10 text-center text-slate-500 text-sm">
+                    No diagnostic records found.
+                  </div>
+                ) : (
+                  historyItems.map((log) => {
+                    const pct = Math.round(log.confidence_score * 100);
+                    return (
+                      <div key={log.id} className="py-3.5 space-y-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center space-x-2 min-w-0">
+                            <Leaf className="w-4 h-4 text-agri-600 shrink-0" />
+                            <span className="font-semibold text-sm text-slate-900 truncate">{log.disease_name}</span>
+                          </div>
+                          <span className="font-mono text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md shrink-0">
+                            {pct}%
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
+                          <div className="truncate">
+                            <span className="font-medium text-slate-800">{log.user_name}</span>
+                            <span className="mx-1.5 text-slate-300">•</span>
+                            <span>{new Date(log.diagnosis_timestamp).toLocaleDateString()}</span>
+                          </div>
+                          {log.media_url ? (
+                            <a
+                              href={log.media_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center space-x-1 text-xs text-agri-700 hover:text-agri-900 font-semibold underline underline-offset-2 shrink-0"
+                            >
+                              <span>Image</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          ) : (
+                            <span className="text-xs text-slate-500 shrink-0">Archived</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Desktop History Table (md+) */}
+              <div className="hidden md:block overflow-x-auto pt-4">
                 <table className="w-full text-left text-sm text-slate-700">
                   <thead className="text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
                     <tr>
@@ -731,11 +883,11 @@ export const AdminPage: React.FC = () => {
 
           {/* TAB 3: REMEDY & TREATMENT CATALOG */}
           <TabsContent value="remedies" className="space-y-4">
-            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-white/80 shadow-sm">
+            <Card glass className="p-4 sm:p-6 backdrop-blur-xl border border-emerald-950/10 shadow-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 sm:pb-6 border-b border-emerald-950/10">
                 <div className="space-y-1">
                   <h2 className="text-lg font-bold text-slate-900">Disease Remedy Catalog</h2>
-                  <p className="text-xs sm:text-sm text-slate-500">
+                  <p className="text-xs sm:text-sm text-slate-600">
                     Add, update, or remove biological, chemical, and cultural treatments served to farmers
                   </p>
                 </div>
@@ -744,7 +896,7 @@ export const AdminPage: React.FC = () => {
                   <select
                     value={selectedDiseaseId}
                     onChange={(e) => setSelectedDiseaseId(e.target.value)}
-                    className="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-xl bg-white/75 border border-slate-200 text-base sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-agri-600"
+                    className="flex-1 sm:flex-initial min-h-[44px] px-3.5 py-2 rounded-xl bg-white/85 border border-slate-200 text-base sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-agri-600"
                   >
                     {GROUNDNUT_DISEASES.map((d) => (
                       <option key={d.id} value={d.id}>
@@ -783,7 +935,7 @@ export const AdminPage: React.FC = () => {
                       return (
                         <div
                           key={remedy.id}
-                          className="p-4 sm:p-5 rounded-2xl bg-white/80 border border-emerald-950/10 shadow-xs flex flex-col justify-between space-y-4 hover:border-agri-600/30 transition"
+                          className="p-4 sm:p-5 rounded-2xl bg-white/85 border border-emerald-950/10 shadow-xs flex flex-col justify-between space-y-4 hover:border-agri-600/30 transition"
                         >
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
@@ -797,7 +949,7 @@ export const AdminPage: React.FC = () => {
                                 <button
                                   type="button"
                                   onClick={() => openEditRemedyModal(remedy)}
-                                  className="h-9 w-9 rounded-xl text-agri-700 hover:text-agri-900 hover:bg-emerald-50 flex items-center justify-center transition touch-target cursor-pointer"
+                                  className="h-11 w-11 rounded-xl text-agri-700 hover:text-agri-900 hover:bg-emerald-50 flex items-center justify-center transition touch-target cursor-pointer"
                                   title="Edit remedy"
                                   aria-label="Edit remedy"
                                 >
@@ -806,7 +958,7 @@ export const AdminPage: React.FC = () => {
                                 <button
                                   type="button"
                                   onClick={() => handleDeleteRemedy(remedy.id)}
-                                  className="h-9 w-9 rounded-xl text-rose-700 hover:text-rose-900 hover:bg-rose-50 flex items-center justify-center transition touch-target cursor-pointer"
+                                  className="h-11 w-11 rounded-xl text-rose-700 hover:text-rose-900 hover:bg-rose-50 flex items-center justify-center transition touch-target cursor-pointer"
                                   title="Delete remedy"
                                   aria-label="Delete remedy"
                                 >

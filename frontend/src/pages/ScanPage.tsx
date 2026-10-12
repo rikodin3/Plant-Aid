@@ -261,10 +261,11 @@ export const ScanPage: React.FC = () => {
     if (!file) return;
 
     if (!file.type.match(/image\/(jpeg|png)/)) {
-      alert('Only JPEG and PNG foliage images are supported.');
+      setCameraError('Only JPEG and PNG foliage images are supported.');
       return;
     }
 
+    setCameraError(null);
     setIsInFlight(true);
     setIsSaved(false);
     setSaveMessage(null);
@@ -287,7 +288,7 @@ export const ScanPage: React.FC = () => {
       setCurrentResult(res.data);
       setLastInferenceTime(Date.now() - startTime);
     } catch (err: any) {
-      alert('Failed to analyze uploaded foliage image. ' + (err.response?.data?.detail || ''));
+      setCameraError('Failed to analyze uploaded foliage image. ' + (err.response?.data?.detail || ''));
     } finally {
       setIsInFlight(false);
     }
@@ -348,7 +349,7 @@ export const ScanPage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent text-slate-900 py-6 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent text-slate-900 pt-2.5 pb-20 sm:py-6 px-3.5 sm:px-6 lg:px-8 font-sans"
     >
       {/* Hidden Offscreen Canvas & File Input */}
       <canvas ref={canvasRef} className="hidden" />
@@ -360,54 +361,50 @@ export const ScanPage: React.FC = () => {
         className="hidden"
       />
 
-      <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6 pb-16 sm:pb-8">
-        {/* Top Header & Tactical Instrument Switcher */}
-        <Surface className="p-4 sm:p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">
-            <div className="space-y-1">
-              <div className="flex items-center space-x-2 text-agri-800 text-xs font-semibold">
-                <ShieldCheck className="w-4 h-4 text-agri-600 shrink-0" />
-                <span>Groundnut Health Scanner</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-                Live Foliage Scanner
-              </h1>
-            </div>
+      <div className="max-w-6xl mx-auto space-y-3 sm:space-y-6 pb-8">
+        {/* Top Header & Tactical Instrument Switcher — Compact single line on mobile */}
+        <Surface className="p-2.5 sm:p-6 md:p-8">
+          <div className="flex items-center justify-between gap-2 sm:gap-4">
+            <h1 className="text-base sm:text-3xl font-bold sm:font-normal text-slate-900 tracking-tight truncate pl-1 sm:pl-0">
+              Live Foliage Scanner
+            </h1>
 
-            {/* Seamless Mode Switcher Pill — Full-width 2-col on mobile */}
-            <div className="grid grid-cols-2 sm:inline-flex items-center bg-emerald-950/5 p-1 rounded-xl backdrop-blur-xs select-none w-full sm:w-auto">
+            {/* Seamless Mode Switcher Pill */}
+            <div className="inline-flex items-center bg-emerald-950/5 p-1 rounded-xl backdrop-blur-xs select-none shrink-0">
               <button
                 type="button"
                 onClick={handleSwitchToCamera}
-                className={`flex items-center justify-center space-x-2 px-4 py-2.5 sm:py-2 rounded-lg text-xs font-semibold transition-all min-h-[44px] sm:min-h-[38px] touch-target cursor-pointer ${
+                className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] touch-target cursor-pointer ${
                   mode === 'camera'
                     ? 'bg-white text-agri-950 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Camera className="w-4 h-4 text-agri-700 shrink-0" />
-                <span>Live Camera</span>
+                <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-agri-700 shrink-0" />
+                <span className="sm:hidden">Camera</span>
+                <span className="hidden sm:inline">Live Camera</span>
               </button>
               <button
                 type="button"
                 onClick={handleSwitchToUpload}
-                className={`flex items-center justify-center space-x-2 px-4 py-2.5 sm:py-2 rounded-lg text-xs font-semibold transition-all min-h-[44px] sm:min-h-[38px] touch-target cursor-pointer ${
+                className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] touch-target cursor-pointer ${
                   mode === 'upload'
                     ? 'bg-white text-agri-950 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Upload className="w-4 h-4 text-agri-700 shrink-0" />
-                <span>Upload Photo</span>
+                <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-agri-700 shrink-0" />
+                <span className="sm:hidden">Upload</span>
+                <span className="hidden sm:inline">Upload Photo</span>
               </button>
             </div>
           </div>
         </Surface>
 
         {/* Main Work Area: Unified Viewfinder Station (Left) + Integrated Diagnostic Panel (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-6 items-start">
           {/* Left Viewfinder Station (7 Cols) - Unified Hardware Console */}
-          <div className="lg:col-span-7 space-y-3.5 sm:space-y-4">
+          <div className="lg:col-span-7 space-y-3 sm:space-y-4">
             <div
               className={`relative rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col transition-colors duration-300 ${
                 mode === 'camera'
@@ -437,7 +434,7 @@ export const ScanPage: React.FC = () => {
                     )}
 
                     {/* Tactical Corner Crosshairs for Leaf Framing */}
-                    <div className="absolute inset-4 sm:inset-6 pointer-events-none border border-white/20 rounded-2xl">
+                    <div className="absolute inset-3.5 sm:inset-6 pointer-events-none border border-white/20 rounded-2xl">
                       <div className="absolute -top-1 -left-1 w-5 h-5 sm:w-6 sm:h-6 border-t-2 border-l-2 border-agri-400" />
                       <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 border-t-2 border-r-2 border-agri-400" />
                       <div className="absolute -bottom-1 -left-1 w-5 h-5 sm:w-6 sm:h-6 border-b-2 border-l-2 border-agri-400" />
@@ -455,9 +452,9 @@ export const ScanPage: React.FC = () => {
                     />
 
                     {/* Top Status Pill Bar */}
-                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 pointer-events-none flex items-center space-x-2 z-30">
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 pointer-events-none flex items-center space-x-1.5 sm:space-x-2 z-30">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wide backdrop-blur-md border flex items-center space-x-1.5 ${
+                        className={`px-2.5 sm:px-3 py-1 rounded-full text-xs font-mono font-bold tracking-wide backdrop-blur-md border flex items-center space-x-1.5 ${
                           isInFlight
                             ? 'bg-amber-950/85 text-amber-300 border-amber-600/60'
                             : isFrozen
@@ -490,7 +487,7 @@ export const ScanPage: React.FC = () => {
                       </span>
 
                       {lastInferenceTime && (
-                        <span className="hidden sm:inline-block px-2.5 py-1 rounded-full text-xs font-mono bg-slate-900/80 text-slate-300 border border-slate-700 backdrop-blur-md">
+                        <span className="px-2 py-1 rounded-full text-[11px] sm:text-xs font-mono bg-slate-900/80 text-slate-300 border border-slate-700 backdrop-blur-md">
                           {lastInferenceTime}ms
                         </span>
                       )}
@@ -508,14 +505,14 @@ export const ScanPage: React.FC = () => {
                   </div>
 
                   {/* Tactical Shutter Dock — Stacked cleanly below video on mobile, floating overlay on sm+ */}
-                  <div className="sm:absolute sm:bottom-3 sm:inset-x-3 bg-slate-950/95 sm:bg-slate-950/85 backdrop-blur-md border-t sm:border border-white/10 sm:rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shadow-lg z-30">
+                  <div className="sm:absolute sm:bottom-3 sm:inset-x-3 bg-slate-950/95 sm:bg-slate-950/85 backdrop-blur-md border-t sm:border border-white/10 sm:rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3 shadow-lg z-30">
                     <div className="flex items-center">
                       {isFrozen ? (
                         <Button
                           variant="glass"
                           size="sm"
                           onClick={handleRetake}
-                          className="w-full sm:w-auto min-h-[44px] sm:min-h-[38px] bg-white/95 text-slate-900 hover:bg-white font-bold"
+                          className="w-full sm:w-auto min-h-[42px] sm:min-h-[38px] bg-white/95 text-slate-900 hover:bg-white font-bold"
                         >
                           <RotateCcw className="w-4 h-4 text-agri-700" />
                           <span>Resume Stream</span>
@@ -525,7 +522,7 @@ export const ScanPage: React.FC = () => {
                           size="sm"
                           onClick={() => captureAndInferFrame(true)}
                           disabled={isInFlight}
-                          className="w-full sm:w-auto min-h-[44px] sm:min-h-[38px] bg-agri-600 hover:bg-agri-700 text-white font-bold"
+                          className="w-full sm:w-auto min-h-[42px] sm:min-h-[38px] bg-agri-600 hover:bg-agri-700 text-white font-bold"
                         >
                           <Camera className="w-4 h-4" />
                           <span>{isInFlight ? 'Processing...' : 'Freeze & Diagnose'}</span>
@@ -537,7 +534,7 @@ export const ScanPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowHeatmap(!showHeatmap)}
-                        className={`min-h-[40px] sm:min-h-[36px] px-3 py-1.5 rounded-xl font-bold border transition-colors text-center cursor-pointer ${
+                        className={`min-h-[38px] sm:min-h-[36px] px-3 py-1.5 rounded-xl font-bold border transition-colors text-center cursor-pointer ${
                           showHeatmap
                             ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
                             : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
@@ -553,7 +550,7 @@ export const ScanPage: React.FC = () => {
                           if (isFrozen) setIsFrozen(false);
                           setAutoSample(!autoSample);
                         }}
-                        className={`min-h-[40px] sm:min-h-[36px] px-3 py-1.5 rounded-xl font-bold border transition-colors text-center cursor-pointer ${
+                        className={`min-h-[38px] sm:min-h-[36px] px-3 py-1.5 rounded-xl font-bold border transition-colors text-center cursor-pointer ${
                           autoSample
                             ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                             : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
@@ -565,11 +562,11 @@ export const ScanPage: React.FC = () => {
                   </div>
                 </>
               ) : (
-                /* Upload Mode Viewport — Botanical Frosted-Glass Theme */
+                /* Upload Mode Viewport */
                 <div className="flex-1 w-full flex flex-col items-center justify-center text-center relative">
                   {uploadedImageDataUrl ? (
                     <>
-                      <div className="relative w-full aspect-[4/3] flex items-center justify-center p-3 sm:p-6 sm:pb-16">
+                      <div className="relative w-full aspect-[4/3] flex items-center justify-center p-2.5 sm:p-6 sm:pb-16">
                         <div className="relative w-full h-full flex items-center justify-center">
                           <img
                             src={uploadedImageDataUrl}
@@ -587,22 +584,22 @@ export const ScanPage: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Bottom Upload Control Dock — Attached on mobile, floating bar on sm+ */}
-                      <div className="w-full sm:w-auto sm:absolute sm:bottom-3 sm:inset-x-3 bg-white/95 backdrop-blur-md border-t sm:border border-emerald-950/10 sm:rounded-2xl p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 shadow-md z-30">
+                      {/* Bottom Upload Control Dock */}
+                      <div className="w-full sm:w-auto sm:absolute sm:bottom-3 sm:inset-x-3 bg-white/95 backdrop-blur-md border-t sm:border border-emerald-950/10 sm:rounded-2xl p-2.5 sm:p-3 flex flex-row items-center justify-between gap-2 sm:gap-3 shadow-md z-30">
                         <Button
                           size="sm"
                           onClick={() => fileInputRef.current?.click()}
                           disabled={isInFlight}
-                          className="w-full sm:w-auto min-h-[44px] sm:min-h-[38px] bg-agri-700 hover:bg-agri-800 text-white font-bold"
+                          className="flex-1 sm:flex-initial min-h-[40px] sm:min-h-[38px] bg-agri-700 hover:bg-agri-800 text-white font-bold"
                         >
                           <Upload className="w-4 h-4" />
-                          <span>{isInFlight ? 'Analyzing...' : 'Upload Another Photo'}</span>
+                          <span>{isInFlight ? 'Analyzing...' : 'Upload Another'}</span>
                         </Button>
 
                         <button
                           type="button"
                           onClick={() => setShowHeatmap(!showHeatmap)}
-                          className={`min-h-[40px] sm:min-h-[36px] px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer ${
+                          className={`min-h-[40px] sm:min-h-[36px] px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer shrink-0 ${
                             showHeatmap
                               ? 'bg-[#edf4ed] text-agri-800 border-agri-600/30'
                               : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
@@ -613,24 +610,24 @@ export const ScanPage: React.FC = () => {
                       </div>
                     </>
                   ) : (
-                    <div className="w-full aspect-[4/3] min-h-[280px] flex items-center justify-center p-4 sm:p-8">
+                    <div className="w-full py-6 px-3.5 sm:aspect-[4/3] sm:min-h-[280px] flex items-center justify-center sm:p-8">
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="cursor-pointer flex flex-col items-center justify-center space-y-3.5 sm:space-y-4 p-6 sm:p-10 border-2 border-dashed border-agri-600/30 bg-white/90 rounded-2xl sm:rounded-3xl hover:border-agri-700 hover:bg-white transition-all shadow-sm max-w-md w-full group"
+                        className="cursor-pointer flex flex-col items-center justify-center space-y-3 sm:space-y-4 p-5 sm:p-10 border-2 border-dashed border-agri-600/30 bg-white/90 rounded-2xl sm:rounded-3xl hover:border-agri-700 hover:bg-white transition-all shadow-sm max-w-md w-full group"
                       >
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#edf4ed] text-agri-800 flex items-center justify-center border border-emerald-950/10 group-hover:scale-105 transition-transform">
-                          <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-agri-700" />
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#edf4ed] text-agri-800 flex items-center justify-center border border-emerald-950/10 group-hover:scale-105 transition-transform">
+                          <Upload className="w-6 h-6 sm:w-8 sm:h-8 text-agri-700" />
                         </div>
                         <div className="space-y-1">
-                          <div className="text-base sm:text-lg font-bold text-slate-900">
+                          <div className="text-sm sm:text-lg font-bold text-slate-900">
                             Upload Groundnut Foliage Photo
                           </div>
                           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                             Select a clear leaf photo from your device (JPEG or PNG)
                           </p>
                         </div>
-                        <span className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-agri-700 group-hover:bg-agri-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-colors">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 min-h-[42px] sm:min-h-[44px] rounded-xl bg-agri-700 group-hover:bg-agri-800 text-white text-xs sm:text-sm font-bold shadow-xs transition-colors">
                           <Upload className="w-4 h-4" />
                           <span>Browse Device Photos</span>
                         </span>
@@ -641,63 +638,25 @@ export const ScanPage: React.FC = () => {
               )}
             </div>
 
-            {/* Mobile Live Telemetry Quick-Strip — Visible above the fold on mobile (<lg) when a result is present */}
-            {currentResult && (
-              <div className="lg:hidden rounded-2xl bg-white/90 backdrop-blur-md border border-emerald-950/10 p-3.5 shadow-sm flex items-center justify-between gap-3">
-                <div className="min-w-0 space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                        isNoPlant
-                          ? 'bg-slate-400'
-                          : isHealthy
-                          ? 'bg-emerald-500'
-                          : isConfirmedInfection
-                          ? 'bg-rose-500'
-                          : 'bg-amber-500'
-                      }`}
-                    />
-                    <span className="text-sm font-bold text-slate-900 truncate">
-                      {isNoPlant ? 'No groundnut plant seen' : currentResult.disease_name}
-                    </span>
-                  </div>
-                  {!isNoPlant && (
-                    <div className="text-xs text-slate-600 font-mono pl-4.5">
-                      {(currentResult.confidence_score * 100).toFixed(1)}% confidence
-                    </div>
-                  )}
-                </div>
-                {!isNoPlant && (
-                  <Button
-                    size="sm"
-                    onClick={() => setModalOpen(true)}
-                    className="shrink-0 min-h-[40px] bg-agri-700 hover:bg-agri-800 text-white text-xs font-bold px-3.5"
-                  >
-                    <span>Remedies</span>
-                  </Button>
-                )}
-              </div>
-            )}
-
             {cameraError && (
-              <div className="p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs sm:text-sm flex items-start space-x-3">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs sm:text-sm flex items-start space-x-3">
                 <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <div className="font-bold">Camera Connection Issue</div>
+                  <div className="font-bold">Scanner Notice</div>
                   <div>{cameraError}</div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right Diagnosis Console Surface (5 Cols) */}
+          {/* Unified Diagnosis Console Surface (5 Cols on Desktop, Compact Single Sheet on Mobile) */}
           <div className="lg:col-span-5">
-            <Surface className="p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
+            <Surface className="p-3.5 sm:p-6 md:p-8 space-y-3.5 sm:space-y-6">
               {/* Header */}
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-950/10 pb-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-950/10 pb-2.5 sm:pb-4">
                 <div className="space-y-0.5">
-                  <h2 className="text-base font-bold text-slate-900">Diagnostic Reading</h2>
-                  <p className="text-xs text-slate-500">Real-time disease detection</p>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">Diagnostic Reading</h2>
+                  <p className="hidden sm:block text-xs text-slate-500">Real-time disease detection</p>
                 </div>
 
                 {currentResult && (
@@ -724,40 +683,24 @@ export const ScanPage: React.FC = () => {
               </div>
 
               {currentResult ? (
-                <div className="space-y-5 sm:space-y-6">
+                <div className="space-y-3.5 sm:space-y-6">
                   {isNoPlant ? (
                     /* No Plant Detected State */
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                       <div className="space-y-1">
-                        <div className="text-xs uppercase tracking-wider text-slate-500 font-bold">
-                          Detection Status
-                        </div>
-                        <div className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                        <div className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight">
                           No groundnut plant seen
                         </div>
-                        <p className="text-sm text-slate-600 leading-relaxed pt-1">
-                          No groundnut leaf foliage was detected in the frame. Point your camera directly at groundnut leaves with clear lighting to analyze health.
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                          Point your camera 15–30 cm from groundnut foliage in clear lighting so the leaf fills the center frame.
                         </p>
-                      </div>
-
-                      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-700 text-xs sm:text-sm flex items-start space-x-3">
-                        <Camera className="w-5 h-5 text-emerald-700 flex-shrink-0 mt-0.5" />
-                        <div className="space-y-1">
-                          <div className="font-bold text-slate-800">Framing Advice</div>
-                          <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
-                            Hold the camera 15–30 cm from the foliage and ensure the groundnut leaf fills the center of the camera view.
-                          </p>
-                        </div>
                       </div>
                     </div>
                   ) : (
                     <>
                       {/* Primary Disease Title */}
-                      <div className="space-y-1">
-                        <div className="text-xs uppercase tracking-wider text-slate-500 font-bold">
-                          Identified Condition
-                        </div>
-                        <div className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
+                      <div className="space-y-0.5 sm:space-y-1">
+                        <div className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
                           {currentResult.disease_name}
                         </div>
                         {currentResult.scientific_name && (
@@ -768,7 +711,7 @@ export const ScanPage: React.FC = () => {
                       </div>
 
                       {/* Confidence Meter */}
-                      <div className="space-y-2 bg-white/60 p-4 rounded-xl border border-emerald-950/5">
+                      <div className="space-y-1.5 sm:space-y-2 bg-white/75 sm:bg-white/60 p-3 sm:p-4 rounded-xl border border-emerald-950/10">
                         <div className="flex items-center justify-between text-xs font-semibold">
                           <span className="text-slate-700">Confidence</span>
                           <span className="font-mono text-agri-800 text-sm font-bold">
@@ -776,7 +719,7 @@ export const ScanPage: React.FC = () => {
                           </span>
                         </div>
 
-                        <div className="w-full h-3 bg-slate-200/80 rounded-full overflow-hidden relative">
+                        <div className="w-full h-2.5 sm:h-3 bg-slate-200/80 rounded-full overflow-hidden relative">
                           {/* Threshold Marker at 55% */}
                           <div
                             className="absolute top-0 bottom-0 w-0.5 bg-slate-600 z-10"
@@ -791,7 +734,7 @@ export const ScanPage: React.FC = () => {
                           />
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-slate-500 font-mono pt-1">
+                        <div className="flex items-center justify-between text-[11px] sm:text-xs text-slate-500 font-mono pt-0.5">
                           <span>0%</span>
                           <span className="text-slate-700 font-semibold">55% threshold</span>
                           <span>100%</span>
@@ -800,41 +743,58 @@ export const ScanPage: React.FC = () => {
 
                       {/* Calibration Advice Notice */}
                       {isUncertain && (
-                        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs sm:text-sm flex items-start space-x-2.5">
+                        <div className="p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start space-x-2">
                           <AlertTriangle className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
-                          <div className="space-y-1">
+                          <div className="space-y-0.5">
                             <div className="font-bold">Low-Confidence Reading (&lt; 55%)</div>
-                            <p className="text-xs sm:text-sm leading-relaxed text-amber-950">
-                              Hold your device steady, verify bright outdoor illumination, and frame the leaf in the center before deciding on treatment.
+                            <p className="text-xs leading-relaxed text-amber-950">
+                              Hold your device steady in bright light and center the leaf before deciding on treatment.
                             </p>
                           </div>
                         </div>
                       )}
 
-                      {/* Action Buttons: Save & View Remedies */}
-                      <div className="space-y-3 pt-2">
-                        <Button
-                          onClick={handleSaveDiagnosis}
-                          disabled={isSaving || isSaved}
-                          size="lg"
-                          className={`w-full font-bold shadow-md min-h-[48px] ${
-                            isSaved ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-agri-700 hover:bg-agri-800'
-                          }`}
-                        >
-                          {isSaving ? (
-                            <span>Logging Record...</span>
-                          ) : isSaved ? (
-                            <>
-                              <CheckCircle2 className="w-5 h-5 text-white" />
-                              <span>Diagnosis Logged to History</span>
-                            </>
-                          ) : (
-                            <>
-                              <Save className="w-5 h-5" />
-                              <span>Save Diagnosis to History</span>
-                            </>
-                          )}
-                        </Button>
+                      {/* Action Buttons: Side-by-side on mobile, stacked on desktop */}
+                      <div className="space-y-2 pt-1 sm:pt-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-1 gap-2 sm:gap-3">
+                          <Button
+                            onClick={handleSaveDiagnosis}
+                            disabled={isSaving || isSaved}
+                            size="lg"
+                            className={`w-full font-bold shadow-md min-h-[44px] sm:min-h-[48px] text-xs sm:text-sm px-3 sm:px-5 ${
+                              isSaved ? 'bg-emerald-700 hover:bg-emerald-800' : 'bg-agri-700 hover:bg-agri-800'
+                            }`}
+                          >
+                            {isSaving ? (
+                              <span>Saving...</span>
+                            ) : isSaved ? (
+                              <>
+                                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" />
+                                <span className="sm:hidden">Saved</span>
+                                <span className="hidden sm:inline">Diagnosis Logged to History</span>
+                              </>
+                            ) : (
+                              <>
+                                <Save className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="sm:hidden">Save to History</span>
+                                <span className="hidden sm:inline">Save Diagnosis to History</span>
+                              </>
+                            )}
+                          </Button>
+
+                          <Button
+                            onClick={() => setModalOpen(true)}
+                            variant="outline"
+                            className="w-full text-xs sm:text-sm font-semibold min-h-[44px] px-3 sm:px-4"
+                          >
+                            <Layers className="w-4 h-4 text-agri-700 shrink-0" />
+                            <span className="sm:hidden">Remedies</span>
+                            <span className="hidden sm:inline">
+                              {isHealthy ? 'View Foliage Maintenance Tips' : 'Inspect Organic & Chemical Remedies'}
+                            </span>
+                            <ExternalLink className="hidden sm:inline w-3.5 h-3.5 ml-1 text-slate-500 shrink-0" />
+                          </Button>
+                        </div>
 
                         {saveMessage && (
                           <p
@@ -845,32 +805,20 @@ export const ScanPage: React.FC = () => {
                             {saveMessage}
                           </p>
                         )}
-
-                        <Button
-                          onClick={() => setModalOpen(true)}
-                          variant="outline"
-                          className="w-full text-xs sm:text-sm font-semibold min-h-[44px]"
-                        >
-                          <Layers className="w-4 h-4 text-agri-700 shrink-0" />
-                          <span>
-                            {isHealthy ? 'View Foliage Maintenance Tips' : 'Inspect Organic & Chemical Remedies'}
-                          </span>
-                          <ExternalLink className="w-3.5 h-3.5 ml-1 text-slate-500 shrink-0" />
-                        </Button>
                       </div>
                     </>
                   )}
                 </div>
               ) : (
                 /* Empty Waiting State */
-                <div className="py-12 sm:py-16 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white/60 text-agri-700 flex items-center justify-center mx-auto border border-emerald-950/10 shadow-xs">
-                    <Camera className="w-6 h-6 animate-pulse" />
+                <div className="py-6 sm:py-16 text-center space-y-2.5 sm:space-y-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/80 text-agri-700 flex items-center justify-center mx-auto border border-emerald-950/10 shadow-xs">
+                    <Camera className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
                   </div>
                   <div className="space-y-1">
                     <div className="text-sm sm:text-base font-bold text-slate-900">Awaiting Foliage Specimen</div>
                     <p className="text-xs sm:text-sm text-slate-600 max-w-xs mx-auto leading-relaxed">
-                      Frame groundnut leaves inside the corner crosshairs and tap &quot;Freeze &amp; Diagnose&quot; to inspect.
+                      Frame groundnut leaves inside the crosshairs and tap &quot;Freeze &amp; Diagnose&quot; to inspect.
                     </p>
                   </div>
                 </div>

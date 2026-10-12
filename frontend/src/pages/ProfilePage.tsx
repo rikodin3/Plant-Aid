@@ -262,10 +262,10 @@ export const ProfilePage: React.FC = () => {
       return;
     }
 
-    if (newPassword.length < 6) {
+    if (newPassword.length < 8) {
       setPasswordFeedback({
         type: 'error',
-        message: 'New password must be at least 6 characters long.',
+        message: 'New password must be at least 8 characters long.',
       });
       return;
     }
@@ -308,19 +308,19 @@ export const ProfilePage: React.FC = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="min-h-screen bg-transparent pt-6 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
+      className="min-h-screen bg-transparent pt-4 pb-24 sm:py-8 sm:pb-12 px-4 sm:px-6 lg:px-8 font-sans"
     >
-      <div className="max-w-3xl mx-auto space-y-5 sm:space-y-6">
+      <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
         {/* 1. Minimal Profile Header */}
         <Card glass className="p-4 sm:p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
-            <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-agri-800 text-white flex items-center justify-center font-bold text-xl shadow-xs shrink-0 select-none">
+          <div className="flex items-center justify-between gap-3 sm:gap-5">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-2xl bg-agri-800 text-white flex items-center justify-center font-bold text-lg sm:text-xl shadow-xs shrink-0 select-none">
                 {displayName.charAt(0).toUpperCase()}
               </div>
-              <div className="min-w-0 space-y-1">
+              <div className="min-w-0 space-y-0.5 sm:space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight truncate">
+                  <h1 className="text-lg sm:text-2xl font-bold text-slate-900 tracking-tight truncate">
                     {displayName}
                   </h1>
                   {isAdmin && (
@@ -333,14 +333,14 @@ export const ProfilePage: React.FC = () => {
                     </Badge>
                   )}
                 </div>
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs sm:text-sm text-slate-600">
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs sm:text-sm text-slate-600">
                   <span className="truncate max-w-full">{displayEmail}</span>
                   {memberSinceText && (
                     <>
                       <span className="text-slate-300 hidden sm:inline" aria-hidden="true">
                         •
                       </span>
-                      <span className="text-xs sm:text-sm text-slate-500">
+                      <span className="hidden sm:inline text-xs sm:text-sm text-slate-500">
                         Member since {memberSinceText}
                       </span>
                     </>
@@ -351,28 +351,29 @@ export const ProfilePage: React.FC = () => {
 
             <Button
               variant="outline"
+              size="sm"
               onClick={handleLogout}
-              className="w-full sm:w-auto self-stretch sm:self-center shrink-0 min-h-[44px]"
+              className="shrink-0 min-h-[42px] px-3 sm:px-4"
             >
-              <LogOut className="w-4 h-4 text-slate-500" />
-              <span>Sign Out</span>
+              <LogOut className="w-4 h-4 text-slate-600" />
+              <span className="hidden sm:inline">Sign Out</span>
             </Button>
           </div>
         </Card>
 
         {/* 2. Diagnostic Activity & Field Data Export */}
-        <Card glass className="p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+        <Card glass className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="space-y-0.5 sm:space-y-1">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Diagnostic Activity &amp; Field Records
               </h2>
-              <p className="text-sm text-slate-600">
+              <p className="hidden sm:block text-sm text-slate-600">
                 Summary of your saved foliage diagnoses and downloadable CSV report.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+            <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
               <Button
                 variant="outline"
                 size="sm"
@@ -402,7 +403,7 @@ export const ProfilePage: React.FC = () => {
               ))}
             </div>
           ) : totalScans === 0 ? (
-            <div className="pt-5 border-t border-emerald-950/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="pt-4 sm:pt-5 border-t border-emerald-950/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-slate-800">
                   No field diagnoses saved yet
@@ -419,10 +420,10 @@ export const ProfilePage: React.FC = () => {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-5 gap-x-4 sm:gap-x-6 pt-5 border-t border-emerald-950/10">
-              <div className="space-y-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-4 gap-x-4 sm:gap-x-6 pt-4 sm:pt-5 border-t border-emerald-950/10">
+              <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-xs font-medium text-slate-600">Saved Scans</div>
-                <div className="text-2xl font-bold text-slate-900 font-mono tabular-nums">
+                <div className="text-xl sm:text-2xl font-bold text-slate-900 font-mono tabular-nums">
                   {totalScans}
                 </div>
                 {activityStats.lastScanDate && (
@@ -432,9 +433,9 @@ export const ProfilePage: React.FC = () => {
                 )}
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-xs font-medium text-slate-600">Healthy Canopy</div>
-                <div className="text-2xl font-bold text-emerald-700 font-mono tabular-nums">
+                <div className="text-xl sm:text-2xl font-bold text-emerald-700 font-mono tabular-nums">
                   {activityStats.healthyCount}
                 </div>
                 <div className="text-xs text-slate-500 font-mono tabular-nums">
@@ -442,9 +443,9 @@ export const ProfilePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-0.5 sm:space-y-1">
                 <div className="text-xs font-medium text-slate-600">Pathology Detected</div>
-                <div className="text-2xl font-bold text-amber-800 font-mono tabular-nums">
+                <div className="text-xl sm:text-2xl font-bold text-amber-800 font-mono tabular-nums">
                   {activityStats.diseasedCount}
                 </div>
                 <div className="text-xs text-slate-500 font-mono tabular-nums">
@@ -452,7 +453,7 @@ export const ProfilePage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-1 min-w-0">
+              <div className="space-y-0.5 sm:space-y-1 min-w-0">
                 <div className="text-xs font-medium text-slate-600">Most Frequent</div>
                 <div
                   className="text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2"
@@ -468,17 +469,17 @@ export const ProfilePage: React.FC = () => {
 
         {/* 3. Editable Personal Information */}
         <Card glass className="p-4 sm:p-6 md:p-8">
-          <form onSubmit={handleSaveProfile} className="space-y-5 sm:space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+          <form onSubmit={handleSaveProfile} className="space-y-4 sm:space-y-6">
+            <div className="space-y-0.5 sm:space-y-1">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Personal Information
               </h2>
-              <p className="text-sm text-slate-600">
+              <p className="text-xs sm:text-sm text-slate-600">
                 Manage your display name and phone number used for login and verification.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 pt-4 border-t border-emerald-950/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5 pt-3.5 sm:pt-4 border-t border-emerald-950/10">
               <div className="space-y-1.5">
                 <label
                   htmlFor="profile-full-name"
@@ -498,7 +499,7 @@ export const ProfilePage: React.FC = () => {
                     if (profileFeedback) setProfileFeedback(null);
                   }}
                   placeholder="Enter your name"
-                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/80 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/85 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
                 />
               </div>
 
@@ -519,7 +520,7 @@ export const ProfilePage: React.FC = () => {
                     if (profileFeedback) setProfileFeedback(null);
                   }}
                   placeholder="+1 (555) 000-0000"
-                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/80 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/85 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
                 />
               </div>
 
@@ -568,7 +569,7 @@ export const ProfilePage: React.FC = () => {
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div className="flex items-center justify-end gap-3 pt-1">
               {isProfileDirty && (
                 <Button
                   type="button"
@@ -595,17 +596,17 @@ export const ProfilePage: React.FC = () => {
 
         {/* 4. Password & Security Controls */}
         <Card glass className="p-4 sm:p-6 md:p-8">
-          <form onSubmit={handlePasswordSubmit} className="space-y-5 sm:space-y-6">
-            <div className="space-y-1">
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
+          <form onSubmit={handlePasswordSubmit} className="space-y-4 sm:space-y-6">
+            <div className="space-y-0.5 sm:space-y-1">
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Password &amp; Security
               </h2>
-              <p className="text-sm text-slate-600">
-                Update your account password. Choose a strong password with at least 6 characters.
+              <p className="text-xs sm:text-sm text-slate-600">
+                Update your account password. Choose a strong password with at least 8 characters.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 pt-4 border-t border-emerald-950/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5 pt-3.5 sm:pt-4 border-t border-emerald-950/10">
               <div className="sm:col-span-2 space-y-1.5">
                 <label
                   htmlFor="current-password"
@@ -624,7 +625,7 @@ export const ProfilePage: React.FC = () => {
                       if (passwordFeedback) setPasswordFeedback(null);
                     }}
                     placeholder="Enter current password"
-                    className="w-full h-11 pl-3.5 pr-11 rounded-xl border border-emerald-950/15 bg-white/80 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                    className="w-full h-11 pl-3.5 pr-11 rounded-xl border border-emerald-950/15 bg-white/85 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
                   />
                   <button
                     type="button"
@@ -653,14 +654,14 @@ export const ProfilePage: React.FC = () => {
                     id="new-password"
                     type={showNewPassword ? 'text' : 'password'}
                     autoComplete="new-password"
-                    minLength={6}
+                    minLength={8}
                     value={newPassword}
                     onChange={(e) => {
                       setNewPassword(e.target.value);
                       if (passwordFeedback) setPasswordFeedback(null);
                     }}
-                    placeholder="At least 6 characters"
-                    className="w-full h-11 pl-3.5 pr-11 rounded-xl border border-emerald-950/15 bg-white/80 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                    placeholder="At least 8 characters"
+                    className="w-full h-11 pl-3.5 pr-11 rounded-xl border border-emerald-950/15 bg-white/85 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
                   />
                   <button
                     type="button"
@@ -688,14 +689,14 @@ export const ProfilePage: React.FC = () => {
                   id="confirm-password"
                   type={showNewPassword ? 'text' : 'password'}
                   autoComplete="new-password"
-                  minLength={6}
+                  minLength={8}
                   value={confirmPassword}
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
                     if (passwordFeedback) setPasswordFeedback(null);
                   }}
                   placeholder="Re-enter new password"
-                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/80 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
+                  className="w-full h-11 px-3.5 rounded-xl border border-emerald-950/15 bg-white/85 text-slate-900 placeholder-slate-400 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-agri-600 focus:bg-white transition-all"
                 />
               </div>
             </div>

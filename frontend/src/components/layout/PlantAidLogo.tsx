@@ -89,7 +89,7 @@ export const PlantAidLogo: React.FC<PlantAidLogoProps> = ({
           <span className="font-cursive font-bold text-2xl text-[#b88a44] tracking-normal ml-0.5 select-none">Aid</span>
         </div>
         {showSubtitle && (
-          <span className="text-[10px] uppercase tracking-wider font-semibold text-slate-500 mt-1">
+          <span className="hidden sm:inline text-xs uppercase tracking-wider font-semibold text-slate-600 mt-0.5">
             Real-Time Plant Health
           </span>
         )}

@@ -103,37 +103,44 @@
   scrollbar-color: rgba(16, 185, 129, 0.25) transparent;
 }
 
-/* Ultra-Refined Frosted Glassmorphism matching reference */
+/* Ultra-Refined Frosted Glassmorphism with high-contrast mobile floor */
 .glass-frost {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.28) 100%);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(5, 46, 22, 0.1);
   box-shadow: 
-    0 20px 45px -15px rgba(20, 83, 45, 0.08),
+    0 10px 28px -12px rgba(20, 83, 45, 0.07),
     0 1px 3px 0 rgba(0, 0, 0, 0.02),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 2px 0 rgba(255, 255, 255, 0.25);
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .glass-frost-subtle {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.60) 0%, rgba(255, 255, 255, 0.22) 100%);
-  backdrop-filter: blur(20px) saturate(170%);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  border: 1px solid rgba(255, 255, 255, 0.80);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.72) 100%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(5, 46, 22, 0.08);
   box-shadow: 
-    0 10px 25px -10px rgba(20, 83, 45, 0.05),
+    0 6px 18px -8px rgba(20, 83, 45, 0.05),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-frost-pill {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.80) 0%, rgba(255, 255, 255, 0.45) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(5, 46, 22, 0.1);
   box-shadow: 
-    0 4px 16px -3px rgba(0, 0, 0, 0.04),
+    0 4px 12px -3px rgba(0, 0, 0, 0.04),
     inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 

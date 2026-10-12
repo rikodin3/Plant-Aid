@@ -281,14 +281,14 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-transparent">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-elevated">
+    <div className="min-h-[calc(100vh-3.5rem)] sm:min-h-[85vh] flex items-center justify-center py-4 sm:py-12 px-3.5 sm:px-6 lg:px-8 bg-transparent">
+      <div className="max-w-md w-full space-y-5 sm:space-y-8 bg-white sm:bg-white/90 md:backdrop-blur-md p-5 sm:p-10 rounded-2xl sm:rounded-3xl border border-emerald-950/10 shadow-elevated">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center justify-center group mb-2" title="Return to Home">
+        <div className="text-center space-y-1.5 sm:space-y-2">
+          <Link to="/" className="hidden sm:inline-flex items-center justify-center group mb-2" title="Return to Home">
             <PlantAidIcon size={48} className="transition-transform group-hover:scale-105 shadow-sm rounded-xl" />
           </Link>
-          <h2 className="text-2xl font-normal text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold sm:font-normal text-slate-900 tracking-tight">
             {challenge
               ? 'Two-Factor Authentication'
               : mode === 'forgot'
@@ -296,8 +296,8 @@ export const AuthPage: React.FC = () => {
               : mode === 'login'
               ? 'Sign In to Plant-Aid'
               : 'Create Farm Account'}
-          </h2>
-          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+          </h1>
+          <p className="text-xs text-slate-600 max-w-xs mx-auto">
             {challenge
               ? 'Enter the 6-digit security code dispatched to your registered contact.'
               : mode === 'forgot'
@@ -325,11 +325,11 @@ export const AuthPage: React.FC = () => {
 
         {/* 2FA Challenge View */}
         {challenge ? (
-          <form onSubmit={handleVerify2FA} className="space-y-6" autoComplete="off">
-            <div className="p-4 rounded-2xl bg-agri-50/60 border border-agri-200/80 text-center space-y-2">
-              <KeyRound className="w-8 h-8 text-agri-700 mx-auto" />
+          <form onSubmit={handleVerify2FA} className="space-y-5 sm:space-y-6" autoComplete="off">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-agri-50/60 border border-agri-200/80 text-center space-y-1.5">
+              <KeyRound className="w-7 h-7 sm:w-8 sm:h-8 text-agri-700 mx-auto" />
               <div className="text-xs font-semibold text-agri-900">Active Challenge Session</div>
-              <p className="text-[11px] text-agri-700">
+              <p className="text-xs text-agri-700">
                 Session expires in{' '}
                 <span className="font-mono font-bold text-agri-900">{formatTimer(secondsRemaining)}</span>
               </p>
@@ -360,13 +360,13 @@ export const AuthPage: React.FC = () => {
                 data-form-type="other"
                 disabled={loading || secondsRemaining === 0}
               />
-              <div className="flex items-center justify-between text-xs text-slate-500 mt-2 px-0.5">
+              <div className="flex items-center justify-between text-xs text-slate-600 mt-2 px-0.5">
                 <span>Didn't receive the email?</span>
                 <button
                   type="button"
                   onClick={handleResendOTP}
                   disabled={resendCooldown > 0 || resendLoading}
-                  className="font-semibold text-agri-700 hover:text-agri-900 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors"
+                  className="py-1 font-semibold text-agri-700 hover:text-agri-900 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors"
                 >
                   {resendLoading
                     ? 'Sending...'
@@ -399,7 +399,7 @@ export const AuthPage: React.FC = () => {
                 setOtpCode('');
                 setErrorMsg(null);
               }}
-              className="w-full text-center text-xs text-slate-500 hover:text-slate-800 font-medium"
+              className="w-full py-2 text-center text-xs text-slate-600 hover:text-slate-900 font-medium touch-target"
             >
               ← Cancel and return to sign in
             </button>
@@ -408,7 +408,7 @@ export const AuthPage: React.FC = () => {
           /* Forgot Password Flow */
           forgotStep === 'email' ? (
             <form onSubmit={handleForgotSubmit} className="space-y-4">
-              <p className="text-xs text-slate-500 leading-snug">
+              <p className="text-xs text-slate-600 leading-snug">
                 Enter the email address linked to your account and we will dispatch a 6-digit
                 reset code.
               </p>
@@ -417,7 +417,7 @@ export const AuthPage: React.FC = () => {
                   Registered Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     id="forgot-email"
                     type="email"
@@ -425,7 +425,7 @@ export const AuthPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="agronomist@farm.org"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     autoFocus
                   />
                 </div>
@@ -453,17 +453,17 @@ export const AuthPage: React.FC = () => {
                   setErrorMsg(null);
                   setSuccessMsg(null);
                 }}
-                className="w-full text-center text-xs text-slate-500 hover:text-slate-800 font-medium"
+                className="w-full py-2 text-center text-xs text-slate-600 hover:text-slate-900 font-medium touch-target"
               >
                 ← Back to sign in
               </button>
             </form>
           ) : (
-            <form onSubmit={handleResetPasswordSubmit} className="space-y-5" autoComplete="off">
-              <div className="p-4 rounded-2xl bg-agri-50/60 border border-agri-200/80 text-center space-y-2">
-                <KeyRound className="w-8 h-8 text-agri-700 mx-auto" />
+            <form onSubmit={handleResetPasswordSubmit} className="space-y-4 sm:space-y-5" autoComplete="off">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-agri-50/60 border border-agri-200/80 text-center space-y-1.5">
+                <KeyRound className="w-7 h-7 sm:w-8 sm:h-8 text-agri-700 mx-auto" />
                 <div className="text-xs font-semibold text-agri-900">Reset Code Dispatched</div>
-                <p className="text-[11px] text-agri-700">
+                <p className="text-xs text-agri-700">
                   Enter the 6-digit code sent to{' '}
                   <span className="font-semibold">{email.trim()}</span>
                 </p>
@@ -497,7 +497,7 @@ export const AuthPage: React.FC = () => {
                   New Password
                 </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     id="new-password"
                     type="password"
@@ -505,7 +505,7 @@ export const AuthPage: React.FC = () => {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Min 8 characters"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     autoComplete="new-password"
                     disabled={loading}
                   />
@@ -535,7 +535,7 @@ export const AuthPage: React.FC = () => {
                   setNewPassword('');
                   setErrorMsg(null);
                 }}
-                className="w-full text-center text-xs text-slate-500 hover:text-slate-800 font-medium"
+                className="w-full py-2 text-center text-xs text-slate-600 hover:text-slate-900 font-medium touch-target"
               >
                 ← Use a different email address
               </button>
@@ -543,7 +543,7 @@ export const AuthPage: React.FC = () => {
           )
         ) : (
           /* Normal Login / Register Tabs */
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl">
               <button
                 type="button"
@@ -551,8 +551,8 @@ export const AuthPage: React.FC = () => {
                   setMode('login');
                   setErrorMsg(null);
                 }}
-                className={`py-2 text-xs font-bold rounded-lg transition-all ${
-                  mode === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'
+                className={`py-2.5 min-h-[40px] text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  mode === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 Sign In
@@ -563,8 +563,8 @@ export const AuthPage: React.FC = () => {
                   setMode('register');
                   setErrorMsg(null);
                 }}
-                className={`py-2 text-xs font-bold rounded-lg transition-all ${
-                  mode === 'register' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900'
+                className={`py-2.5 min-h-[40px] text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  mode === 'register' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 Register
@@ -573,20 +573,20 @@ export const AuthPage: React.FC = () => {
 
             {mode === 'login' ? (
               /* Login Form */
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
+              <form onSubmit={handleLoginSubmit} className="space-y-3.5 sm:space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
                     Email Address or Phone Number
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       required
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
                       placeholder="farmer@plant-aid.org"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                   </div>
                 </div>
@@ -594,21 +594,21 @@ export const AuthPage: React.FC = () => {
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                       title={showPassword ? 'Hide password' : 'Show password'}
-                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 transition-colors touch-target cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -619,7 +619,7 @@ export const AuthPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={enterForgotMode}
-                    className="text-xs font-semibold text-agri-700 hover:text-agri-900 transition-colors"
+                    className="py-1.5 px-1 text-xs font-semibold text-agri-700 hover:text-agri-900 transition-colors cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -628,7 +628,7 @@ export const AuthPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-sm shadow-md transition-colors disabled:opacity-50 touch-target flex items-center justify-center space-x-2"
+                  className="w-full mt-1 py-3 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-sm shadow-md transition-colors disabled:opacity-50 touch-target flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   {loading ? (
                     <span>Authenticating...</span>
@@ -642,18 +642,18 @@ export const AuthPage: React.FC = () => {
               </form>
             ) : (
               /* Register Form */
-              <form onSubmit={handleRegisterSubmit} className="space-y-4">
+              <form onSubmit={handleRegisterSubmit} className="space-y-3.5 sm:space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
                   <div className="relative">
-                    <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="User Name"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                   </div>
                 </div>
@@ -661,30 +661,30 @@ export const AuthPage: React.FC = () => {
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="agronomist@farm.org"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Phone Number <span className="text-slate-400 font-normal">(Optional for SMS 2FA)</span>
+                    Phone Number <span className="text-slate-500 font-normal">(Optional for SMS 2FA)</span>
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+91 9876543210"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                   </div>
                 </div>
@@ -692,21 +692,21 @@ export const AuthPage: React.FC = () => {
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Min 8 characters"
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
+                      className="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
                       aria-label={showPassword ? 'Hide password' : 'Show password'}
                       title={showPassword ? 'Hide password' : 'Show password'}
-                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 transition-colors touch-target cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -716,7 +716,7 @@ export const AuthPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-2 py-3 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-sm shadow-md transition-colors disabled:opacity-50 touch-target flex items-center justify-center space-x-2"
+                  className="w-full mt-1 py-3 px-4 rounded-xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-sm shadow-md transition-colors disabled:opacity-50 touch-target flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   {loading ? (
                     <span>Registering Account...</span>

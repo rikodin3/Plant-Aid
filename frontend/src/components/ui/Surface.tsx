@@ -14,9 +14,9 @@ export const Surface = React.forwardRef<HTMLDivElement, SurfaceProps>(
         className={cn(
           'rounded-2xl transition-all duration-200',
           glass
-            ? 'bg-white/70 backdrop-blur-md border border-white/80 shadow-[0_4px_20px_-2px_rgba(20,83,45,0.05),0_2px_6px_-1px_rgba(20,83,45,0.03)]'
+            ? 'bg-white sm:bg-white/88 md:backdrop-blur-md border border-emerald-950/10 shadow-[0_2px_10px_-2px_rgba(20,83,45,0.05)]'
             : 'bg-white border border-slate-200/80 shadow-xs',
-          elevation === 'elevated' && 'shadow-[0_12px_32px_-4px_rgba(20,83,45,0.08)]',
+          elevation === 'elevated' && 'shadow-[0_10px_24px_-4px_rgba(20,83,45,0.08)]',
           elevation === 'flat' && 'shadow-none border-transparent',
           className
         )}
