@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" fill="none">
-  <!-- Base Squircle in deep botanical evergreen -->
-  <rect width="44" height="44" rx="12" fill="#1b4332" />
-  <rect x="1.5" y="1.5" width="41" height="41" rx="10.5" stroke="rgba(255,255,255,0.18)" stroke-width="1" fill="none" />
+  <!-- Base Squircle in #0F5757 -->
+  <rect width="44" height="44" rx="12" fill="#0F5757" />
+  <rect x="1.5" y="1.5" width="41" height="41" rx="10.5" stroke="rgba(217,242,242,0.22)" stroke-width="1" fill="none" />
 
   <!-- First-Aid Cross in soft ivory -->
   <rect x="7" y="16" width="30" height="12" rx="3.5" fill="#fcfdfa" />
   <rect x="16" y="7" width="12" height="30" rx="3.5" fill="#fcfdfa" />
 
   <!-- Living Plant Sprout in center of cross -->
-  <path d="M22 22V30" stroke="#1b4332" stroke-width="2" stroke-linecap="round" />
-  <path d="M22 24C18 24 14.5 21 15 17C17 17 21 19.5 22 24Z" fill="#2d6a4f" />
-  <path d="M22 25C22 20 25.5 16.5 28 17C28 20 25 24 22 25Z" fill="#40916c" />
-  <circle cx="28.5" cy="14.5" r="2.2" fill="#d97706" />
+  <path d="M22 22V30" stroke="#0F5757" stroke-width="2" stroke-linecap="round" />
+  <path d="M22 24C18 24 14.5 21 15 17C17 17 21 19.5 22 24Z" fill="#2D8686" />
+  <path d="M22 25C22 20 25.5 16.5 28 17C28 20 25 24 22 25Z" fill="#75BDBD" />
+  <circle cx="28.5" cy="14.5" r="2.2" fill="#A6D9D9" />
 </svg>

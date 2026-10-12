@@ -27,15 +27,15 @@ export const PlantAidIcon: React.FC<PlantAidIconProps> = ({
       height={pixelSize}
       aria-hidden="true"
     >
-      {/* Squircle base in deep botanical evergreen */}
-      <rect width="44" height="44" rx="12" fill="#1b4332" />
+      {/* Squircle base in #0F5757 */}
+      <rect width="44" height="44" rx="12" fill="#0F5757" />
       <rect
         x="1.5"
         y="1.5"
         width="41"
         height="41"
         rx="10.5"
-        stroke="rgba(255,255,255,0.15)"
+        stroke="rgba(217,242,242,0.22)"
         strokeWidth="1"
         fill="none"
       />
@@ -48,22 +48,22 @@ export const PlantAidIcon: React.FC<PlantAidIconProps> = ({
       {/* Slender stem rooted in lower cross arm */}
       <path
         d="M22 22V30"
-        stroke="#1b4332"
+        stroke="#0F5757"
         strokeWidth="2"
         strokeLinecap="round"
       />
-      {/* Left leaf in deep botanical forest green */}
+      {/* Left leaf in #2D8686 */}
       <path
         d="M22 24C18 24 14.5 21 15 17C17 17 21 19.5 22 24Z"
-        fill="#2d6a4f"
+        fill="#2D8686"
       />
-      {/* Right leaf in vibrant spring growth green */}
+      {/* Right leaf in #75BDBD */}
       <path
         d="M22 25C22 20 25.5 16.5 28 17C28 20 25 24 22 25Z"
-        fill="#40916c"
+        fill="#75BDBD"
       />
-      {/* Vitality / Sun / Care dot */}
-      <circle cx="28.5" cy="14.5" r="2.2" fill="#d97706" />
+      {/* Vitality / Sprout dot in #A6D9D9 */}
+      <circle cx="28.5" cy="14.5" r="2.2" fill="#A6D9D9" />
     </svg>
   );
 };
@@ -84,12 +84,12 @@ export const PlantAidLogo: React.FC<PlantAidLogoProps> = ({
       <PlantAidIcon size={size} className="shrink-0 transition-transform group-hover:scale-105" />
       <div className="flex flex-col justify-center">
         <div className="flex items-baseline leading-none tracking-tight">
-          <span className="font-bold text-xl text-slate-900 font-gilroy">Plant</span>
-          <span className="text-amber-600 font-bold text-lg mx-0.5">·</span>
-          <span className="font-cursive font-bold text-2xl text-[#b88a44] tracking-normal ml-0.5 select-none">Aid</span>
+          <span className="font-bold text-xl text-[#0F5757] font-gilroy">GroundNut</span>
+          <span className="text-[#75BDBD] font-bold text-lg mx-0.5">·</span>
+          <span className="font-cursive font-bold text-2xl text-[#2D8686] tracking-normal ml-0.5 select-none">Aid</span>
         </div>
         {showSubtitle && (
-          <span className="hidden sm:inline text-xs uppercase tracking-wider font-semibold text-slate-600 mt-0.5">
+          <span className="hidden sm:inline text-xs uppercase tracking-wider font-semibold text-[#0F5757]/75 mt-0.5">
             Real-Time Plant Health
           </span>
         )}

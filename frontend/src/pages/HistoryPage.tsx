@@ -232,7 +232,7 @@ export const HistoryPage: React.FC = () => {
                 return (
                   <div
                     key={`mobile-${item.id}`}
-                    className="flex items-center gap-3 p-3 rounded-2xl bg-white/92 border border-emerald-950/10 shadow-xs"
+                    className="glass-frost flex items-center gap-3 p-3 rounded-2xl"
                   >
                     <img
                       src={imageSrc}

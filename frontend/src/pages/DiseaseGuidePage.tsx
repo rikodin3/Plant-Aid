@@ -553,7 +553,7 @@ export const DiseaseGuidePage: React.FC = () => {
                         {disease.chemicalRemedies.map((r, idx) => (
                           <div key={idx} className="p-3.5 rounded-xl bg-white/80 border border-emerald-950/10 space-y-1.5">
                             <div className="text-sm font-bold text-slate-900 leading-snug">{r.name}</div>
-                            <div className="text-xs text-agri-900 font-bold bg-[#edf4ed] border border-emerald-950/10 px-2.5 py-1 rounded-lg inline-block">
+                            <div className="text-xs text-agri-900 font-bold bg-agri-100/80 border border-emerald-950/10 px-2.5 py-1 rounded-lg inline-block">
                               Dosage: {r.dosage}
                             </div>
                             <p className="text-sm text-slate-600 leading-relaxed">{r.instruction}</p>

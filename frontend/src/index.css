@@ -75,7 +75,7 @@
     font-weight: 500;
   }
   body {
-    @apply bg-[#edf4ed] text-slate-900 font-sans antialiased min-h-screen selection:bg-agri-200 selection:text-agri-950;
+    @apply bg-[#e8f6f6] text-slate-900 font-sans antialiased min-h-screen selection:bg-agri-200 selection:text-agri-950;
   }
 }
 
@@ -92,46 +92,46 @@
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(16, 185, 129, 0.25);
+  background-color: rgba(45, 134, 134, 0.3);
   border-radius: 9999px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(16, 185, 129, 0.5);
+  background-color: rgba(15, 87, 87, 0.55);
 }
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(16, 185, 129, 0.25) transparent;
+  scrollbar-color: rgba(45, 134, 134, 0.3) transparent;
 }
 
-/* Ultra-Refined Frosted Glassmorphism with high-contrast mobile floor */
+/* Ultra-Refined Frosted Glassmorphism */
 .glass-frost {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(217, 242, 242, 0.36) 100%);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(5, 46, 22, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.82);
   box-shadow: 
-    0 10px 28px -12px rgba(20, 83, 45, 0.07),
-    0 1px 3px 0 rgba(0, 0, 0, 0.02),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+    0 20px 40px -15px rgba(15, 87, 87, 0.1),
+    0 2px 6px 0 rgba(15, 87, 87, 0.04),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
 }
 
 .glass-frost-subtle {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.72) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.52) 0%, rgba(217, 242, 242, 0.28) 100%);
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
-  border: 1px solid rgba(5, 46, 22, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: 
-    0 6px 18px -8px rgba(20, 83, 45, 0.05),
+    0 10px 24px -10px rgba(15, 87, 87, 0.07),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .glass-frost-pill {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(5, 46, 22, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(217, 242, 242, 0.44) 100%);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   box-shadow: 
-    0 4px 12px -3px rgba(0, 0, 0, 0.04),
+    0 4px 12px -3px rgba(15, 87, 87, 0.06),
     inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
 }
 

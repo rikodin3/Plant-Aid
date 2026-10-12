@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Plant-Aid API"
+    APP_NAME: str = "GroundNut-Aid API"
     APP_DEBUG: bool = True
 
     # Security / JWT
@@ -44,8 +44,8 @@ class Settings(BaseSettings):
     SMTP_USERNAME: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_USE_STARTTLS: bool = True
-    SMTP_FROM_EMAIL: str = "noreply@plant-aid.org"
-    SMTP_FROM_NAME: str = "Plant-Aid Security"
+    SMTP_FROM_EMAIL: str = "noreply@groundnut-aid.org"
+    SMTP_FROM_NAME: str = "GroundNut-Aid Security"
     SMTP_TIMEOUT_SECONDS: int = 10
 
     # Resend Configuration

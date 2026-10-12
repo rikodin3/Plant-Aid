@@ -49,22 +49,22 @@ export const LandingPage: React.FC = () => {
       >
         {/* Main Glassmorphic Hero Container */}
         <motion.div variants={itemVariants} className="relative">
-          {/* Ambient 3D Glow Blobs behind the hero — desktop only */}
-          <div className="hidden sm:block absolute -top-16 -left-16 w-80 h-80 bg-gradient-to-br from-emerald-400/25 to-emerald-300/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="hidden sm:block absolute -bottom-16 -right-16 w-80 h-80 bg-gradient-to-br from-amber-400/20 to-emerald-300/15 rounded-full blur-3xl pointer-events-none" />
+          {/* Ambient 3D Glow Blobs behind the hero */}
+          <div className="absolute -top-12 -left-12 sm:-top-16 sm:-left-16 w-64 sm:w-80 h-64 sm:h-80 bg-gradient-to-br from-[#75BDBD]/40 to-[#A6D9D9]/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-12 -right-12 sm:-bottom-16 sm:-right-16 w-64 sm:w-80 h-64 sm:h-80 bg-gradient-to-br from-[#2D8686]/25 to-[#75BDBD]/30 rounded-full blur-3xl pointer-events-none" />
 
           <div className="glass-frost p-5 sm:p-12 lg:p-16 text-center space-y-4 sm:space-y-8 relative overflow-hidden rounded-2xl sm:rounded-[32px]">
             {/* Headline & Description */}
             <div className="space-y-2.5 sm:space-y-4 max-w-3xl mx-auto">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl inline-flex items-baseline justify-center leading-none tracking-tight">
-                <span className="font-bold text-slate-900 font-gilroy">Plant</span>
-                <span className="text-amber-600 font-bold text-[0.9em] mx-1 sm:mx-1.5">·</span>
-                <span className="font-cursive font-bold text-[1.2em] text-[#b88a44] tracking-normal ml-0.5 select-none">
+              <h1 className="text-3xl sm:text-6xl lg:text-7xl inline-flex items-baseline justify-center leading-none tracking-tight">
+                <span className="font-bold text-[#0F5757] font-gilroy">GroundNut</span>
+                <span className="text-[#75BDBD] font-bold text-[0.9em] mx-1 sm:mx-1.5">·</span>
+                <span className="font-cursive font-bold text-[1.2em] text-[#2D8686] tracking-normal ml-0.5 select-none">
                   Aid
                 </span>
               </h1>
               <p className="text-sm sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed">
-                Diagnose groundnut crop diseases in real-time with high-accuracy and reliable remedies
+                Detect groundnut crop diseases in real-time with high-accuracy and reliable remedies
               </p>
             </div>
 
@@ -96,7 +96,7 @@ export const LandingPage: React.FC = () => {
             {/* Card 1: Instant Camera Scanner */}
             <Link
               to={isAuthenticated ? '/scan' : '/auth?mode=register'}
-              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(20,83,45,0.12),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(15,87,87,0.14),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
             >
               <div className="flex items-center justify-between shrink-0">
                 <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-100/90 border border-emerald-200/80 flex items-center justify-center group-hover:scale-105 transition-transform">
@@ -122,19 +122,19 @@ export const LandingPage: React.FC = () => {
             {/* Card 2: Targeted Remedies */}
             <Link
               to="/guide"
-              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(20,83,45,0.12),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(15,87,87,0.14),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
             >
               <div className="flex items-center justify-between shrink-0">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-100/90 border border-amber-200/80 flex items-center justify-center group-hover:scale-105 transition-transform">
-                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-amber-800" />
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-100/90 border border-emerald-200/80 flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-800" />
                 </div>
-                <div className="hidden md:flex w-9 h-9 rounded-xl glass-frost-pill items-center justify-center text-slate-600 group-hover:text-amber-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
+                <div className="hidden md:flex w-9 h-9 rounded-xl glass-frost-pill items-center justify-center text-slate-600 group-hover:text-emerald-700 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
               </div>
 
               <div className="flex-1 min-w-0">
-                <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight group-hover:text-amber-950 transition-colors">
+                <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight group-hover:text-emerald-950 transition-colors">
                   Targeted Remedies
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 mt-0.5 sm:mt-2 leading-relaxed line-clamp-2 md:line-clamp-none">
@@ -142,13 +142,13 @@ export const LandingPage: React.FC = () => {
                 </p>
               </div>
 
-              <ArrowUpRight className="md:hidden w-4 h-4 text-slate-400 group-hover:text-amber-700 shrink-0" />
+              <ArrowUpRight className="md:hidden w-4 h-4 text-slate-400 group-hover:text-emerald-700 shrink-0" />
             </Link>
 
             {/* Card 3: Diagnosis History */}
             <Link
               to={isAuthenticated ? '/history' : '/auth?mode=register'}
-              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(20,83,45,0.12),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
+              className="glass-frost rounded-2xl sm:rounded-[28px] p-3.5 sm:p-7 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-0 md:space-y-4 hover:shadow-[0_25px_50px_-12px_rgba(15,87,87,0.14),inset_0_1px_1px_rgba(255,255,255,1)] md:hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer relative overflow-hidden"
             >
               <div className="flex items-center justify-between shrink-0">
                 <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-100/90 border border-emerald-200/80 flex items-center justify-center group-hover:scale-105 transition-transform">

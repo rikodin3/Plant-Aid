@@ -70,8 +70,8 @@ export const DashboardPage: React.FC = () => {
         {/* Main Glassmorphic Hero Container */}
         <div className="relative">
           {/* Ambient 3D Glow Blobs behind the hero — desktop only */}
-          <div className="hidden sm:block absolute -top-16 -left-16 w-80 h-80 bg-gradient-to-br from-emerald-400/25 to-teal-300/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="hidden sm:block absolute -bottom-16 -right-16 w-80 h-80 bg-gradient-to-br from-amber-400/20 to-emerald-300/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="hidden sm:block absolute -top-16 -left-16 w-80 h-80 bg-gradient-to-br from-[#75BDBD]/35 to-[#A6D9D9]/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="hidden sm:block absolute -bottom-16 -right-16 w-80 h-80 bg-gradient-to-br from-[#2D8686]/25 to-[#75BDBD]/30 rounded-full blur-3xl pointer-events-none" />
 
           <div className="glass-frost p-4 sm:p-10 lg:p-14 text-center space-y-3.5 sm:space-y-7 relative overflow-hidden rounded-2xl sm:rounded-[32px]">
             {/* Headline & Description — Concise operational greeting on mobile, full title on sm+ */}
@@ -82,7 +82,7 @@ export const DashboardPage: React.FC = () => {
               <h1 className="text-xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-slate-900 leading-[1.15]">
                 <span className="sm:hidden">Groundnut Disease Scanner &amp; Advisory</span>
                 <span className="hidden sm:inline">
-                  Plant-Aid: Real-Time Plant Disease Identification &amp; Treatment Recommendation System
+                  GroundNut-Aid: Real-Time Plant Disease Identification &amp; Treatment Recommendation System
                 </span>
               </h1>
             </div>

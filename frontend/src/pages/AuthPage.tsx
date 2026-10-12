@@ -282,7 +282,7 @@ export const AuthPage: React.FC = () => {
 
   return (
     <div className="min-h-[calc(100vh-3.5rem)] sm:min-h-[85vh] flex items-center justify-center py-4 sm:py-12 px-3.5 sm:px-6 lg:px-8 bg-transparent">
-      <div className="max-w-md w-full space-y-5 sm:space-y-8 bg-white sm:bg-white/90 md:backdrop-blur-md p-5 sm:p-10 rounded-2xl sm:rounded-3xl border border-emerald-950/10 shadow-elevated">
+      <div className="glass-frost max-w-md w-full space-y-5 sm:space-y-8 p-5 sm:p-10 rounded-2xl sm:rounded-3xl">
         {/* Header */}
         <div className="text-center space-y-1.5 sm:space-y-2">
           <Link to="/" className="hidden sm:inline-flex items-center justify-center group mb-2" title="Return to Home">
@@ -294,7 +294,7 @@ export const AuthPage: React.FC = () => {
               : mode === 'forgot'
               ? 'Reset Your Password'
               : mode === 'login'
-              ? 'Sign In to Plant-Aid'
+              ? 'Sign In to GroundNut-Aid'
               : 'Create Farm Account'}
           </h1>
           <p className="text-xs text-slate-600 max-w-xs mx-auto">
@@ -585,7 +585,7 @@ export const AuthPage: React.FC = () => {
                       required
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
-                      placeholder="farmer@plant-aid.org"
+                      placeholder="farmer@groundnut-aid.org"
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-agri-500 focus:border-agri-500"
                     />
                   </div>

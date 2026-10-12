@@ -1,13 +1,13 @@
-# Plant-Aid
+# GroundNut-Aid
 
 **Real-Time AI Plant Disease Identification & Agronomic Treatment Companion**
 
-[![Live App](https://img.shields.io/badge/Live_App-plant--aid--seven.vercel.app-16a34a?style=for-the-badge&logo=vercel)](https://plant-aid-seven.vercel.app/)
+[![Live App](https://img.shields.io/badge/Live_App-plant--aid--seven.vercel.app-0F5757?style=for-the-badge&logo=vercel)](https://plant-aid-seven.vercel.app/)
 [![Backend API](https://img.shields.io/badge/AI_Engine-Hugging_Face_Spaces-ffcc00?style=for-the-badge&logo=huggingface&logoColor=black)](https://rikodon72-plant-aid-api.hf.space)
 
-**Plant-Aid** is an AI-powered web application that helps farmers, agronomists, agricultural extension workers, and researchers identify crop diseases in seconds and take immediate, science-backed action. 
+**GroundNut-Aid** is an AI-powered web application that helps farmers, agronomists, agricultural extension workers, and researchers identify crop diseases in seconds and take immediate, science-backed action. 
 
-Using either your smartphone/laptop camera or a saved photo, Plant-Aid pinpoints leaf lesions, diagnoses the condition with calibrated confidence, and provides practical **Organic**, **Chemical**, and **Cultural** treatment plans tailored for the field.
+Using either your smartphone/laptop camera or a saved photo, GroundNut-Aid pinpoints leaf lesions, diagnoses the condition with calibrated confidence, and provides practical **Organic**, **Chemical**, and **Cultural** treatment plans tailored for the field.
 
 ---
 
@@ -20,18 +20,18 @@ Using either your smartphone/laptop camera or a saved photo, Plant-Aid pinpoints
 
 ### Demo Preview
 
-![Plant-Aid Demo Preview](Docs/assets/demo.gif)
+![GroundNut-Aid Demo Preview](Docs/assets/demo.gif)
 
 ---
 
-## What You Can Do with Plant-Aid
+## What You Can Do with GroundNut-Aid
 
 ### 1. Live Camera Scanning & Photo Upload
 * **Live Camera Stream**: Point your camera at a plant leaf for continuous real-time analysis (automatically sampling frames every 1.5 seconds without overlapping requests).
 * **Photo Upload**: Prefer to snap a photo first? Upload any `JPEG` or `PNG` leaf image from your device for instant analysis.
 
 ### 2. Visual Lesion Pinpointing & Heatmaps
-* **Color-Coded Bounding Boxes**: Plant-Aid visually frames the detected leaf on screen using clear status colors:
+* **Color-Coded Bounding Boxes**: GroundNut-Aid visually frames the detected leaf on screen using clear status colors:
   * **Emerald**: Healthy foliage detected
   * **Crimson**: Confirmed disease lesion detected
   * **Amber**: Low confidence or ambiguous frame—reposition the camera for a clearer view
@@ -39,7 +39,7 @@ Using either your smartphone/laptop camera or a saved photo, Plant-Aid pinpoints
 
 ### 3. Honest Confidence Calibration (No False Alarms)
 * Generic plant apps often guess a random disease even when pointed at soil, a desk, or a blurry leaf.
-* Plant-Aid first verifies that plant foliage is actually in frame, and then applies a **55% confidence threshold ($\tau = 0.55$)**—explicitly warning you when a scan is uncertain so you never apply unnecessary treatments based on a weak guess.
+* GroundNut-Aid first verifies that plant foliage is actually in frame, and then applies a **55% confidence threshold ($\tau = 0.55$)**—explicitly warning you when a scan is uncertain so you never apply unnecessary treatments based on a weak guess.
 
 ### 4. Actionable 3-Way Treatment Plans
 Every diagnosed condition comes with a structured treatment guide broken down into three practical approaches:
@@ -87,7 +87,7 @@ Every diagnosed condition comes with a structured treatment guide broken down in
 
 ## Supported Crop Diseases
 
-Plant-Aid's primary deep vision model is trained and calibrated on **6 Groundnut (*Arachis hypogaea*) foliage conditions**:
+GroundNut-Aid's primary deep vision model is trained and calibrated on **6 Groundnut (*Arachis hypogaea*) foliage conditions**:
 
 | Condition | Scientific / Causal Agent | Type | Severity | Key Visual Symptoms |
 |---|---|---|---|---|
@@ -104,7 +104,7 @@ Plant-Aid's primary deep vision model is trained and calibrated on **6 Groundnut
 
 ## How It Works Under the Hood
 
-Plant-Aid is designed to deliver fast, explainable diagnoses without requiring expensive GPU hardware in the field:
+GroundNut-Aid is designed to deliver fast, explainable diagnoses without requiring expensive GPU hardware in the field:
 
 1. **Stage 1 — Foliage Isolation (OpenCV HSV Masking)**:
    When an image arrives, the vision pipeline converts it into the HSV color space to isolate green/chlorotic plant tissue from background soil, twigs, or hands. If no plant foliage is present, it immediately lets the user know rather than forcing a false classification.
@@ -119,9 +119,9 @@ Plant-Aid is designed to deliver fast, explainable diagnoses without requiring e
 
 ---
 
-## Running Plant-Aid Locally (Optional)
+## Running GroundNut-Aid Locally (Optional)
 
-If you want to run your own copy of Plant-Aid on your machine:
+If you want to run your own copy of GroundNut-Aid on your machine:
 
 ### Option A: One-Command Docker Launch
 ```bash

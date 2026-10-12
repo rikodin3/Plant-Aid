@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#edf4ed]/90 backdrop-blur-md border-b border-slate-300/40">
+      <header className="sticky top-0 z-40 bg-[#e8f6f6]/65 backdrop-blur-xl border-b border-white/70 shadow-[0_4px_20px_-4px_rgba(15,87,87,0.05)]">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-3">
             {/* Brand Logo */}
@@ -131,12 +131,12 @@ export const Navbar: React.FC = () => {
 
         {/* Mobile Secondary Drawer (Admin & Sign Out when authenticated) */}
         {mobileMenuOpen && isAuthenticated && (
-          <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-2 shadow-lg">
+          <div className="md:hidden border-t border-white/70 bg-white/80 backdrop-blur-xl px-4 py-3 space-y-2 shadow-lg">
             {isAdmin && (
               <Link
                 to="/admin"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-white/70"
               >
                 <ShieldCheck className="w-4 h-4 text-agri-700" />
                 <span>Admin Console</span>
@@ -160,7 +160,7 @@ export const Navbar: React.FC = () => {
       {location.pathname !== '/auth' && (
         <nav
           aria-label="Mobile bottom navigation"
-          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-lg border-t border-emerald-950/10 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_16px_rgba(5,46,22,0.06)]"
+          className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/70 backdrop-blur-xl border-t border-white/80 px-2 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_rgba(15,87,87,0.08)]"
         >
           <div className={`grid ${isAuthenticated ? 'grid-cols-5' : 'grid-cols-3'} items-center h-14 max-w-md mx-auto`}>
             <Link

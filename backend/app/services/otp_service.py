@@ -10,8 +10,8 @@ from app.config import settings
 logger = logging.getLogger("plant_aid.otp_service")
 logging.basicConfig(level=logging.INFO)
 
-OTP_SUBJECT = "Your Plant-Aid Verification Code"
-PASSWORD_RESET_SUBJECT = "Your Plant-Aid Password Reset Code"
+OTP_SUBJECT = "Your GroundNut-Aid Verification Code"
+PASSWORD_RESET_SUBJECT = "Your GroundNut-Aid Password Reset Code"
 
 PURPOSE_SUBJECTS = {
     "verification": OTP_SUBJECT,
@@ -36,7 +36,7 @@ class OTPService:
         )
 
         text_body = (
-            f"Plant-Aid Security Verification\n\n"
+            f"GroundNut-Aid Security Verification\n\n"
             f"Your {'password reset' if is_reset else 'verification'} code is: {otp_code}\n\n"
             f"This code expires in {settings.OTP_EXPIRE_MINUTES} minutes.\n"
             f"If you did not request this code, please ignore this email"
@@ -52,16 +52,16 @@ class OTPService:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{subject}</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f4f6f4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
+<body style="margin: 0; padding: 0; background-color: #e8f6f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
   <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
     <tr>
       <td align="center" style="padding: 40px 10px;">
-        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 20px; box-shadow: 0 4px 25px rgba(22, 101, 52, 0.08); overflow: hidden; border: 1px solid #e2e8f0;">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 520px; background-color: #ffffff; border-radius: 20px; box-shadow: 0 4px 25px rgba(15, 87, 87, 0.08); overflow: hidden; border: 1px solid #e2e8f0;">
           <!-- Header Banner -->
           <tr>
-            <td style="background-color: #15803d; padding: 28px 32px; text-align: center;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">🌱 Plant-Aid</h1>
-              <p style="margin: 4px 0 0; color: #bbf7d0; font-size: 13px; font-weight: 500;">Real-Time Crop Disease Diagnostic</p>
+            <td style="background-color: #0F5757; padding: 28px 32px; text-align: center;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">🌱 GroundNut-Aid</h1>
+              <p style="margin: 4px 0 0; color: #D9F2F2; font-size: 13px; font-weight: 500;">Real-Time Crop Disease Diagnostic</p>
             </td>
           </tr>
           <!-- Main Content -->
@@ -75,14 +75,14 @@ class OTPService:
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td align="center">
-                    <div style="background-color: #f0fdf4; border: 2px dashed #22c55e; border-radius: 14px; padding: 20px 24px; text-align: center; display: inline-block;">
-                      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 34px; font-weight: 800; letter-spacing: 8px; color: #14532d;">{otp_code}</span>
+                    <div style="background-color: #D9F2F2; border: 2px dashed #2D8686; border-radius: 14px; padding: 20px 24px; text-align: center; display: inline-block;">
+                      <span style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 34px; font-weight: 800; letter-spacing: 8px; color: #0F5757;">{otp_code}</span>
                     </div>
                   </td>
                 </tr>
               </table>
               <p style="margin: 24px 0 0; font-size: 12px; line-height: 1.5; color: #64748b; text-align: center;">
-                Never share this verification code with anyone. Plant-Aid staff will never ask for your code.
+                Never share this verification code with anyone. GroundNut-Aid staff will never ask for your code.
               </p>
             </td>
           </tr>
@@ -91,7 +91,7 @@ class OTPService:
             <td style="background-color: #f8fafc; padding: 20px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
               <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.4;">
                 If you did not request this code, no action is needed. Your account remains safe.<br>
-                © Plant-Aid Agronomic Technologies
+                © GroundNut-Aid Agronomic Technologies
               </p>
             </td>
           </tr>
@@ -153,7 +153,7 @@ class OTPService:
             f"====================================================\n"
             f"[2FA OTP DISPATCH — {channel.upper()}]\n"
             f"To: {destination}\n"
-            f"Your Plant-Aid Verification Code is: {otp_code}\n"
+            f"Your GroundNut-Aid Verification Code is: {otp_code}\n"
             f"Valid for {settings.OTP_EXPIRE_MINUTES} minutes.\n"
             f"===================================================="
         )
