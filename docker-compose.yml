@@ -11,6 +11,7 @@ services:
       - APP_NAME=Plant-Aid API
       - APP_DEBUG=${APP_DEBUG:-True}
       - SECRET_KEY=${SECRET_KEY:-dev-insecure-plant-aid-jwt-key-replace-in-env}
+      - PLANT_AID_SECRET_KEY=${SECRET_KEY:-dev-insecure-plant-aid-jwt-key-replace-in-env}
       - DATABASE_URL=${DATABASE_URL:-sqlite:////app/data/plant_aid.db}
       - UPLOAD_DIR=${UPLOAD_DIR:-/app/uploads}
       - OTP_PROVIDER=${OTP_PROVIDER:-smtp}

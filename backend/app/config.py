@@ -1,5 +1,6 @@
 import os
 
+from pydantic import AliasChoices, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,7 +9,10 @@ class Settings(BaseSettings):
     APP_DEBUG: bool = True
 
     # Security / JWT
-    SECRET_KEY: str = "super-secret-plant-aid-jwt-key-change-in-production"
+    SECRET_KEY: str = Field(
+        default="super-secret-plant-aid-jwt-key-change-in-production",
+        validation_alias=AliasChoices("PLANT_AID_SECRET_KEY", "SECRET_KEY"),
+    )
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60  # 60 minutes per Implementation.md §2.2
     OTP_EXPIRE_MINUTES: int = 5  # 5-min TTL per Implementation.md §2.2
@@ -76,6 +80,19 @@ class Settings(BaseSettings):
     RATE_LIMIT_INFERENCE: str = "60/minute"
     RATE_LIMIT_LOGIN: str = "10/minute"
     RATE_LIMIT_PASSWORD_RESET: str = "5/minute"
+
+    @model_validator(mode="after")
+    def validate_production_secret(self) -> "Settings":
+        if not self.APP_DEBUG and "change-in-production" in self.SECRET_KEY:
+            import warnings
+
+            warnings.warn(
+                "CRITICAL SECURITY WARNING: Insecure default SECRET_KEY detected in production! "
+                "Set PLANT_AID_SECRET_KEY or SECRET_KEY in your environment.",
+                UserWarning,
+                stacklevel=2,
+            )
+        return self
 
     model_config = SettingsConfigDict(
         env_file=(
