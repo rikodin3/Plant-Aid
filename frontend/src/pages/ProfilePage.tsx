@@ -475,7 +475,7 @@ export const ProfilePage: React.FC = () => {
                 Personal Information
               </h2>
               <p className="text-xs sm:text-sm text-slate-600">
-                Manage your display name and phone number used for login and verification.
+                Manage your display name and contact phone number.
               </p>
             </div>
 

@@ -107,7 +107,7 @@ export const AuthPage: React.FC = () => {
     setSuccessMsg(null);
 
     if (!identifier.trim() || !password) {
-      setErrorMsg('Please enter your email or phone number and password.');
+      setErrorMsg('Please enter your email address and password.');
       return;
     }
 
@@ -576,12 +576,12 @@ export const AuthPage: React.FC = () => {
               <form onSubmit={handleLoginSubmit} className="space-y-3.5 sm:space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Email Address or Phone Number
+                    Email Address
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
-                      type="text"
+                      type="email"
                       required
                       value={identifier}
                       onChange={(e) => setIdentifier(e.target.value)}
@@ -675,7 +675,7 @@ export const AuthPage: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Phone Number <span className="text-slate-500 font-normal">(Optional for SMS 2FA)</span>
+                    Phone Number <span className="text-slate-500 font-normal">(Optional)</span>
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
