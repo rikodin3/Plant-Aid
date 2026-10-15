@@ -1,18 +1,21 @@
+import csv
 import datetime
+import io
 import json
 import uuid
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
-from app.models import DiseaseHistoryLog, User
+from app.models import Disease, DiseaseHistoryLog, User
 from app.schemas import (
     HistoryLogCreate,
     HistoryLogCreateResponse,
     HistoryLogResponse,
     PaginatedHistoryResponse,
+    RemedySchema,
 )
 from app.security import get_current_user, get_now_utc
 from app.services.disease_lookup import resolve_disease
@@ -21,11 +24,104 @@ from app.services.storage import storage_service
 router = APIRouter(tags=["Disease History & Media Storage Management"])
 
 
+def _extract_image_identifier(s3_storage_uri: str) -> str:
+    """Extract filename or identifier from storage URI."""
+    if not s3_storage_uri:
+        return ""
+    clean = s3_storage_uri.rstrip("/").split("?")[0]
+    return clean.split("/")[-1] if "/" in clean else clean
+
+
 def _to_response(log: DiseaseHistoryLog) -> HistoryLogResponse:
-    """Helper to convert model to schema with active presigned media URL."""
+    """Helper to convert model to schema with active presigned media URL and enriched metadata."""
     resp = HistoryLogResponse.model_validate(log)
     resp.media_url = storage_service.generate_presigned_url(log.s3_storage_uri)
+    resp.image_identifier = _extract_image_identifier(log.s3_storage_uri)
+
+    is_healthy = (
+        log.disease_id == "healthy_leaf"
+        or "healthy" in (log.disease_name or "").lower()
+    )
+    resp.leaf_status = "Healthy" if is_healthy else "Diseased"
+
+    disease = getattr(log, "disease", None)
+    if disease:
+        resp.plant_species = disease.plant_species
+        resp.scientific_name = disease.scientific_name
+        resp.severity_level = disease.severity_level
+        if getattr(disease, "remedies", None):
+            resp.remedies = [RemedySchema.model_validate(r) for r in disease.remedies]
+    elif is_healthy:
+        resp.severity_level = "NONE"
+
     return resp
+
+
+def _format_remedies_by_category(remedies: list, is_healthy: bool) -> tuple[str, str, str, str]:
+    """Group remedies into organic, chemical, preventive, and consolidated summary text."""
+    if is_healthy:
+        organic_parts = []
+        cultural_parts = []
+        if remedies:
+            for r in remedies:
+                title = getattr(r, "title", "") or ""
+                desc = getattr(r, "description", "") or ""
+                cat = (getattr(r, "category", "") or "").lower()
+                text = f"{title}: {desc}" if desc else title
+                if "organic" in cat or "biological" in cat:
+                    organic_parts.append(text)
+                else:
+                    cultural_parts.append(text)
+
+        organic_str = " | ".join(organic_parts) if organic_parts else "Rhizobium Bio-Fertilizer (Seed/soil inoculation to sustain vigor)"
+        chemical_str = "None required (Foliage is healthy)"
+        cultural_str = " | ".join(cultural_parts) if cultural_parts else "Maintain optimal irrigation, balanced NPK nutrition, and routine crop scouting."
+        summary_str = "Healthy foliage baseline. No curative chemical intervention needed. Maintain preventive nutrition and crop scouting."
+        return (organic_str, chemical_str, cultural_str, summary_str)
+
+    if not remedies:
+        return (
+            "Consult local agricultural extension for organic bio-agents.",
+            "Apply labeled fungicide if spread exceeds economic threshold.",
+            "Remove and destroy infected crop debris; avoid overhead sprinkler irrigation.",
+            "Disease detected. Initiate field sanitation and inspect surrounding foliage.",
+        )
+
+    organic_items = []
+    chemical_items = []
+    cultural_items = []
+    all_summaries = []
+
+    for r in remedies:
+        title = getattr(r, "title", "") or ""
+        desc = getattr(r, "description", "") or ""
+        instr = getattr(r, "application_instructions", "") or ""
+        cat = (getattr(r, "category", "") or "").lower()
+
+        detail_parts = [title]
+        if desc:
+            detail_parts.append(desc)
+        if instr:
+            detail_parts.append(f"Instructions: {instr}")
+        formatted_entry = " — ".join(detail_parts)
+
+        if "organic" in cat or "biological" in cat:
+            organic_items.append(formatted_entry)
+        elif "chemical" in cat or "fungicide" in cat:
+            chemical_items.append(formatted_entry)
+        elif "preventive" in cat or "cultural" in cat:
+            cultural_items.append(formatted_entry)
+        else:
+            cultural_items.append(formatted_entry)
+
+        all_summaries.append(f"[{getattr(r, 'remedy_type', 'General')}] {title}: {desc}")
+
+    organic_str = " | ".join(organic_items) if organic_items else "None specified"
+    chemical_str = " | ".join(chemical_items) if chemical_items else "None specified"
+    cultural_str = " | ".join(cultural_items) if cultural_items else "None specified"
+    summary_str = " | ".join(all_summaries) if all_summaries else "Follow integrated pest management (IPM) guidelines."
+
+    return (organic_str, chemical_str, cultural_str, summary_str)
 
 
 @router.post(
@@ -139,6 +235,7 @@ def _get_visible_log_or_404(db: Session, log_id: int, user_id: int) -> DiseaseHi
     """Fetches one of the caller's non-deleted history rows, or raises 404."""
     log = (
         db.query(DiseaseHistoryLog)
+        .options(joinedload(DiseaseHistoryLog.disease).joinedload(Disease.remedies))
         .filter(
             DiseaseHistoryLog.id == log_id,
             DiseaseHistoryLog.user_id == user_id,
@@ -176,9 +273,13 @@ def get_user_history(
     """
     actual_limit = size if size is not None else limit
 
-    query = db.query(DiseaseHistoryLog).filter(
-        DiseaseHistoryLog.user_id == current_user.id,
-        DiseaseHistoryLog.deleted_at.is_(None),
+    query = (
+        db.query(DiseaseHistoryLog)
+        .options(joinedload(DiseaseHistoryLog.disease).joinedload(Disease.remedies))
+        .filter(
+            DiseaseHistoryLog.user_id == current_user.id,
+            DiseaseHistoryLog.deleted_at.is_(None),
+        )
     )
 
     dt_from = _parse_dt(date_from)
@@ -207,6 +308,144 @@ def get_user_history(
         page=page,
         limit=actual_limit,
         total_pages=total_pages,
+    )
+
+
+@router.get(
+    "/export",
+    summary="Export complete diagnosis history as an enriched CSV report",
+    response_class=Response,
+)
+def export_user_history_csv(
+    disease_id: Optional[str] = Query(None, description="Filter by disease ID"),
+    date_from: Optional[str] = Query(
+        None, description="Filter records on or after this timestamp (ISO format)"
+    ),
+    date_to: Optional[str] = Query(
+        None, description="Filter records on or before this timestamp (ISO format)"
+    ),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Exports the authenticated user's complete diagnosis history as a comprehensive, research-grade CSV.
+    Includes image identifiers, leaf health status, confidence scores, coordinates, and detailed
+    organic, chemical, and preventive cultural treatment recommendations.
+    """
+    query = (
+        db.query(DiseaseHistoryLog)
+        .options(joinedload(DiseaseHistoryLog.disease).joinedload(Disease.remedies))
+        .filter(
+            DiseaseHistoryLog.user_id == current_user.id,
+            DiseaseHistoryLog.deleted_at.is_(None),
+        )
+    )
+
+    dt_from = _parse_dt(date_from)
+    dt_to = _parse_dt(date_to)
+
+    if disease_id and disease_id != "all":
+        query = query.filter(DiseaseHistoryLog.disease_id == disease_id)
+    if dt_from:
+        query = query.filter(DiseaseHistoryLog.diagnosis_timestamp >= dt_from)
+    if dt_to:
+        query = query.filter(DiseaseHistoryLog.diagnosis_timestamp <= dt_to)
+
+    records = query.order_by(DiseaseHistoryLog.diagnosis_timestamp.desc()).all()
+
+    output = io.StringIO()
+    # Write UTF-8 BOM so spreadsheet viewers render unicode correctly
+    output.write("\ufeff")
+    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
+
+    headers = [
+        "Log ID",
+        "Diagnosis Timestamp (UTC)",
+        "Diagnosis Date",
+        "Crop / Plant Species",
+        "Leaf Status",
+        "Condition Name",
+        "Scientific Name",
+        "Disease ID / Code",
+        "Severity Level",
+        "Confidence (%)",
+        "Image Identifier",
+        "Detection Bounding Box",
+        "Treatment Required",
+        "Organic / Biological Treatments",
+        "Chemical / Fungicide Treatments",
+        "Preventive Cultural Practices",
+        "Consolidated Treatment Summary",
+    ]
+    writer.writerow(headers)
+
+    for log in records:
+        is_healthy = (
+            log.disease_id == "healthy_leaf"
+            or "healthy" in (log.disease_name or "").lower()
+        )
+        leaf_status = "Healthy" if is_healthy else "Diseased"
+        treatment_req = "No (Healthy Foliage)" if is_healthy else "Yes"
+
+        disease = getattr(log, "disease", None)
+        plant_species = getattr(disease, "plant_species", None) or "Groundnut (Arachis hypogaea)"
+        sci_name = getattr(disease, "scientific_name", None) or ("Arachis hypogaea L." if is_healthy else "Unknown")
+        severity = getattr(disease, "severity_level", None) or ("NONE" if is_healthy else "MEDIUM")
+        remedies = getattr(disease, "remedies", []) if disease else []
+
+        organic_str, chemical_str, cultural_str, summary_str = _format_remedies_by_category(
+            remedies, is_healthy
+        )
+
+        dt = log.diagnosis_timestamp
+        dt_str = dt.isoformat() if dt else ""
+        date_str = dt.strftime("%Y-%m-%d") if dt else ""
+
+        conf_str = f"{log.confidence_score * 100:.1f}%"
+        img_id = _extract_image_identifier(log.s3_storage_uri)
+
+        bbox_str = "Full Leaf / Unspecified"
+        if log.bounding_box_json:
+            try:
+                b = json.loads(log.bounding_box_json)
+                if isinstance(b, dict) and "x_min" in b:
+                    bbox_str = f"x_min={b.get('x_min', 0):.2f}, y_min={b.get('y_min', 0):.2f}, x_max={b.get('x_max', 0):.2f}, y_max={b.get('y_max', 0):.2f}"
+                else:
+                    bbox_str = log.bounding_box_json
+            except Exception:
+                bbox_str = log.bounding_box_json
+
+        writer.writerow([
+            log.id,
+            dt_str,
+            date_str,
+            plant_species,
+            leaf_status,
+            log.disease_name,
+            sci_name,
+            log.disease_id,
+            severity,
+            conf_str,
+            img_id,
+            bbox_str,
+            treatment_req,
+            organic_str,
+            chemical_str,
+            cultural_str,
+            summary_str,
+        ])
+
+    csv_data = output.getvalue()
+    today_str = datetime.date.today().isoformat()
+    filename = f"groundnut-aid-history-{today_str}.csv"
+
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"',
+            "Access-Control-Expose-Headers": "Content-Disposition",
+        },
     )
 
 

@@ -91,6 +91,12 @@ export interface HistoryLog {
   bounding_box_json?: string | null;
   diagnosis_timestamp: string;
   deleted_at?: string | null;
+  leaf_status?: 'Healthy' | 'Diseased' | string;
+  image_identifier?: string;
+  plant_species?: string;
+  scientific_name?: string;
+  severity_level?: string;
+  remedies?: Remedy[];
 }
 
 export interface PaginatedHistoryResponse {

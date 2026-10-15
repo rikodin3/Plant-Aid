@@ -16,7 +16,7 @@ from app.routers.history import router as history_router
 from app.routers.inference import router as inference_router
 from app.routers.remedy import router as remedy_router
 
-# Initialize database tables
+# Initialize database tables (supports both local SQLite and Neon PostgreSQL)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
