@@ -34,17 +34,27 @@ IMAGENET_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_STD = (0.229, 0.224, 0.225)
 
 
-def normalized_bbox(x_min: float, y_min: float, x_max: float, y_max: float) -> Dict[str, float]:
+def normalized_bbox(
+    x_min: float,
+    y_min: float,
+    x_max: float,
+    y_max: float,
+    confidence: Optional[float] = None,
+) -> Dict[str, Any]:
     """
     Single constructor for the normalized [0, 1] bounding box, so every producer of a box
-    (leaf ROI, lesion hotspot, ROI-relative fallback) emits the same four rounded, clamped keys.
+    (leaf ROI, lesion hotspot, ROI-relative fallback) emits the same rounded, clamped keys,
+    with an optional per-lesion confidence score.
     """
-    return {
+    box: Dict[str, Any] = {
         "x_min": round(max(0.0, min(1.0, x_min)), 4),
         "y_min": round(max(0.0, min(1.0, y_min)), 4),
         "x_max": round(max(0.0, min(1.0, x_max)), 4),
         "y_max": round(max(0.0, min(1.0, y_max)), 4),
     }
+    if confidence is not None:
+        box["confidence"] = round(max(0.0, min(1.0, float(confidence))), 4)
+    return box
 
 
 class MLEngine:
@@ -265,26 +275,38 @@ class MLEngine:
 
         return heatmap, cam_b64
 
-    def compute_two_layer_bbox(
+    def compute_two_layer_bboxes(
         self,
         image_np: np.ndarray,
         leaf_roi: Dict[str, Any],
         is_healthy: bool,
         heatmap: Optional[np.ndarray] = None,
-    ) -> Dict[str, float]:
+        max_boxes: int = 8,
+        min_area_ratio: float = 0.0005,
+        model_confidence: float = 1.0,
+    ) -> List[Dict[str, Any]]:
         """
-        Layer 2 Localization: Computes localized lesion bounding box by thresholding
-        the intersected Grad-CAM attention heatmap inside Layer 1 Leaf ROI per Implementation.md §4.2.
+        Layer 2 Localization: Computes multiple localized lesion bounding boxes
+        by thresholding the intersected Grad-CAM attention heatmap inside Layer 1 Leaf ROI.
+        Extracts up to `max_boxes` distinct lesion clusters ordered by contour area,
+        and assigns an individual, graded confidence score to each lesion based on local activation.
         """
         if is_healthy or not leaf_roi.get("detected", False):
             # Healthy leaf or fallback: bounding box encompasses the full leaf ROI
-            return normalized_bbox(
-                leaf_roi["x_min"], leaf_roi["y_min"], leaf_roi["x_max"], leaf_roi["y_max"]
-            )
+            return [
+                normalized_bbox(
+                    leaf_roi["x_min"],
+                    leaf_roi["y_min"],
+                    leaf_roi["x_max"],
+                    leaf_roi["y_max"],
+                    confidence=model_confidence,
+                )
+            ]
 
         h, w = image_np.shape[:2]
+        boxes: List[Dict[str, Any]] = []
 
-        # If heatmap is provided, threshold it inside the leaf ROI to locate the primary lesion cluster
+        # If heatmap is provided, threshold it inside the leaf ROI to locate all lesion clusters
         if heatmap is not None and float(np.max(heatmap)) > 0.15:
             thresh_val = float(np.max(heatmap) * 0.4)
             leaf_mask = leaf_roi.get("mask")
@@ -295,16 +317,44 @@ class MLEngine:
 
             contours, _ = cv2.findContours(hotspot_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             if contours:
-                largest = max(contours, key=cv2.contourArea)
-                if cv2.contourArea(largest) > (0.001 * h * w):
-                    bx, by, bw, bh = cv2.boundingRect(largest)
-                    # Normalize and clamp within leaf ROI bounds
+                min_area = min_area_ratio * (h * w)
+                valid_contours = [c for c in contours if cv2.contourArea(c) >= min_area]
+                valid_contours.sort(key=cv2.contourArea, reverse=True)
+                selected_contours = valid_contours[:max_boxes]
+
+                # Compute local Grad-CAM intensity for each contour to assign individual confidences
+                contour_scores = []
+                for cnt in selected_contours:
+                    c_mask = np.zeros(heatmap.shape, dtype=np.uint8)
+                    cv2.drawContours(c_mask, [cnt], -1, 255, -1)
+                    pts = heatmap[c_mask > 0]
+                    if len(pts) > 0:
+                        score = float(0.6 * np.max(pts) + 0.4 * np.mean(pts))
+                    else:
+                        bx, by, bw, bh = cv2.boundingRect(cnt)
+                        score = float(np.mean(heatmap[by : by + bh, bx : bx + bw]))
+                    contour_scores.append(score)
+
+                peak_score = max(contour_scores) if contour_scores else 1.0
+
+                for cnt, score in zip(selected_contours, contour_scores):
+                    bx, by, bw, bh = cv2.boundingRect(cnt)
                     x_min = max(leaf_roi["x_min"], float(bx) / w)
                     y_min = max(leaf_roi["y_min"], float(by) / h)
                     x_max = min(leaf_roi["x_max"], float(bx + bw) / w)
                     y_max = min(leaf_roi["y_max"], float(by + bh) / h)
                     if x_max > x_min and y_max > y_min:
-                        return normalized_bbox(x_min, y_min, x_max, y_max)
+                        # Scale spot confidence proportional to its Grad-CAM lesion intensity
+                        ratio = score / (peak_score + 1e-6)
+                        spot_conf = round(
+                            float(model_confidence * (0.65 + 0.35 * ratio)), 4
+                        )
+                        boxes.append(
+                            normalized_bbox(x_min, y_min, x_max, y_max, confidence=spot_conf)
+                        )
+
+        if boxes:
+            return boxes
 
         # Safe fallback centered within leaf ROI if hotspot is diffuse
         roi_w = leaf_roi["x_max"] - leaf_roi["x_min"]
@@ -314,7 +364,28 @@ class MLEngine:
         x_max = min(1.0, x_min + 0.58 * roi_w)
         y_max = min(1.0, y_min + 0.52 * roi_h)
 
-        return normalized_bbox(x_min, y_min, x_max, y_max)
+        return [normalized_bbox(x_min, y_min, x_max, y_max, confidence=model_confidence)]
+
+    def compute_two_layer_bbox(
+        self,
+        image_np: np.ndarray,
+        leaf_roi: Dict[str, Any],
+        is_healthy: bool,
+        heatmap: Optional[np.ndarray] = None,
+    ) -> Dict[str, float]:
+        """
+        Layer 2 Localization: Computes localized lesion bounding box by thresholding
+        the intersected Grad-CAM attention heatmap inside Layer 1 Leaf ROI per Implementation.md §4.2.
+        Returns the primary (largest) lesion bounding box for backwards compatibility.
+        """
+        boxes = self.compute_two_layer_bboxes(
+            image_np=image_np,
+            leaf_roi=leaf_roi,
+            is_healthy=is_healthy,
+            heatmap=heatmap,
+            max_boxes=1,
+        )
+        return boxes[0] if boxes else normalized_bbox(0.1, 0.1, 0.9, 0.9)
 
     def predict(self, image_bytes: bytes) -> Dict[str, Any]:
         """
@@ -354,6 +425,7 @@ class MLEngine:
                 "confidence": 0.0,
                 "confidence_score": 0.0,
                 "bounding_box": None,
+                "bounding_boxes": [],
                 "cam_heatmap_b64": None,
                 "leaf_roi": normalized_bbox(0.0, 0.0, 0.0, 0.0),
                 "is_healthy_or_uncertain": True,
@@ -411,11 +483,22 @@ class MLEngine:
         )
 
         # Layer 2: Compute bounding box localization
-        bbox = self.compute_two_layer_bbox(
+        bboxes = self.compute_two_layer_bboxes(
             image_np=img_rgb,
             leaf_roi=leaf_roi,
             is_healthy=is_healthy,
             heatmap=heatmap,
+            model_confidence=confidence,
+        )
+        primary_bbox = (
+            {
+                "x_min": bboxes[0]["x_min"],
+                "y_min": bboxes[0]["y_min"],
+                "x_max": bboxes[0]["x_max"],
+                "y_max": bboxes[0]["y_max"],
+            }
+            if bboxes
+            else None
         )
 
         return {
@@ -426,7 +509,8 @@ class MLEngine:
             "plant_species": info.get("plant_species", "Groundnut (Arachis hypogaea)"),
             "confidence": round(confidence, 4),
             "confidence_score": round(confidence, 4),
-            "bounding_box": bbox,
+            "bounding_box": primary_bbox,
+            "bounding_boxes": bboxes,
             "cam_heatmap_b64": cam_b64,
             "leaf_roi": normalized_bbox(
                 leaf_roi["x_min"], leaf_roi["y_min"], leaf_roi["x_max"], leaf_roi["y_max"]

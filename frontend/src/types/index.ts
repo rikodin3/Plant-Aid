@@ -50,6 +50,7 @@ export interface BoundingBox {
   y_min: number;
   x_max: number;
   y_max: number;
+  confidence?: number;
 }
 
 export interface Remedy {
@@ -72,6 +73,7 @@ export interface InferenceResponse {
   confidence: number;
   confidence_score: number;
   bounding_box?: BoundingBox | null;
+  bounding_boxes?: BoundingBox[] | null;
   cam_heatmap_b64?: string | null;
   frame_id: string;
   is_healthy_or_uncertain: boolean;

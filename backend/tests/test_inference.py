@@ -377,6 +377,27 @@ def test_upload_validation_sniffs_content_not_declared_type(auth_user):
     assert res.status_code == 200
 
 
+def test_inference_returns_multiple_bounding_boxes(auth_user):
+    """Verify that multi-lesion localization returns an array of bounding_boxes."""
+    headers, _ = auth_user
+    payload = {
+        "mime_type": "image/jpeg",
+        "encoding": "base64",
+        "image_b64": _create_synthetic_leaf_b64(),
+    }
+    res = client.post("/api/inference/frame", json=payload, headers=headers)
+    assert res.status_code == 200
+    data = res.json()
+    assert "bounding_box" in data
+    assert "bounding_boxes" in data
+    assert isinstance(data["bounding_boxes"], list)
+    if data["bounding_box"] is not None:
+        assert len(data["bounding_boxes"]) >= 1
+        first_box = data["bounding_boxes"][0]
+        assert first_box["x_min"] == data["bounding_box"]["x_min"]
+        assert first_box["y_min"] == data["bounding_box"]["y_min"]
+
+
 def test_rate_limiting_auth_endpoint():
     """Task 5.6: Verify rate limiting returns HTTP 429 Too Many Requests upon exceeding threshold."""
     # settings.RATE_LIMIT_LOGIN is 10/minute

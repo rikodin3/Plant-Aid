@@ -441,6 +441,7 @@ export const ScanPage: React.FC = () => {
                     {/* Bounding Box / Two-layer Localization Overlay */}
                     <BoundingBoxOverlay
                       boundingBox={isNoPlant ? null : currentResult?.bounding_box}
+                      boundingBoxes={isNoPlant ? null : currentResult?.bounding_boxes}
                       confidence={currentResult?.confidence || currentResult?.confidence_score || 0}
                       isConfirmedInfection={Boolean(isConfirmedInfection)}
                       isHealthy={Boolean(isHealthy)}
@@ -563,15 +564,16 @@ export const ScanPage: React.FC = () => {
                 <div className="flex-1 w-full flex flex-col items-center justify-center text-center relative">
                   {uploadedImageDataUrl ? (
                     <>
-                      <div className="relative w-full aspect-[4/3] flex items-center justify-center p-2.5 sm:p-6 sm:pb-16">
-                        <div className="relative w-full h-full flex items-center justify-center">
+                      <div className="relative w-full flex items-center justify-center p-2.5 sm:p-6 sm:pb-16 min-h-[320px]">
+                        <div className="relative inline-block max-w-full max-h-[65vh] rounded-2xl overflow-hidden shadow-md border border-emerald-950/10 bg-white/50">
                           <img
                             src={uploadedImageDataUrl}
                             alt="Uploaded leaf"
-                            className="w-full h-full object-contain rounded-2xl shadow-md border border-emerald-950/10 bg-white/50"
+                            className="max-w-full max-h-[65vh] w-auto h-auto block object-contain"
                           />
                           <BoundingBoxOverlay
                             boundingBox={isNoPlant ? null : currentResult?.bounding_box}
+                            boundingBoxes={isNoPlant ? null : currentResult?.bounding_boxes}
                             confidence={currentResult?.confidence || currentResult?.confidence_score || 0}
                             isConfirmedInfection={Boolean(isConfirmedInfection)}
                             isHealthy={Boolean(isHealthy)}

@@ -22,6 +22,7 @@ from app.schemas import (
     BoundingBoxSchema,
     InferenceFramePayload,
     InferenceResponse,
+    LesionBoundingBoxSchema,
     RemedySchema,
 )
 from app.security import get_current_user, get_now_utc
@@ -111,6 +112,11 @@ def _build_inference_response(
             if prediction.get("bounding_box")
             else None
         ),
+        bounding_boxes=[
+            LesionBoundingBoxSchema(**b)
+            for b in prediction.get("bounding_boxes", [])
+            if b
+        ],
         cam_heatmap_b64=prediction.get("cam_heatmap_b64"),
         frame_id=frame_id,
         is_healthy_or_uncertain=prediction["is_healthy_or_uncertain"],

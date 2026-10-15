@@ -155,6 +155,10 @@ class BoundingBoxSchema(BaseModel):
     y_max: float
 
 
+class LesionBoundingBoxSchema(BoundingBoxSchema):
+    confidence: float | None = None
+
+
 class InferenceFramePayload(BaseModel):
     mime_type: str = "image/jpeg"
     encoding: str = "base64"
@@ -170,6 +174,7 @@ class InferenceResponse(BaseModel):
     plant_species: str | None = None
     scientific_name: str | None = None
     bounding_box: BoundingBoxSchema | None = None
+    bounding_boxes: list[LesionBoundingBoxSchema] = []
     cam_heatmap_b64: str | None = None
     frame_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     is_healthy_or_uncertain: bool = False

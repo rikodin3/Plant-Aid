@@ -51,3 +51,13 @@ desktop.ini
 
 # Local scratch space (agent tracks, tickets, throwaway scripts)
 .scratch/
+
+# Screenshots, research documents, archives & local demo files
+[Ee]xperimental*screenshots*/
+webapp-screenshots/
+*.pdf
+*.zip
+backend/multi_bbox_demo.jpg
+backend/ml/demo_multi_bbox.py
+.impeccable/
+*.tsbuildinfo
