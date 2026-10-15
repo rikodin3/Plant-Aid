@@ -312,7 +312,7 @@ export const ScanPage: React.FC = () => {
 
       await api.post('/api/history', payload);
       setIsSaved(true);
-      setSaveMessage('Diagnosis logged to farm history record.');
+      setSaveMessage('Detection logged to farm history record.');
     } catch (err: any) {
       console.error('Failed to log diagnosis record', err);
       setSaveMessage('Failed to save to history. Please try again.');
@@ -522,7 +522,7 @@ export const ScanPage: React.FC = () => {
                           className="w-full sm:w-auto min-h-[42px] sm:min-h-[38px] bg-agri-600 hover:bg-agri-700 text-white font-bold"
                         >
                           <Camera className="w-4 h-4" />
-                          <span>{isInFlight ? 'Processing...' : 'Freeze & Diagnose'}</span>
+                          <span>{isInFlight ? 'Processing...' : 'Freeze & Detect'}</span>
                         </Button>
                       )}
                     </div>
@@ -652,7 +652,7 @@ export const ScanPage: React.FC = () => {
               {/* Header */}
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-950/10 pb-2.5 sm:pb-4">
                 <div className="space-y-0.5">
-                  <h2 className="text-sm sm:text-base font-bold text-slate-900">Diagnostic Reading</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-slate-900">Detection Reading</h2>
                   <p className="hidden sm:block text-xs text-slate-500">Real-time disease detection</p>
                 </div>
 
@@ -768,13 +768,13 @@ export const ScanPage: React.FC = () => {
                               <>
                                 <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" />
                                 <span className="sm:hidden">Saved</span>
-                                <span className="hidden sm:inline">Diagnosis Logged to History</span>
+                                <span className="hidden sm:inline">Detection Logged to History</span>
                               </>
                             ) : (
                               <>
                                 <Save className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="sm:hidden">Save to History</span>
-                                <span className="hidden sm:inline">Save Diagnosis to History</span>
+                                <span className="hidden sm:inline">Save Detection to History</span>
                               </>
                             )}
                           </Button>
@@ -815,7 +815,7 @@ export const ScanPage: React.FC = () => {
                   <div className="space-y-1">
                     <div className="text-sm sm:text-base font-bold text-slate-900">Awaiting Foliage Specimen</div>
                     <p className="text-xs sm:text-sm text-slate-600 max-w-xs mx-auto leading-relaxed">
-                      Frame groundnut leaves inside the crosshairs and tap &quot;Freeze &amp; Diagnose&quot; to inspect.
+                      Frame groundnut leaves inside the crosshairs and tap &quot;Freeze &amp; Detect&quot; to inspect.
                     </p>
                   </div>
                 </div>

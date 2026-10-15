@@ -366,10 +366,10 @@ export const ProfilePage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
             <div className="space-y-0.5 sm:space-y-1">
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                Diagnostic Activity &amp; Field Records
+                Detection Activity &amp; Field Records
               </h2>
               <p className="hidden sm:block text-sm text-slate-600">
-                Summary of your saved foliage diagnoses and downloadable CSV report.
+                Summary of your saved foliage detections and downloadable CSV report.
               </p>
             </div>
 
@@ -406,7 +406,7 @@ export const ProfilePage: React.FC = () => {
             <div className="pt-4 sm:pt-5 border-t border-emerald-950/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div className="space-y-1">
                 <p className="text-sm font-semibold text-slate-800">
-                  No field diagnoses saved yet
+                  No field detections saved yet
                 </p>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                   Scan groundnut foliage and save confirmed results to populate your farm log and enable CSV exports.

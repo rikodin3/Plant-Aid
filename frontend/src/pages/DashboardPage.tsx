@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
-  Upload,
   ArrowRight,
-  Camera,
   Compass,
+  Scan,
+  BookOpen,
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import { cn } from '../lib/utils';
 
 const QUICK_DISEASES = [
@@ -56,9 +55,6 @@ const QUICK_DISEASES = [
 ];
 
 export const DashboardPage: React.FC = () => {
-  const { user } = useAuth();
-  const displayName = user?.user_name || 'Field Agronomist';
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -73,39 +69,38 @@ export const DashboardPage: React.FC = () => {
           <div className="hidden sm:block absolute -top-16 -left-16 w-80 h-80 bg-gradient-to-br from-[#75BDBD]/35 to-[#A6D9D9]/25 rounded-full blur-3xl pointer-events-none" />
           <div className="hidden sm:block absolute -bottom-16 -right-16 w-80 h-80 bg-gradient-to-br from-[#2D8686]/25 to-[#75BDBD]/30 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="glass-frost p-4 sm:p-10 lg:p-14 text-center space-y-3.5 sm:space-y-7 relative overflow-hidden rounded-2xl sm:rounded-[32px]">
-            {/* Headline & Description — Concise operational greeting on mobile, full title on sm+ */}
-            <div className="space-y-2 sm:space-y-4 max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/5 border border-emerald-950/10 text-xs font-semibold text-agri-800">
-                <span>Welcome back, {displayName}</span>
-              </div>
-              <h1 className="text-xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-slate-900 leading-[1.15]">
-                <span className="sm:hidden">Groundnut Disease Scanner &amp; Advisory</span>
-                <span className="hidden sm:inline">
-                  GroundNut-Aid: Real-Time Plant Disease Identification &amp; Treatment Recommendation System
+          <div className="glass-frost p-5 sm:p-12 lg:p-16 text-center space-y-4 sm:space-y-8 relative overflow-hidden rounded-2xl sm:rounded-[32px]">
+            {/* Headline & Description */}
+            <div className="space-y-2.5 sm:space-y-4 max-w-3xl mx-auto">
+              <h1 className="text-3xl sm:text-6xl lg:text-7xl inline-flex items-baseline justify-center leading-none tracking-tight">
+                <span className="font-bold text-[#0F5757] font-gilroy">GroundNut</span>
+                <span className="text-[#75BDBD] font-bold text-[0.9em] mx-1 sm:mx-1.5">·</span>
+                <span className="font-cursive font-bold text-[1.2em] text-[#2D8686] tracking-normal ml-0.5 select-none">
+                  Aid
                 </span>
               </h1>
+              <p className="text-sm sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed">
+                Detect groundnut crop diseases in real-time with high accuracy and reliable remedies.
+              </p>
             </div>
 
             {/* Action CTAs */}
-            <div className="pt-0.5 sm:pt-1 grid grid-cols-2 sm:flex sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
+            <div className="pt-1 sm:pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4">
               <Link
                 to="/scan"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 sm:space-x-2.5 px-3 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-xs sm:text-base shadow-md shadow-agri-900/15 transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[44px] sm:min-h-[48px] touch-target"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-6 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-agri-700 hover:bg-agri-800 text-white font-bold text-sm sm:text-base shadow-md shadow-agri-900/15 transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[46px] sm:min-h-[48px] touch-target"
               >
-                <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" />
-                <span className="sm:hidden">Live Scanner</span>
-                <span className="hidden sm:inline">Launch Live Scanner</span>
-                <ArrowRight className="hidden sm:inline w-4 h-4 ml-1 shrink-0" />
+                <Scan className="w-5 h-5 text-white shrink-0" />
+                <span>Start Instant Scan</span>
+                <ArrowRight className="w-4 h-4 ml-1 shrink-0" />
               </Link>
 
               <Link
-                to="/scan?mode=upload"
-                className="glass-frost-pill w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 sm:space-x-2 px-3 py-3 sm:px-7 sm:py-4 rounded-xl sm:rounded-2xl text-slate-800 hover:text-slate-950 font-semibold text-xs sm:text-base transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[44px] sm:min-h-[48px] touch-target"
+                to="/guide"
+                className="glass-frost-pill w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 sm:px-7 sm:py-4 rounded-xl sm:rounded-2xl text-slate-800 hover:text-slate-950 font-semibold text-sm sm:text-base transition-all hover:scale-[1.02] active:scale-[0.98] min-h-[46px] sm:min-h-[48px] touch-target"
               >
-                <Upload className="w-4 h-4 sm:w-5 sm:h-5 text-agri-700 shrink-0" />
-                <span className="sm:hidden">Upload Photo</span>
-                <span className="hidden sm:inline">Upload Specimen</span>
+                <BookOpen className="w-5 h-5 text-agri-700 shrink-0" />
+                <span>Browse Disease Guide</span>
               </Link>
             </div>
           </div>

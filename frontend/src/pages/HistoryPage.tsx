@@ -140,7 +140,7 @@ export const HistoryPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 pb-3 sm:pb-6 border-b border-emerald-950/10">
             <div className="space-y-1">
               <h1 className="text-xl sm:text-3xl font-normal text-slate-900 tracking-tight">
-                Specimen Diagnosis History
+                Specimen Detection History
               </h1>
               <p className="hidden sm:block text-sm text-slate-600 leading-relaxed">
                 Select any saved specimen to inspect high-resolution foliage details and verified remedies.
@@ -204,11 +204,11 @@ export const HistoryPage: React.FC = () => {
         ) : filteredItems.length === 0 ? (
           <Surface className="py-12 sm:py-16 px-4 text-center space-y-4 border-dashed border-2">
             <Scan className="w-10 h-10 sm:w-12 sm:h-12 text-slate-400 mx-auto" />
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">No Diagnosis Records Found</h2>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">No Detection Records Found</h2>
             <p className="text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
               {searchQuery || diseaseFilter !== 'all'
                 ? 'No historical logs match your current search and filter settings.'
-                : 'Diagnoses are saved explicitly from the Live Scanner. Start scanning crops to build your history.'}
+                : 'Detections are saved explicitly from the Live Scanner. Start scanning crops to build your history.'}
             </p>
             <div className="pt-2">
               <Button asChild size="default" className="min-h-[44px]">
@@ -466,7 +466,7 @@ export const HistoryPage: React.FC = () => {
                       Confirm Record Soft Deletion
                     </h3>
                     <p className="text-xs text-slate-500">
-                      This diagnosis log will be archived and hidden from your active history
+                      This detection log will be archived and hidden from your active history
                       dashboard.
                     </p>
                   </div>

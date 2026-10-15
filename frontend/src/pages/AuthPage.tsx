@@ -303,8 +303,8 @@ export const AuthPage: React.FC = () => {
               : mode === 'forgot'
               ? 'Verify your email with a 6-digit code, then set a new password.'
               : mode === 'login'
-              ? 'Access real-time crop disease diagnosis, remedies, and field records.'
-              : 'Join agricultural professionals diagnosing groundnut foliage with AI.'}
+              ? 'Access real-time crop disease detection, remedies, and field records.'
+              : 'Join agricultural professionals detecting groundnut foliage with AI.'}
           </p>
         </div>
 

@@ -161,7 +161,7 @@ export const LandingPage: React.FC = () => {
 
               <div className="flex-1 min-w-0">
                 <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight group-hover:text-agri-950 transition-colors">
-                  Diagnosis History
+                  Detection History
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-600 mt-0.5 sm:mt-2 leading-relaxed line-clamp-2 md:line-clamp-none">
                   Keep a structured log of field inspections with images and timeline tracking across your crops.

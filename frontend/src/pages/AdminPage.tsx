@@ -273,7 +273,7 @@ export const AdminPage: React.FC = () => {
                     Platform Administration
                   </h1>
                   <p className="hidden sm:block text-sm text-slate-600 leading-relaxed">
-                    Governance console for user authorization, diagnostic logs, and remedy catalog management
+                    Governance console for user authorization, detection logs, and remedy catalog management
                   </p>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export const AdminPage: React.FC = () => {
               <History className="w-4 h-4 sm:w-5 sm:h-5 text-agri-700 shrink-0" />
               <div>
                 <div className="text-xs font-bold text-slate-600">
-                  Diagnoses
+                  Detections
                 </div>
                 <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tabular-nums">{historyTotal}</div>
               </div>
@@ -355,7 +355,7 @@ export const AdminPage: React.FC = () => {
             <TabsTrigger value="history" className="flex items-center justify-center space-x-1.5 sm:space-x-2 px-2 sm:px-4 py-2">
               <History className="w-4 h-4 shrink-0" />
               <span className="sm:hidden">Records</span>
-              <span className="hidden sm:inline">Global Diagnosis Records</span>
+              <span className="hidden sm:inline">Global Detection Records</span>
             </TabsTrigger>
             <TabsTrigger value="remedies" className="flex items-center justify-center space-x-1.5 sm:space-x-2 px-2 sm:px-4 py-2">
               <BookOpen className="w-4 h-4 shrink-0" />
@@ -724,11 +724,11 @@ export const AdminPage: React.FC = () => {
                 {historyLoading ? (
                   <div className="py-10 text-center text-slate-500 text-sm">
                     <div className="w-6 h-6 border-2 border-agri-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                    Loading global diagnosis records...
+                    Loading global detection records...
                   </div>
                 ) : historyItems.length === 0 ? (
                   <div className="py-10 text-center text-slate-500 text-sm">
-                    No diagnostic records found.
+                    No detection records found.
                   </div>
                 ) : (
                   historyItems.map((log) => {
@@ -788,13 +788,13 @@ export const AdminPage: React.FC = () => {
                       <tr>
                         <td colSpan={5} className="py-12 text-center text-slate-500">
                           <div className="w-6 h-6 border-2 border-agri-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                          Loading global diagnosis records...
+                          Loading global detection records...
                         </td>
                       </tr>
                     ) : historyItems.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="py-12 text-center text-slate-500">
-                          No diagnostic records found.
+                          No detection records found.
                         </td>
                       </tr>
                     ) : (
