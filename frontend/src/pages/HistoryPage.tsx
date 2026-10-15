@@ -11,6 +11,7 @@ import {
   ChevronRight,
   Scan,
   BookOpen,
+  Download,
 } from 'lucide-react';
 import api from '../services/api';
 import { HistoryLog, PaginatedHistoryResponse, Remedy } from '../types';
@@ -19,6 +20,7 @@ import { Surface } from '../components/ui/Surface';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import ExpandableProfileCard from '../components/watermelon/original';
+import { downloadHistoryCsv } from '../utils/csvExport';
 
 const getDiseaseImage = (name: string, fallbackUrl?: string | null): string => {
   if (fallbackUrl && fallbackUrl.trim().length > 0 && !fallbackUrl.includes('placeholder')) {
@@ -42,6 +44,7 @@ export const HistoryPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [diseaseFilter, setDiseaseFilter] = useState<string>('all');
+  const [isExporting, setIsExporting] = useState<boolean>(false);
 
   // Deletion modal
   const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -127,6 +130,22 @@ export const HistoryPage: React.FC = () => {
     return item.disease_name.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  // Export CSV handler
+  const handleExportCsv = async () => {
+    if (totalCount === 0 || isExporting) return;
+    setIsExporting(true);
+    try {
+      await downloadHistoryCsv({
+        disease_id: diseaseFilter !== 'all' ? diseaseFilter : undefined,
+        fallbackLogs: historyItems,
+      });
+    } catch (err) {
+      console.error('Failed to export history CSV', err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -137,7 +156,7 @@ export const HistoryPage: React.FC = () => {
       <div className="max-w-6xl mx-auto space-y-3.5 sm:space-y-6">
         {/* Header Console */}
         <Surface className="p-3.5 sm:p-6 md:p-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 pb-3 sm:pb-6 border-b border-emerald-950/10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-3 sm:pb-6 border-b border-emerald-950/10">
             <div className="space-y-1">
               <h1 className="text-xl sm:text-3xl font-normal text-slate-900 tracking-tight">
                 Specimen Detection History
@@ -145,6 +164,29 @@ export const HistoryPage: React.FC = () => {
               <p className="hidden sm:block text-sm text-slate-600 leading-relaxed">
                 Select any saved specimen to inspect high-resolution foliage details and verified remedies.
               </p>
+            </div>
+            <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportCsv}
+                disabled={loading || totalCount === 0 || isExporting}
+                className="min-h-[40px] px-3.5"
+                title={
+                  diseaseFilter !== 'all'
+                    ? `Export records filtered by "${diseaseFilter}" with treatments and image identifiers`
+                    : 'Export all specimen records with treatments and image identifiers'
+                }
+              >
+                <Download className={`w-4 h-4 text-agri-700 shrink-0 ${isExporting ? 'animate-bounce' : ''}`} />
+                <span>
+                  {isExporting
+                    ? 'Exporting...'
+                    : diseaseFilter !== 'all'
+                    ? 'Export Filtered CSV'
+                    : 'Export CSV'}
+                </span>
+              </Button>
             </div>
           </div>
 

@@ -32,6 +32,8 @@ backend/uploads/
 .env.*
 !.env.example
 .neon
+backend/env
+env.local
 
 # Node.js & Frontend
 node_modules/

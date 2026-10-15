@@ -210,6 +210,12 @@ class HistoryLogResponse(BaseModel):
     media_url: str | None = None
     bounding_box_json: str | None = None
     diagnosis_timestamp: datetime.datetime
+    leaf_status: str | None = None
+    image_identifier: str | None = None
+    plant_species: str | None = None
+    scientific_name: str | None = None
+    severity_level: str | None = None
+    remedies: list[RemedySchema] = []
 
     model_config = ConfigDict(from_attributes=True)
 

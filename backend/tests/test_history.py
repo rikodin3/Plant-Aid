@@ -314,3 +314,92 @@ def test_history_log_with_image_b64_and_pagination_size(auth_user):
     assert pdata["size"] == 5
     assert "total_pages" in pdata
     assert "pages" in pdata
+
+
+def test_history_log_enriched_fields(auth_user):
+    headers, _ = auth_user
+    # Log a diseased leaf
+    diseased_res = client.post(
+        "/api/history",
+        json={
+            "disease_id": "early_leaf_spot",
+            "confidence_score": 0.92,
+            "s3_storage_uri": "s3://plant-aid-media-bucket/frames/user1/leaf-test-001.jpg",
+        },
+        headers=headers,
+    )
+    assert diseased_res.status_code == 201
+    log_id = diseased_res.json()["log_id"]
+
+    get_res = client.get(f"/api/history/{log_id}", headers=headers)
+    assert get_res.status_code == 200
+    data = get_res.json()
+    assert data["leaf_status"] == "Diseased"
+    assert data["image_identifier"] == "leaf-test-001.jpg"
+    assert data["plant_species"] is not None
+    assert data["scientific_name"] is not None
+    assert len(data["remedies"]) > 0
+
+    # Log a healthy leaf
+    healthy_res = client.post(
+        "/api/history",
+        json={
+            "disease_id": "healthy_leaf",
+            "confidence_score": 0.98,
+            "s3_storage_uri": "s3://plant-aid-media-bucket/frames/user1/healthy-sample.jpg",
+        },
+        headers=headers,
+    )
+    assert healthy_res.status_code == 201
+    h_log_id = healthy_res.json()["log_id"]
+
+    h_get_res = client.get(f"/api/history/{h_log_id}", headers=headers)
+    assert h_get_res.status_code == 200
+    h_data = h_get_res.json()
+    assert h_data["leaf_status"] == "Healthy"
+    assert h_data["image_identifier"] == "healthy-sample.jpg"
+
+
+def test_history_export_csv_success(auth_user):
+    headers, _ = auth_user
+    res = client.get("/api/history/export", headers=headers)
+    assert res.status_code == 200
+    assert "text/csv" in res.headers.get("content-type", "")
+    assert "attachment; filename=" in res.headers.get("content-disposition", "")
+
+    csv_text = res.text
+    # Check that required headers are in the CSV
+    assert "Log ID" in csv_text
+    assert "Leaf Status" in csv_text
+    assert "Image Identifier" in csv_text
+    assert "Organic / Biological Treatments" in csv_text
+    assert "Chemical / Fungicide Treatments" in csv_text
+    assert "Preventive Cultural Practices" in csv_text
+    assert "Consolidated Treatment Summary" in csv_text
+
+    # Verify rows contain populated identifiers and statuses
+    assert "Healthy" in csv_text or "Diseased" in csv_text
+
+    # Verify sensitive cloud infrastructure and credentials are strictly excluded
+    assert "s3://" not in csv_text
+    assert "Image Storage URI" not in csv_text
+    assert "Image Media URL" not in csv_text
+    assert "X-Amz" not in csv_text
+
+
+def test_history_export_csv_with_filter(auth_user):
+    headers, _ = auth_user
+    res = client.get("/api/history/export?disease_id=healthy_leaf", headers=headers)
+    assert res.status_code == 200
+    csv_text = res.text
+    lines = [line.strip() for line in csv_text.splitlines() if line.strip()]
+    # At least header + records
+    assert len(lines) >= 2
+    # Verify no rust or late leaf spot rows are in this filtered export
+    for line in lines[1:]:
+        assert "late_leaf_spot" not in line
+
+
+def test_history_export_csv_unauthorized():
+    res = client.get("/api/history/export")
+    assert res.status_code == 401

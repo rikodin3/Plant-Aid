@@ -19,6 +19,7 @@ import { User, HistoryLog, PaginatedHistoryResponse } from '../types';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/card';
+import { downloadHistoryCsv } from '../utils/csvExport';
 
 export const ProfilePage: React.FC = () => {
   const { user: initialUser, updateProfile, changePassword, logout } = useAuth();
@@ -38,6 +39,7 @@ export const ProfilePage: React.FC = () => {
   const [historyLogs, setHistoryLogs] = useState<HistoryLog[]>([]);
   const [totalScans, setTotalScans] = useState<number>(0);
   const [loadingActivity, setLoadingActivity] = useState<boolean>(true);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
 
   // Password form state
   const [currentPassword, setCurrentPassword] = useState<string>('');
@@ -159,41 +161,16 @@ export const ProfilePage: React.FC = () => {
   }, [historyLogs]);
 
   // Export CSV handler
-  const handleExportCsv = () => {
-    if (historyLogs.length === 0) return;
-
-    const headers = ['Log ID', 'Diagnosis Timestamp', 'Condition Name', 'Disease ID', 'Confidence (%)'];
-    const escapeCsv = (val: string | number) => {
-      const str = String(val ?? '');
-      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        return `"${str.replace(/"/g, '""')}"`;
-      }
-      return str;
-    };
-
-    const rows = historyLogs.map((log) => [
-      log.id,
-      log.diagnosis_timestamp,
-      log.disease_name,
-      log.disease_id,
-      (log.confidence_score * 100).toFixed(1),
-    ]);
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map((r) => r.map(escapeCsv).join(',')),
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    const dateStamp = new Date().toISOString().slice(0, 10);
-    link.href = url;
-    link.setAttribute('download', `groundnut-aid-history-${dateStamp}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const handleExportCsv = async () => {
+    if (historyLogs.length === 0 || isExporting) return;
+    setIsExporting(true);
+    try {
+      await downloadHistoryCsv({ fallbackLogs: historyLogs });
+    } catch (err) {
+      console.error('Failed to export history CSV', err);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   // Profile form dirty check & submit
@@ -378,11 +355,12 @@ export const ProfilePage: React.FC = () => {
                 variant="outline"
                 size="sm"
                 onClick={handleExportCsv}
-                disabled={loadingActivity || historyLogs.length === 0}
+                disabled={loadingActivity || historyLogs.length === 0 || isExporting}
                 className="min-h-[42px] w-full sm:w-auto"
+                title="Download comprehensive CSV report with image identifiers, leaf status, and remedies"
               >
-                <Download className="w-4 h-4 text-agri-700 shrink-0" />
-                <span>Export CSV</span>
+                <Download className={`w-4 h-4 text-agri-700 shrink-0 ${isExporting ? 'animate-bounce' : ''}`} />
+                <span>{isExporting ? 'Exporting...' : 'Export CSV'}</span>
               </Button>
               <Button variant="secondary" size="sm" asChild className="min-h-[42px] w-full sm:w-auto">
                 <Link to="/history">

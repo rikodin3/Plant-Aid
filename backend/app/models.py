@@ -102,3 +102,4 @@ class DiseaseHistoryLog(Base):
     deleted_at = Column(DateTime, nullable=True, default=None)
 
     user = relationship("User", back_populates="history_logs")
+    disease = relationship("Disease", foreign_keys=[disease_id])
