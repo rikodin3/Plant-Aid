@@ -29,6 +29,7 @@ export const ScanPage: React.FC = () => {
   const [cameraActive, setCameraActive] = useState<boolean>(false);
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [cameraError, setCameraError] = useState<string | null>(null);
+  const [cameraAspect, setCameraAspect] = useState<string>('16 / 9');
 
   // Scanning & Shutter workflow states
   // Default to continuous 1.5s auto-sampling per SRS §3.1 F.2
@@ -87,6 +88,11 @@ export const ScanPage: React.FC = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.onloadedmetadata = () => {
+          const vw = videoRef.current?.videoWidth;
+          const vh = videoRef.current?.videoHeight;
+          if (vw && vh) {
+            setCameraAspect(`${vw} / ${vh}`);
+          }
           videoRef.current?.play();
           setCameraActive(true);
         };
@@ -144,8 +150,15 @@ export const ScanPage: React.FC = () => {
       }
 
       const canvas = canvasRef.current;
-      canvas.width = 640;
-      canvas.height = 480;
+      const vw = video.videoWidth || 640;
+      const vh = video.videoHeight || 480;
+
+      // Keep aspect ratio strictly proportional to video feed (no squashing)
+      // Limit max dimension to 640px for fast inference latency
+      const maxDim = 640;
+      const scale = Math.min(1.0, maxDim / Math.max(vw, vh));
+      canvas.width = Math.round(vw * scale);
+      canvas.height = Math.round(vh * scale);
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
@@ -411,14 +424,17 @@ export const ScanPage: React.FC = () => {
             >
               {mode === 'camera' ? (
                 <>
-                  {/* Dedicated 4:3 Optical Stage — 100% unobstructed on mobile */}
-                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-950">
+                  {/* Dedicated Optical Stage — Matches camera stream aspect ratio 1:1 with zero letterboxing */}
+                  <div
+                    className="relative w-full overflow-hidden bg-slate-950 flex items-center justify-center transition-all duration-300"
+                    style={{ aspectRatio: cameraAspect }}
+                  >
                     {/* Active Video Stream */}
                     <video
                       ref={videoRef}
                       playsInline
                       muted
-                      className={`w-full h-full object-contain ${isFrozen ? 'hidden' : 'block'}`}
+                      className={`w-full h-full object-cover ${isFrozen ? 'hidden' : 'block'}`}
                     />
 
                     {/* Frozen Frame View */}
@@ -426,7 +442,7 @@ export const ScanPage: React.FC = () => {
                       <img
                         src={frozenFrameDataUrl}
                         alt="Frozen leaf specimen"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-cover"
                       />
                     )}
 
@@ -502,8 +518,8 @@ export const ScanPage: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Tactical Shutter Dock — Stacked cleanly below video on mobile, floating overlay on sm+ */}
-                  <div className="sm:absolute sm:bottom-3 sm:inset-x-3 bg-slate-950/95 sm:bg-slate-950/85 backdrop-blur-md border-t sm:border border-white/10 sm:rounded-2xl p-2.5 sm:p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3 shadow-lg z-30">
+                  {/* Tactical Shutter Dock — Positioned cleanly below optical stage so it never obscures live feed or bounding boxes */}
+                  <div className="relative bg-slate-950/95 border-t border-white/10 p-2.5 sm:p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-3 shadow-lg z-30">
                     <div className="flex items-center">
                       {isFrozen ? (
                         <Button

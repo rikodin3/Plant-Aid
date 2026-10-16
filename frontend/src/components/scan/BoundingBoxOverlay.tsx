@@ -64,9 +64,9 @@ export const BoundingBoxOverlay: React.FC<BoundingBoxOverlayProps> = ({
             }}
           >
             <div
-              className={`absolute left-0 px-2 py-0.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-slate-900/95 text-white border border-slate-700 whitespace-nowrap shadow-sm z-30 ${
-                box.y_min < 0.10 ? 'top-1 left-1' : '-top-7'
-              }`}
+              className={`absolute px-2 py-0.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-slate-900/95 text-white border border-slate-700 whitespace-nowrap shadow-sm z-30 ${
+                box.y_min < 0.10 ? 'top-1' : '-top-7'
+              } ${box.x_min > 0.70 ? 'right-1' : 'left-0'}`}
             >
               {isHealthy
                 ? 'Healthy Canopy'
