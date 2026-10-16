@@ -87,13 +87,18 @@ export const ScanPage: React.FC = () => {
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.onloadedmetadata = () => {
+        const updateAspect = () => {
           const vw = videoRef.current?.videoWidth;
           const vh = videoRef.current?.videoHeight;
           if (vw && vh) {
             setCameraAspect(`${vw} / ${vh}`);
           }
-          videoRef.current?.play();
+        };
+        // Check if metadata is already ready synchronously
+        updateAspect();
+        videoRef.current.onloadedmetadata = () => {
+          updateAspect();
+          videoRef.current?.play().catch(() => {});
           setCameraActive(true);
         };
       }
@@ -434,6 +439,12 @@ export const ScanPage: React.FC = () => {
                       ref={videoRef}
                       playsInline
                       muted
+                      onLoadedMetadata={(e) => {
+                        const video = e.currentTarget;
+                        if (video.videoWidth && video.videoHeight) {
+                          setCameraAspect(`${video.videoWidth} / ${video.videoHeight}`);
+                        }
+                      }}
                       className={`w-full h-full object-cover ${isFrozen ? 'hidden' : 'block'}`}
                     />
 
