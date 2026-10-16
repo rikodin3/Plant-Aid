@@ -19,15 +19,31 @@ class Settings(BaseSettings):
     MAX_OTP_ATTEMPTS: int = 5  # 5 failed attempts cap per Implementation.md §2.2
 
     # Database
-    DATABASE_URL: str = (
-        f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'plant_aid.db').replace(os.sep, '/')}"
+    DATABASE_URL: str = Field(
+        default=f"sqlite:///{os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'plant_aid.db').replace(os.sep, '/')}",
+        validation_alias=AliasChoices("PLANT_AID_DATABASE_URL", "DATABASE_URL"),
     )
 
-    # AWS S3 Settings
-    AWS_ACCESS_KEY_ID: str = ""
-    AWS_SECRET_ACCESS_KEY: str = ""
-    AWS_REGION: str = "us-east-1"
-    S3_BUCKET_NAME: str = "plant-aid-media-bucket"
+    # AWS / Neon S3 Object Storage Settings
+    AWS_ACCESS_KEY_ID: str = Field(
+        "", validation_alias=AliasChoices("PLANT_AID_AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID")
+    )
+    AWS_SECRET_ACCESS_KEY: str = Field(
+        "", validation_alias=AliasChoices("PLANT_AID_AWS_SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY")
+    )
+    AWS_REGION: str = Field(
+        "us-east-2", validation_alias=AliasChoices("PLANT_AID_AWS_REGION", "AWS_REGION")
+    )
+    AWS_ENDPOINT_URL: str = Field(
+        "",
+        validation_alias=AliasChoices(
+            "PLANT_AID_AWS_ENDPOINT_URL", "AWS_ENDPOINT_URL_S3", "AWS_ENDPOINT_URL"
+        ),
+    )
+    S3_BUCKET_NAME: str = Field(
+        "plant-aid-media-bucket",
+        validation_alias=AliasChoices("PLANT_AID_S3_BUCKET_NAME", "S3_BUCKET_NAME"),
+    )
     S3_PRESIGNED_EXPIRATION_SECONDS: int = (
         900  # 15 minutes TTL per Implementation.md §6.2
     )
@@ -43,21 +59,24 @@ class Settings(BaseSettings):
     MAX_OTP_RESENDS: int = 3
 
     # SMTP Configuration (Gmail App Password, Brevo, AWS SES, custom relay)
-    SMTP_HOST: str = "smtp.gmail.com"
-    SMTP_PORT: int = 587
-    SMTP_USERNAME: str = ""
-    SMTP_PASSWORD: str = ""
-    SMTP_USE_STARTTLS: bool = True
-    SMTP_FROM_EMAIL: str = "noreply@groundnut-aid.org"
-    SMTP_FROM_NAME: str = "GroundNut-Aid Security"
-    SMTP_TIMEOUT_SECONDS: int = 10
+    SMTP_HOST: str = Field("smtp.gmail.com", validation_alias=AliasChoices("PLANT_AID_SMTP_HOST", "SMTP_HOST"))
+    SMTP_PORT: int = Field(587, validation_alias=AliasChoices("PLANT_AID_SMTP_PORT", "SMTP_PORT"))
+    SMTP_USERNAME: str = Field("", validation_alias=AliasChoices("PLANT_AID_SMTP_USERNAME", "SMTP_USERNAME"))
+    SMTP_PASSWORD: str = Field("", validation_alias=AliasChoices("PLANT_AID_SMTP_PASSWORD", "SMTP_PASSWORD"))
+    SMTP_USE_STARTTLS: bool = Field(True, validation_alias=AliasChoices("PLANT_AID_SMTP_USE_STARTTLS", "SMTP_USE_STARTTLS"))
+    SMTP_FROM_EMAIL: str = Field("noreply@groundnut-aid.org", validation_alias=AliasChoices("PLANT_AID_SMTP_FROM_EMAIL", "SMTP_FROM_EMAIL"))
+    SMTP_FROM_NAME: str = Field("GroundNut-Aid Security", validation_alias=AliasChoices("PLANT_AID_SMTP_FROM_NAME", "SMTP_FROM_NAME"))
+    SMTP_TIMEOUT_SECONDS: int = Field(10, validation_alias=AliasChoices("PLANT_AID_SMTP_TIMEOUT_SECONDS", "SMTP_TIMEOUT_SECONDS"))
 
     # Resend Configuration
     RESEND_API_KEY: str = ""
     RESEND_FROM_EMAIL: str = "onboarding@resend.dev"
 
     # Google Apps Script HTTPS Relay Configuration (for cloud containers blocking SMTP port 587)
-    GAS_WEBHOOK_URL: str = ""
+    GAS_WEBHOOK_URL: str = Field("", validation_alias=AliasChoices("PLANT_AID_GAS_WEBHOOK_URL", "GAS_WEBHOOK_URL"))
+
+    # CORS Origins
+    CORS_ORIGINS: str = Field("*", validation_alias=AliasChoices("PLANT_AID_CORS_ORIGINS", "CORS_ORIGINS"))
 
     # Legacy / Alternative Providers
     TWILIO_ACCOUNT_SID: str = ""
@@ -101,9 +120,10 @@ class Settings(BaseSettings):
         env_file=(
             os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"),
             ".env",
+            os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env.local"),
+            ".env.local",
         ),
         env_file_encoding="utf-8",
-        env_prefix="PLANT_AID_",
         extra="ignore",
     )
 
