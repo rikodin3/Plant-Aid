@@ -414,7 +414,7 @@ export const DiseaseGuidePage: React.FC = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 sm:gap-6 pb-3 sm:pb-6 border-b border-emerald-950/10">
             <div className="space-y-1 sm:space-y-2 max-w-2xl">
               <h1 className="text-xl sm:text-3xl font-normal text-slate-900 tracking-tight leading-tight">
-                Groundnut Pathology &amp; Treatment Guide
+                Groundnut disease detection and recommendation
               </h1>
               <p className="hidden sm:block text-slate-600 text-sm leading-relaxed">
                 Farmer-tested visual symptoms, photorealistic specimen photos, natural bio-fungicides, chemical dosages, and soil care.

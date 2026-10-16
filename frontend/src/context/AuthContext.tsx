@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import {
   User,
@@ -41,6 +42,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('plant_aid_token'));
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   // Hydrate user profile on initial mount if token exists
   useEffect(() => {
@@ -62,6 +64,62 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     fetchCurrentUser();
   }, [token]);
+
+  // Automatic Idle Timeout: log out directly after 30 seconds of inactivity if authenticated
+  useEffect(() => {
+    if (!token) return;
+
+    const IDLE_TIMEOUT_MS = 30 * 1000; // 30 seconds
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const handleIdleLogout = () => {
+      setToken(null);
+      setUser(null);
+      localStorage.removeItem('plant_aid_token');
+      localStorage.removeItem('plant_aid_user');
+      navigate('/auth', { replace: true });
+    };
+
+    const resetTimer = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleIdleLogout, IDLE_TIMEOUT_MS);
+    };
+
+    // Start timer on initial mount or token change
+    resetTimer();
+
+    // Listen to all interaction events across the window
+    const activityEvents = [
+      'mousemove',
+      'mousedown',
+      'keydown',
+      'touchstart',
+      'scroll',
+      'click',
+    ];
+
+    let lastActivity = Date.now();
+    const handleActivity = () => {
+      const now = Date.now();
+      // Throttle timer resets to at most once every 500ms for efficiency
+      if (now - lastActivity > 500) {
+        lastActivity = now;
+        resetTimer();
+      }
+    };
+
+    activityEvents.forEach((evt) => {
+      window.addEventListener(evt, handleActivity, { passive: true });
+    });
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      activityEvents.forEach((evt) => {
+        window.removeEventListener(evt, handleActivity);
+      });
+    };
+  }, [token, navigate]);
+
 
   // Initiate login: returns 2FA challenge response containing session_id
   const login = async (identifier: string, password: string): Promise<TwoFactorChallengeResponse> => {
