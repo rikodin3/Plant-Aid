@@ -72,12 +72,8 @@ export const DashboardPage: React.FC = () => {
           <div className="glass-frost p-5 sm:p-12 lg:p-16 text-center space-y-4 sm:space-y-8 relative overflow-hidden rounded-2xl sm:rounded-[32px]">
             {/* Headline & Description */}
             <div className="space-y-2.5 sm:space-y-4 max-w-3xl mx-auto">
-              <h1 className="text-3xl sm:text-6xl lg:text-7xl inline-flex items-baseline justify-center leading-none tracking-tight">
-                <span className="font-bold text-[#0F5757] font-gilroy">GroundNut</span>
-                <span className="text-[#75BDBD] font-bold text-[0.9em] mx-1 sm:mx-1.5">·</span>
-                <span className="font-cursive font-bold text-[1.2em] text-[#2D8686] tracking-normal ml-0.5 select-none">
-                  Aid
-                </span>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#0F5757] font-gilroy tracking-tight leading-tight">
+                Groundnut disease detection and recommendation system
               </h1>
               <p className="text-sm sm:text-lg text-slate-700 max-w-2xl mx-auto leading-relaxed">
                 Detect groundnut crop diseases in real-time with high accuracy and reliable remedies.

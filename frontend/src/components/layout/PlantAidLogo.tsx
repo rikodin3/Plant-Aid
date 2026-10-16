@@ -90,7 +90,7 @@ export const PlantAidLogo: React.FC<PlantAidLogoProps> = ({
         </div>
         {showSubtitle && (
           <span className="hidden sm:inline text-xs uppercase tracking-wider font-semibold text-[#0F5757]/75 mt-0.5">
-            Real-Time Plant Health
+            Real-Time Groundnut-Plant Health
           </span>
         )}
       </div>
