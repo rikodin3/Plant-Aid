@@ -52,11 +52,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           const res = await api.get<User>('/api/auth/me');
           setUser(res.data);
           localStorage.setItem('plant_aid_user', JSON.stringify(res.data));
-        } catch {
-          setToken(null);
-          setUser(null);
-          localStorage.removeItem('plant_aid_token');
-          localStorage.removeItem('plant_aid_user');
+        } catch (err: any) {
+          // Only clear session on 401 Unauthorized (expired or invalid token)
+          // Do not log out on transient network errors, slow connection, or server spin-up
+          if (err.response?.status === 401) {
+            setToken(null);
+            setUser(null);
+            localStorage.removeItem('plant_aid_token');
+            localStorage.removeItem('plant_aid_user');
+          }
         }
       }
       setLoading(false);
@@ -65,11 +69,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     fetchCurrentUser();
   }, [token]);
 
-  // Automatic Idle Timeout: log out directly after 30 seconds of inactivity if authenticated
+  // Automatic Idle Timeout: log out directly after 10 minutes of inactivity if authenticated
   useEffect(() => {
     if (!token) return;
 
-    const IDLE_TIMEOUT_MS = 30 * 1000; // 30 seconds
+    const IDLE_TIMEOUT_MS = 10 * 60 * 1000; // 10 minutes
     let timeoutId: ReturnType<typeof setTimeout>;
 
     const handleIdleLogout = () => {
@@ -92,6 +96,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const activityEvents = [
       'mousemove',
       'mousedown',
+      'pointermove',
+      'pointerdown',
       'keydown',
       'touchstart',
       'scroll',
