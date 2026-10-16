@@ -133,6 +133,13 @@ class MLEngine:
 
     def _load_model(self):
         """Attempts to load the TorchScript model onto the configured device (CUDA or CPU)."""
+        if not os.path.exists(settings.ML_MODEL_PATH):
+            try:
+                from scripts.download_model import ensure_model
+                ensure_model()
+            except Exception as e:
+                logger.debug(f"Could not auto-download model weights: {e}")
+
         if os.path.exists(settings.ML_MODEL_PATH):
             try:
                 self.model = torch.jit.load(settings.ML_MODEL_PATH, map_location=self.device)
@@ -140,7 +147,19 @@ class MLEngine:
                 self.is_fallback = False
                 logger.info(f"TorchScript model loaded successfully from {settings.ML_MODEL_PATH} on {self.device}")
             except Exception as e:
-                logger.warning("Model weights not found. Running in Groundnut Fallback Mode")
+                # If CUDA initialization failed (e.g. ZeroGPU container without active GPU context), fall back to CPU
+                if self.device != torch.device("cpu"):
+                    try:
+                        logger.warning(f"Failed to load model on {self.device} ({e}), falling back to CPU...")
+                        self.device = torch.device("cpu")
+                        self.model = torch.jit.load(settings.ML_MODEL_PATH, map_location=self.device)
+                        self.model.eval()
+                        self.is_fallback = False
+                        logger.info(f"TorchScript model loaded successfully from {settings.ML_MODEL_PATH} on CPU")
+                        return
+                    except Exception as cpu_err:
+                        logger.warning(f"Error loading TorchScript model on CPU fallback: {cpu_err}")
+                logger.warning(f"Error loading TorchScript model: {e}. Running in Groundnut Fallback Mode")
                 self.model = None
                 self.is_fallback = True
         else:
@@ -432,6 +451,11 @@ class MLEngine:
                 "is_fallback": self.is_fallback,
             }
 
+        # Self-healing: if currently in fallback mode, check if weights became available on disk
+        if (self.is_fallback or self.model is None) and os.path.exists(settings.ML_MODEL_PATH):
+            logger.info("Model weights found on disk during inference. Attempting reload...")
+            self._load_model()
+
         if not self.is_fallback and self.model is not None:
             # Real TorchScript Forward Pass on configured device
             input_tensor = self.preprocess_image(img_rgb)
@@ -444,8 +468,20 @@ class MLEngine:
                 class_key = self.classes[idx] if idx < len(self.classes) else "early_leaf_spot"
         else:
             # Intelligent Groundnut Fallback Mode
-            # Deterministically inspect image features (greenness ratio) to provide realistic predictions
-            if green_ratio > 0.60:
+            # Deterministically inspect image features (greenness ratio & necrotic lesion discoloration)
+            hsv = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2HSV)
+            lower_brown = np.array([5, 40, 20], dtype=np.uint8)
+            upper_brown = np.array([24, 255, 200], dtype=np.uint8)
+            brown_mask = cv2.inRange(hsv, lower_brown, upper_brown)
+            brown_ratio = np.sum(brown_mask > 0) / float(h * w) if (h * w) > 0 else 0.0
+
+            if brown_ratio > 0.05:
+                class_key = "late_leaf_spot"
+                confidence = 0.86
+            elif brown_ratio > 0.015:
+                class_key = "early_leaf_spot"
+                confidence = 0.88
+            elif green_ratio > 0.60:
                 class_key = "healthy_leaf"
                 confidence = 0.94
             elif green_ratio > 0.35:

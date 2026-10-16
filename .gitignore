@@ -63,3 +63,4 @@ backend/multi_bbox_demo.jpg
 backend/ml/demo_multi_bbox.py
 .impeccable/
 *.tsbuildinfo
+.workbuddy-ai/

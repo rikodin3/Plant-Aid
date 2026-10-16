@@ -69,8 +69,11 @@ class Settings(BaseSettings):
     # ML Engine Settings
     ML_DEVICE: str = "auto"  # "auto" (cuda if available else cpu) | "cuda" | "cpu"
     ML_CONFIDENCE_THRESHOLD: float = 0.55  # Tau = 0.55 per Implementation.md §4.2
-    ML_MODEL_PATH: str = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)), "ml", "convnext_tiny_groundnut.ts"
+    ML_MODEL_PATH: str = Field(
+        default=os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), "ml", "convnext_tiny_groundnut.ts"
+        ),
+        validation_alias=AliasChoices("PLANT_AID_ML_MODEL_PATH", "ML_MODEL_PATH"),
     )
     ML_LABELS_PATH: str = os.path.join(
         os.path.dirname(os.path.dirname(__file__)), "ml", "labels.json"
